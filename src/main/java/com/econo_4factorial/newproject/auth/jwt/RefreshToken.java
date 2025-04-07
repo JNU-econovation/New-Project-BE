@@ -1,0 +1,24 @@
+package com.econo_4factorial.newproject.auth.jwt;
+
+import jakarta.persistence.Id;
+import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
+import org.springframework.data.redis.core.index.Indexed;
+
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RedisHash(value = "refresh_token")
+public class RefreshToken {
+
+    @Id
+    private Long id;
+
+    @Indexed
+    private String refreshToken;
+
+    @TimeToLive
+    private Long expirationTime;
+}
