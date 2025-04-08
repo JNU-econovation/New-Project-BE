@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: token
+
+custom:
+  jwt:
+    access:
+      expiredTime: ${CUSTOM_JWT_ACCESS_TOKEN_EXPIRED_TIME}
+      secretkey: ${CUSTOM_JWT_ACCESS_TOKEN_SECRET_KEY}
+    refresh:
+      expiredTime: ${CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME}
+      secretKey: ${CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY}

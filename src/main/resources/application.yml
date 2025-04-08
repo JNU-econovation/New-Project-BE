@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: NewProject
+  config:
+    import: optional:file:.env[.properties]
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  profiles:
+    group:
+      local:
+        - jpa
+        - token
+        - kakao

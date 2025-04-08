@@ -1,0 +1,11 @@
+spring:
+  config:
+    activate:
+      on-profile: kakao
+
+oauth:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    url:
+      redirect-uri: ${KAKAO_REDIRECT_URI}
+    response-type: ${KAKAO_RESPONSE_TYPE}
