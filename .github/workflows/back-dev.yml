@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: soop/dev-backend
   ECS_CLUSTER: soop-dev-cluster
-  ECS_SERVICE: soop-dev-back-test-service
+  ECS_SERVICE: soop-dev-backend-test-service
   CONTAINER_NAME: application
 
 jobs:
@@ -61,7 +61,7 @@ jobs:
           --cli-input-json file://new-task-def.json > new-def-response.json
 
         NEW_TASK_ARN=$(jq -r '.taskDefinition.taskDefinitionArn' new-def-response.json)
-
+        echo "Fetched TASK_DEF: $TASK_DEF"
         aws ecs update-service \
           --cluster $ECS_CLUSTER \
           --service $ECS_SERVICE \
