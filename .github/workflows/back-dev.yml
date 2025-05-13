@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: soop/dev-backend
   ECS_CLUSTER: soop-dev-cluster
-  ECS_SERVICE: soop-dev-backend-test-service
+  ECS_SERVICE: soop-dev-bakend-test-service
   CONTAINER_NAME: application
 
 jobs:
