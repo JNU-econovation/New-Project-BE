@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: 650553045794.dkr.ecr.ap-northeast-2.amazonaws.com/soop/dev-backend
+  ECR_REPOSITORY: soop/dev-backend
   ECS_CLUSTER: soop-dev-cluster
   ECS_SERVICE: soop-dev-back-test-service
   CONTAINER_NAME: application
