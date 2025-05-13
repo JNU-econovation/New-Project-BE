@@ -1,0 +1,69 @@
+name: backend Deploy to DEV (on merge)
+
+on:
+  push:
+    branches:
+      - dev
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: 650553045794.dkr.ecr.ap-northeast-2.amazonaws.com/soop/dev-backend
+  ECS_CLUSTER: soop-dev-cluster
+  ECS_SERVICE: soop-dev-back-test-service
+  CONTAINER_NAME: application
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build and push Docker image
+      run: |
+        IMAGE_TAG=dev-$(date +%s)
+        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+        docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+    - name: Update ECS service with new image
+      run: |
+        TASK_DEF=$(aws ecs describe-services \
+          --cluster $ECS_CLUSTER \
+          --services $ECS_SERVICE \
+          --query "services[0].taskDefinition" \
+          --output text)
+
+        NEW_TASK_DEF=$(aws ecs describe-task-definition \
+          --task-definition $TASK_DEF)
+
+        echo "$NEW_TASK_DEF" | jq --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:$IMAGE_TAG" \
+          '(.taskDefinition.containerDefinitions[] | select(.name == env.CONTAINER_NAME) | .image) = $IMAGE' \
+          > new-task-def.json
+
+        aws ecs register-task-definition \
+          --cli-input-json file://new-task-def.json > new-def-response.json
+
+        NEW_TASK_ARN=$(jq -r '.taskDefinition.taskDefinitionArn' new-def-response.json)
+
+        aws ecs update-service \
+          --cluster $ECS_CLUSTER \
+          --service $ECS_SERVICE \
+          --task-definition $NEW_TASK_ARN \
+          --force-new-deployment
