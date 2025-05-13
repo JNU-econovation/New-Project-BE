@@ -1,0 +1,151 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:650553045794:task-definition/soop-dev-bakend-test:6",
+    "containerDefinitions": [
+        {
+            "name": "application",
+            "image": "650553045794.dkr.ecr.ap-northeast-2.amazonaws.com/soop/dev-backend:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "spring-port",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "APPLE_RESPONSE_TYPE",
+                    "value": "code"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:DB_PASSWORD::"
+                },
+                {
+                    "name": "DB_URL",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:DB_URL::"
+                },
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:DB_USERNAME::"
+                },
+                {
+                    "name": "KAKAO_CLIENT_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:KAKAO_CLIENT_ID::"
+                },
+                {
+                    "name": "KAKAO_REDIRECT_URI",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:KAKAO_REDIRECT_URI::"
+                },
+                {
+                    "name": "KAKAO_RESPONSE_TYPE",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:KAKAO_RESPONSE_TYPE::"
+                },
+                {
+                    "name": "APPLE_TEAM_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_TEAM_ID::"
+                },
+                {
+                    "name": "APPLE_CLIENT_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_CLIENT_ID::"
+                },
+                {
+                    "name": "APPLE_REDIRECT_URI",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_REDIRECT_URI::"
+                },
+                {
+                    "name": "APPLE_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY::"
+                },
+                {
+                    "name": "APPLE_KEY_PATH",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY_PATH::"
+                }
+            ],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/soop-dev-bakend-test",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "ap-northeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "soop-dev-bakend-test",
+    "executionRoleArn": "arn:aws:iam::650553045794:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 6,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.28"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2025-05-03T21:37:28.969Z",
+    "registeredBy": "arn:aws:iam::650553045794:root",
+    "enableFaultInjection": false,
+    "tags": [
+        {
+            "key": "project",
+            "value": "soop"
+        }
+    ]
+}
