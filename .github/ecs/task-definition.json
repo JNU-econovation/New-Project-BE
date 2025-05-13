@@ -68,6 +68,10 @@
                 {
                     "name": "APPLE_KEY_PATH",
                     "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY_PATH::"
+                },
+                {
+                "name": "SPRING_PROFILES_ACTIVE",
+                "value": "local"
                 }
             ],
             "ulimits": [],
