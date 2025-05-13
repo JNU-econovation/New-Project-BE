@@ -50,17 +50,19 @@ jobs:
           --query "services[0].taskDefinition" \
           --output text)
 
-        NEW_TASK_DEF=$(aws ecs describe-task-definition \
-          --task-definition $TASK_DEF)
+        aws ecs describe-task-definition \
+          --task-definition $TASK_DEF \
+          --query "taskDefinition" > current-task.json
 
-        echo "$NEW_TASK_DEF" | jq --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:$IMAGE_TAG" \
-          '(.taskDefinition.containerDefinitions[] | select(.name == env.CONTAINER_NAME) | .image) = $IMAGE' \
-          > new-task-def.json
+        jq --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:$IMAGE_TAG" \
+           --arg CONTAINER "$CONTAINER_NAME" \
+           '(.containerDefinitions[] | select(.name == $CONTAINER) | .image) = $IMAGE' \
+           current-task.json > new-task-def.json
 
         aws ecs register-task-definition \
           --cli-input-json file://new-task-def.json > new-def-response.json
 
-        NEW_TASK_ARN=$(jq -r '.taskDefinition.taskDefinitionArn' new-def-response.json)
+        NEW_TASK_ARN=$(jq -r '.taskDefinitionArn' new-def-response.json)
         echo "Fetched TASK_DEF: $TASK_DEF"
         aws ecs update-service \
           --cluster $ECS_CLUSTER \
