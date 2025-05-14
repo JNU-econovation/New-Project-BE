@@ -20,6 +20,12 @@ jobs:
     environment: production
 
     steps:
+      - name: Send Slack start_message
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ dev 브랜치에 코드가 push 되었습니다. 배포를 시작합니다!"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -62,3 +68,9 @@ jobs:
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
+
+      - name: Send Slack start_message
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ 배포가 완료되었습니다!"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
