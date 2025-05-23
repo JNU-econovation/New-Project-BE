@@ -98,4 +98,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 errorType.getHttpStatus()
         );
     }
+
+    @ExceptionHandler(InternalServerException.class)
+    public ApiResult<ApiResult.ErrorBody> handleInternalServerException(InternalServerException ex) {
+        ErrorType errorType = ex.getErrorType();
+        log.error(errorType.getErrorCode());
+
+        return ApiResponse.fail(
+                errorType.getErrorCode(),
+                errorType.getMessage(),
+                errorType.getHttpStatus()
+        );
+    }
 }
