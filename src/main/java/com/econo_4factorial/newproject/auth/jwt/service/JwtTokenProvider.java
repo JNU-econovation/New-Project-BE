@@ -50,17 +50,12 @@ public class JwtTokenProvider {
 
     public String issueRefreshToken(Long userId) {
         Date now = new Date();
-        String refreshToken = Jwts.builder()
+        return Jwts.builder()
                 .claim("id", userId)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + Duration.ofSeconds(refreshTokenExpiredTime).toMillis()))
                 .signWith(refreshSecretKey)
                 .compact();
-
-        RefreshToken token = new RefreshToken(userId, refreshToken, refreshTokenExpiredTime);
-        refreshTokenRepository.save(token);
-
-        return refreshToken;
     }
 
     public Long getUserIdFromAccessToken(String accessToken) {

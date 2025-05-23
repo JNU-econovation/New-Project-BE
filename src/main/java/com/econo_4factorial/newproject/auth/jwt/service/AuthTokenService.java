@@ -1,6 +1,8 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
+import com.econo_4factorial.newproject.auth.jwt.RefreshToken;
+import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,8 +15,11 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthTokenService {
 
+    private final RefreshTokenRepository refreshTokenRepository;
     @Value("${custom.jwt.access.expiredTime}")
     private long accessTokenExpiredTime;
+    @Value("${custom.jwt.refresh.expiredTime}")
+    private long refreshTokenExpiredTime;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -36,6 +41,16 @@ public class AuthTokenService {
         }
 
         return issueAuthToken(userId);
+    }
+
+    @Transactional
+    public String saveRefreshToken(Long userId) {
+        String refreshToken = jwtTokenProvider.issueRefreshToken(userId);
+
+        RefreshToken token = new RefreshToken(userId, refreshToken, refreshTokenExpiredTime);
+        refreshTokenRepository.save(token);
+
+        return refreshToken;
     }
 
     @Transactional
