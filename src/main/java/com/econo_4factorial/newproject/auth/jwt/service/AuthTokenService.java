@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthTokenService {
 
-    private static final String TOKEN_HEADER = "Bearer";
-
     @Value("${custom.jwt.access.expiredTime}")
     private long accessTokenExpiredTime;
 
@@ -22,7 +20,7 @@ public class AuthTokenService {
         String accessToken = jwtTokenProvider.issueAccessToken(userId);
         String refreshToken = jwtTokenProvider.issueRefreshToken(userId);
 
-        return AuthToken.of(accessToken, refreshToken, TOKEN_HEADER, accessTokenExpiredTime);
+        return AuthToken.of(accessToken, refreshToken, accessTokenExpiredTime);
     }
 
     @Transactional
