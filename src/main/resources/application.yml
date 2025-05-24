@@ -2,7 +2,7 @@ spring:
   application:
     name: NewProject
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env[.properties], optional:file:metrics.yml
   jackson:
     property-naming-strategy: SNAKE_CASE
 
