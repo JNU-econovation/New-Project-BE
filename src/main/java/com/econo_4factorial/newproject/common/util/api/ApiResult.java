@@ -14,7 +14,7 @@ public class ApiResult<B> extends ResponseEntity<B> {
     }
 
     public ApiResult(B body, HttpHeaders headers, HttpStatus status) {
-        super (headers, status);
+        super (body, headers, status);
     }
 
     @Getter
