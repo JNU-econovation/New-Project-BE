@@ -1,7 +1,9 @@
 package com.econo_4factorial.newproject.user.service;
 
+import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
+import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.User;
-import com.econo_4factorial.newproject.user.dto.UserInfoDTO;
+import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,16 +15,29 @@ import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
-    @Transactional
-    public User findOrCreateUserByUserInfo(UserInfoDTO userInfoDTO) {
-        return userRepository.findByUserInfo_NameAndUserInfo_PhoneNumber(userInfoDTO.name(), userInfoDTO.phoneNumber())
-                .orElseGet(()-> addUser(userInfoDTO));
+    @Transactional(readOnly = true)
+    public User findUserByIdOrThrow(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
-    private User addUser(UserInfoDTO userInfoDTO) {
+    @Transactional
+    public User findOrCreateUserByKakaoUserInfo(KakaoUserInfoDTO userInfoDTO) {
+        return userRepository.findByKakaoId(userInfoDTO.kakaoId())
+                .orElseGet(()-> addKakaoUser(userInfoDTO));
+    }
+
+    private User addKakaoUser(KakaoUserInfoDTO userInfoDTO) {
         return userRepository.save(toEntity(userInfoDTO));
     }
 
+    @Transactional
+    public User findOrCreateUserByAppleUserInfo(AppleUserInfoDTO userInfo) {
+        return userRepository.findByAppleSub(userInfo.appleSub())
+                .orElseGet(() -> addAppleUser(userInfo));
+    }
 
+    private User addAppleUser(AppleUserInfoDTO userInfo) {
+        return userRepository.save(toEntity(userInfo));
+    }
 }
