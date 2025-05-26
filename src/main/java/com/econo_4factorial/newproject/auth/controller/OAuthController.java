@@ -1,14 +1,17 @@
 package com.econo_4factorial.newproject.auth.controller;
 
-import com.econo_4factorial.newproject.auth.dto.Res.LoginRes;
+import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
+import com.econo_4factorial.newproject.auth.jwt.AuthToken;
 import com.econo_4factorial.newproject.auth.service.OAuthService;
+import com.econo_4factorial.newproject.common.util.HttpHeadersGenerator;
+import com.econo_4factorial.newproject.common.util.RedirectUriBuilder;
+import com.econo_4factorial.newproject.common.util.api.ApiResponse;
+import com.econo_4factorial.newproject.common.util.api.ApiResult;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @AllArgsConstructor
 @RestController
@@ -16,18 +19,23 @@ import java.net.URI;
 public class OAuthController {
     private final OAuthService oAuthService;
 
-    @GetMapping("kakao")
-    public ResponseEntity<Void> getKakaoLoginUri() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(URI.create(oAuthService.getKakaoLoginURI()));
-        return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
+    @PostMapping("/kakao/login")
+    public ApiResult<ApiResult.SuccessBody<Void>> getKakaoLoginUri() {
+        HttpHeaders headers = HttpHeadersGenerator.setLocation(oAuthService.getKakaoLoginURI());
+        return ApiResponse.success(headers, HttpStatus.FOUND);
     }
 
-    @GetMapping("/kakao-redirect")
-    public ResponseEntity<LoginRes> loginWithKakao (@RequestParam("code") String kakaoAuthorizationCode) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(URI.create("")); //추후 프론트 주소로 수정 필요
-        LoginRes authToken = oAuthService.loginWithKaKao(kakaoAuthorizationCode);
-        return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
+    @GetMapping("/kakao/callback")
+    public ApiResult<ApiResult.SuccessBody<Void>> loginWithKakao (@RequestParam("code") String kakaoAuthorizationCode) {
+        AuthToken authToken = oAuthService.loginWithKaKao(kakaoAuthorizationCode);
+        HttpHeaders headers = HttpHeadersGenerator.setLocation(RedirectUriBuilder.buildLoginSuccessUri(authToken));
+        return ApiResponse.success(headers, HttpStatus.FOUND);
+    }
+
+    @PostMapping("/apple/login")
+    public ApiResult<ApiResult.SuccessBody<Void>> loginWithApple (@RequestBody @Valid AppleLoginReq appleLoginReq) {
+        AuthToken authToken = oAuthService.loginWithApple(appleLoginReq);
+        HttpHeaders headers = HttpHeadersGenerator.setLocation(RedirectUriBuilder.buildLoginSuccessUri(authToken));
+        return ApiResponse.success(headers, HttpStatus.FOUND);
     }
 }
