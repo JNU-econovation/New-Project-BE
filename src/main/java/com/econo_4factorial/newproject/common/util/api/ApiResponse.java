@@ -9,7 +9,7 @@ public class ApiResponse {
     private static final String SUCCESS = "success";
     private static final String ERROR = "error";
 
-    public static <D> ApiResult<ApiResult.SuccessBody<Void>> success(final HttpStatus status) {
+    public static ApiResult<ApiResult.SuccessBody<Void>> success(final HttpStatus status) {
         return new ApiResult<>(new ApiResult.SuccessBody<>(null, SUCCESS), status);
     }
 
