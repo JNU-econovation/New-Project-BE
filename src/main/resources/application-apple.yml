@@ -1,0 +1,11 @@
+spring:
+  config:
+    activate:
+      on-profile: apple
+
+oauth:
+  apple:
+    client-id: ${APPLE_CLIENT_ID}
+    iss: ${APPLE_ISS}
+
+
