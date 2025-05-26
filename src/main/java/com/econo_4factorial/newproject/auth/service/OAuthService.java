@@ -1,31 +1,51 @@
-package com.econo_4factorial.newproject.auth.service;
+    package com.econo_4factorial.newproject.auth.service;
 
-import com.econo_4factorial.newproject.auth.dto.Res.LoginRes;
-import com.econo_4factorial.newproject.auth.service.kakao.KaKaoOAuthService;
-import com.econo_4factorial.newproject.user.domain.User;
-import com.econo_4factorial.newproject.user.dto.UserInfoDTO;
-import com.econo_4factorial.newproject.user.service.UserService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+    import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
+    import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
+    import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
+    import com.econo_4factorial.newproject.auth.exception.BadRequestException.AuthException;
+    import com.econo_4factorial.newproject.auth.jwt.AuthToken;
+    import com.econo_4factorial.newproject.auth.jwt.service.AuthTokenService;
+    import com.econo_4factorial.newproject.auth.service.apple.AppleOAuthService;
+    import com.econo_4factorial.newproject.auth.service.kakao.KaKaoOAuthService;
+    import com.econo_4factorial.newproject.common.exception.BadRequestException;
+    import com.econo_4factorial.newproject.user.domain.User;
+    import com.econo_4factorial.newproject.user.service.UserService;
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.stereotype.Service;
+    import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@AllArgsConstructor
-public class OAuthService {
-    private final UserService userService;
-    private final KaKaoOAuthService kaKaoOAuthService;
+    @Service
+    @RequiredArgsConstructor
+    public class OAuthService {
+        private final UserService userService;
+        private final KaKaoOAuthService kaKaoOAuthService;
+        private final AppleOAuthService appleOAuthService;
+        private final AuthTokenService authTokenService;
 
-    public String getKakaoLoginURI () {
-        return kaKaoOAuthService.getLoginURI();
+        public String getKakaoLoginURI () {
+            return kaKaoOAuthService.getLoginURI();
+        }
+
+        @Transactional
+        public AuthToken loginWithKaKao (String kakaoAuthorizationCode) {
+            try {
+                KakaoUserInfoDTO userInfo = kaKaoOAuthService.getUserInfo(kakaoAuthorizationCode);
+                User loginUser = userService.findOrCreateUserByKakaoUserInfo(userInfo);
+                return authTokenService.issueAuthToken(loginUser.getId());
+            } catch (BadRequestException e) {
+                throw new AuthException();
+            }
+        }
+
+        @Transactional
+        public AuthToken loginWithApple (AppleLoginReq appleLoginReq) {
+            try {
+                AppleUserInfoDTO userInfo =appleOAuthService.getUserInfo(appleLoginReq);
+                User loginUser = userService.findOrCreateUserByAppleUserInfo(userInfo);
+                return authTokenService.issueAuthToken(loginUser.getId());
+            } catch (BadRequestException e) {
+                throw new AuthException();
+            }
+        }
     }
-
-    @Transactional
-    public LoginRes loginWithKaKao (String kakaoAuthorizationCode) {
-        UserInfoDTO userInfo = kaKaoOAuthService.getUserInfo(kakaoAuthorizationCode);
-        User loginUser = userService.findOrCreateUserByUserInfo(userInfo);
-        // jwt 토큰 발급 코드
-        //발급된 jwt 토큰 redis에 저장 코드
-        return new LoginRes("temp", "temp"); //추후 수정 필요
-    }
-
-}
