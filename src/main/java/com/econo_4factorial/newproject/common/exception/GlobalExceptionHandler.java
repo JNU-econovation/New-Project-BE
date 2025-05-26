@@ -1,6 +1,6 @@
 package com.econo_4factorial.newproject.common.exception;
 
-import com.econo_4factorial.newproject.auth.exception.BadRequestExeption.AuthException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.AuthException;
 import com.econo_4factorial.newproject.common.util.HttpHeadersGenerator;
 import com.econo_4factorial.newproject.common.util.RedirectUriBuilder;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
