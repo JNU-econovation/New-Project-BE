@@ -34,6 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatusCode status,
             WebRequest request) {
         ErrorType errorType = CommonErrorType.METHOD_ARGUMENT_NOT_VALID_EXCEPTION;
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
 
         BindingResult bindingResult = ex.getBindingResult();
         String errorMessage = bindingResult.getFieldErrors().getFirst().getDefaultMessage();
@@ -49,6 +50,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatusCode status,
             WebRequest request) {
         ErrorType errorType = CommonErrorType.MISSING_PATH_VARIABLE_EXCEPTION;
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
+
         return new ResponseEntity<>(new ApiResult.ErrorBody(ERROR, errorType.getErrorCode(), errorType.getMessage()),
                 errorType.getHttpStatus());
     }
@@ -60,13 +63,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatusCode status,
             WebRequest request) {
         ErrorType errorType = CommonErrorType.MISSING_REQUEST_PARAM_EXCEPTION;
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
+
         return new ResponseEntity<>(new ApiResult.ErrorBody(ERROR, errorType.getErrorCode(), errorType.getMessage()),
                 errorType.getHttpStatus());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ApiResult<ApiResult.ErrorBody> handleIllegalArgumentException(IllegalArgumentException e) {
+    public ApiResult<ApiResult.ErrorBody> handleIllegalArgumentException(IllegalArgumentException ex) {
         ErrorType errorType = CommonErrorType.ILLEGAL_ARGUMENT_EXCEPTION;
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
+
         return ApiResponse.fail(
                 errorType.getErrorCode(),
                 errorType.getMessage(),
@@ -75,9 +82,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AuthException.class)
-    public ApiResult<ApiResult.ErrorBody> handleAuthException(AuthException e) {
-        ErrorType errorType = e.getErrorType();
-        log.error(errorType.getErrorCode());
+    public ApiResult<ApiResult.ErrorBody> handleAuthException(AuthException ex) {
+        ErrorType errorType = ex.getErrorType();
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
 
         HttpHeaders headers = HttpHeadersGenerator.setLocation(RedirectUriBuilder.buildLoginFailUri());
         return ApiResponse.fail(
@@ -91,7 +98,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ApiResult<ApiResult.ErrorBody> handleBadRequest(BadRequestException ex) {
         ErrorType errorType = ex.getErrorType();
-        log.error(errorType.getErrorCode());
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
 
         return ApiResponse.fail(
                 errorType.getErrorCode(),
@@ -103,7 +110,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InternalServerException.class)
     public ApiResult<ApiResult.ErrorBody> handleInternalServerException(InternalServerException ex) {
         ErrorType errorType = ex.getErrorType();
-        log.error(errorType.getErrorCode());
+        log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
 
         return ApiResponse.fail(
                 errorType.getErrorCode(),
