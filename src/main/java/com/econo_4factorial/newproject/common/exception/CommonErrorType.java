@@ -3,7 +3,7 @@ package com.econo_4factorial.newproject.common.exception;
 import org.springframework.http.HttpStatus;
 
 public enum CommonErrorType implements ErrorType{
-    METHOD_ARGUMENT_NOT_VALID_EXCEPTION("Common400_001", HttpStatus.BAD_REQUEST, ""),
+    METHOD_ARGUMENT_NOT_VALID_EXCEPTION("Common400_001", HttpStatus.BAD_REQUEST, "RequestDTO 유효성 검사 미통과"),
     ILLEGAL_ARGUMENT_EXCEPTION("Common400_002", HttpStatus.BAD_REQUEST, "Illegal argument exception 발생 "),
     MISSING_PATH_VARIABLE_EXCEPTION("Common400_003", HttpStatus.BAD_REQUEST, "경로 변수(PathVariable)가 누락됐습니다."),
     MISSING_REQUEST_PARAM_EXCEPTION("Common400_004", HttpStatus.BAD_REQUEST, "쿼리 스트링이 누락됐습니다."),
