@@ -5,6 +5,7 @@ import com.econo_4factorial.newproject.common.util.HttpHeadersGenerator;
 import com.econo_4factorial.newproject.common.util.RedirectUriBuilder;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -103,6 +104,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ApiResult<ApiResult.ErrorBody> handleInternalServerException(InternalServerException ex) {
         ErrorType errorType = ex.getErrorType();
         log.error(errorType.getErrorCode());
+
+        return ApiResponse.fail(
+                errorType.getErrorCode(),
+                errorType.getMessage(),
+                errorType.getHttpStatus()
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ApiResult<ApiResult.ErrorBody> handleUnexpectedException(Exception ex, HttpServletRequest request) {
+        log.error("[예기치 못한 예외 발생] {} {}", request.getMethod(), request.getRequestURI(), ex );
+        ErrorType errorType = CommonErrorType.UN_EXPECTED_EXCEPTION;
 
         return ApiResponse.fail(
                 errorType.getErrorCode(),
