@@ -6,7 +6,9 @@ public enum CommonErrorType implements ErrorType{
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("Common400_001", HttpStatus.BAD_REQUEST, ""),
     ILLEGAL_ARGUMENT_EXCEPTION("Common400_002", HttpStatus.BAD_REQUEST, "Illegal argument exception 발생 "),
     MISSING_PATH_VARIABLE_EXCEPTION("Common400_003", HttpStatus.BAD_REQUEST, "경로 변수(PathVariable)가 누락됐습니다."),
-    MISSING_REQUEST_PARAM_EXCEPTION("Common400_004", HttpStatus.BAD_REQUEST, "쿼리 스트링이 누락됐습니다.");
+    MISSING_REQUEST_PARAM_EXCEPTION("Common400_004", HttpStatus.BAD_REQUEST, "쿼리 스트링이 누락됐습니다."),
+
+    UN_EXPECTED_EXCEPTION("Common500_001", HttpStatus.INTERNAL_SERVER_ERROR, "예기치 못한 에러가 발생했습니다.");
 
     private final String errorCode;
     private final HttpStatus httpStatus;
