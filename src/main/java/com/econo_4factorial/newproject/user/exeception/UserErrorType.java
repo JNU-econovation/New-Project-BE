@@ -4,7 +4,7 @@ import com.econo_4factorial.newproject.common.exception.ErrorType;
 import org.springframework.http.HttpStatus;
 
 public enum UserErrorType implements ErrorType {
-    USER_NOT_FOUND_EXCEPTION ("User400_001", HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다");
+    USER_NOT_FOUND_EXCEPTION ("USER400_001", HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다");
 
     private final String errorCode;
     private final HttpStatus httpStatus;
