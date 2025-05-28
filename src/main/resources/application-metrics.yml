@@ -6,7 +6,10 @@ management:
           - health
           - prometheus
           - info
-
+        include: health, prometheus
+  endpoint:
+    prometheus:
+      enabled: true
   metrics:
     export:
       prometheus:
