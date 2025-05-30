@@ -30,6 +30,46 @@
             "volumesFrom": [],
             "secrets": [
                 {
+                    "name": "APPLE_CLIENT_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_CLIENT_ID::"
+                },
+                {
+                    "name": "APPLE_ISS",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_ISS::"
+                },
+                {
+                    "name": "APPLE_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY::"
+                },
+                {
+                    "name": "APPLE_KEY_PATH",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY_PATH::"
+                },
+                {
+                    "name": "APPLE_REDIRECT_URI",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_REDIRECT_URI::"
+                },
+                {
+                    "name": "APPLE_TEAM_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_TEAM_ID::"
+                },
+                {
+                    "name": "CUSTOM_JWT_ACCESS_TOKEN_EXPIRED_TIME",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:CUSTOM_JWT_ACCESS_TOKEN_EXPIRED_TIME::"
+                },
+                {
+                    "name": "CUSTOM_JWT_ACCESS_TOKEN_SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:CUSTOM_JWT_ACCESS_TOKEN_SECRET_KEY::"
+                },
+                {
+                    "name": "CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME::"
+                },
+                {
+                    "name": "CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY::"
+                },
+                {
                     "name": "DB_PASSWORD",
                     "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:DB_PASSWORD::"
                 },
@@ -54,24 +94,16 @@
                     "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:KAKAO_RESPONSE_TYPE::"
                 },
                 {
-                    "name": "APPLE_TEAM_ID",
-                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_TEAM_ID::"
+                    "name": "REDIS_HOST",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:REDIS_HOST::"
                 },
                 {
-                    "name": "APPLE_CLIENT_ID",
-                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_CLIENT_ID::"
+                    "name": "REDIS_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:REDIS_PASSWORD::"
                 },
                 {
-                    "name": "APPLE_REDIRECT_URI",
-                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_REDIRECT_URI::"
-                },
-                {
-                    "name": "APPLE_KEY",
-                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY::"
-                },
-                {
-                    "name": "APPLE_KEY_PATH",
-                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:APPLE_KEY_PATH::"
+                    "name": "REDIS_PORT",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:REDIS_PORT::"
                 }
             ],
             "ulimits": [],
