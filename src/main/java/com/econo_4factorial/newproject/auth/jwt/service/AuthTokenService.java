@@ -29,6 +29,8 @@ public class AuthTokenService {
         String accessToken = jwtTokenProvider.issueAccessToken(userId);
         String refreshToken = jwtTokenProvider.issueRefreshToken(userId);
 
+        saveRefreshToken(userId, refreshToken);
+
         return AuthToken.of(accessToken, refreshToken, now.getTime() + Duration.ofSeconds(accessTokenExpiredTime).toMillis());
     }
 
