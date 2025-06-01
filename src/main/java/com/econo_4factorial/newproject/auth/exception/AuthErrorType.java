@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum AuthErrorType implements ErrorType {
     AUTH_EXCEPTION ("AUTH400_001", HttpStatus.FOUND, "로그인 과정 중 에러가 발생했습니다"),
-    INVALID_TOKEN_EXCEPTION("AUTH401_001", HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
+    SIGNATURE_EXCEPTION("AUTH401_001", HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN_EXCEPTION("AUTH401_002", HttpStatus.UNAUTHORIZED, "만료된 토큰입니다"),
 
     APPLE_TOKEN_HEADER_PARSING_EXCEPTION("AUTH500_001", HttpStatus.INTERNAL_SERVER_ERROR, "애플 identityToken헤더 파싱 중 에러가 발생했습니다"),
