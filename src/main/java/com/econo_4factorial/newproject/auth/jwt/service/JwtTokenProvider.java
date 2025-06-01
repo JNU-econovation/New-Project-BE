@@ -70,7 +70,7 @@ public class JwtTokenProvider {
         return claims.get("id", Long.class);
     }
 
-    public boolean existRefreshTokenByUserId(String refreshToken) {
+    public boolean isValidRefreshToken(String refreshToken) {
         return refreshTokenRepository.existsByRefreshToken(refreshToken);
     }
 
