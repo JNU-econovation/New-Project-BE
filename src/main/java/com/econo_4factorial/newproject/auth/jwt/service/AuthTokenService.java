@@ -1,8 +1,12 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
+import com.econo_4factorial.newproject.auth.exception.AuthErrorType;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidRefreshTokenException;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
 import com.econo_4factorial.newproject.auth.jwt.RefreshToken;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
+import com.econo_4factorial.newproject.common.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,7 +43,7 @@ public class AuthTokenService {
         Long userId = jwtTokenProvider.getUserIdFromRefreshToken(refreshToken);
 
         if (!jwtTokenProvider.existRefreshTokenByUserId(refreshToken)) {
-            throw new IllegalArgumentException("Invalid refresh token: " + refreshToken);
+            throw new InvalidRefreshTokenException();
         }
 
         return issueAuthToken(userId);
