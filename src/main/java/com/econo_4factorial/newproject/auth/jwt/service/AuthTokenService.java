@@ -44,13 +44,9 @@ public class AuthTokenService {
     }
 
     @Transactional
-    public String saveRefreshToken(Long userId) {
-        String refreshToken = jwtTokenProvider.issueRefreshToken(userId);
-
+    public void saveRefreshToken(Long userId, String refreshToken) {
         RefreshToken token = new RefreshToken(userId, refreshToken, refreshTokenExpiredTime);
         refreshTokenRepository.save(token);
-
-        return refreshToken;
     }
 
     @Transactional
