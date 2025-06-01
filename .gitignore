@@ -38,4 +38,5 @@ out/
 
 ### 추가 ###
 .env
+**/META-INF/MANIFEST.MF
 .DS_Store

@@ -24,13 +24,12 @@ public class UserInfo {
 
     private String phoneNumber;
 
-    public UserInfo(String email, String name, String phoneNumber){
+    public UserInfo(String email, String name){
         validateEmail(email);
         validateName(name);
-        validatePhoneNumber(phoneNumber);
         this.email = email;
         this.name = name;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = null;
     }
 
     private void validateEmail(String email) {
