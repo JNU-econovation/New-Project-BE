@@ -4,7 +4,7 @@ spring:
       on-profile: jpa
   sql:
     init:
-      mode : always
+      mode: always
 
   datasource:
     url: ${DB_URL}
