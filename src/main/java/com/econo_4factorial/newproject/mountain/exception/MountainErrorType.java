@@ -4,7 +4,7 @@ import com.econo_4factorial.newproject.common.exception.ErrorType;
 import org.springframework.http.HttpStatus;
 
 public enum MountainErrorType implements ErrorType {
-    MOUNTAIN_NOT_FOUND_EXCEPTION("MOUNTAIN400_001", HttpStatus.NOT_FOUND, "산을 찾을 수 없습니다");
+    MOUNTAIN_NOT_FOUND_EXCEPTION("MOUNTAIN404_001", HttpStatus.NOT_FOUND, "산을 찾을 수 없습니다");
 
     private final String errorCode;
     private final HttpStatus httpStatus;
