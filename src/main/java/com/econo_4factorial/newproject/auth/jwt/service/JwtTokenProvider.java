@@ -88,8 +88,4 @@ public class JwtTokenProvider {
             throw new SignatureException();
         }
     }
-
-    public void deleteRefreshTokenByUserId(Long userId) {
-        refreshTokenRepository.deleteById(userId);
-    }
 }

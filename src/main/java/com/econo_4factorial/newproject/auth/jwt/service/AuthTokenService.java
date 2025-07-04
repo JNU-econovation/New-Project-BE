@@ -54,7 +54,6 @@ public class AuthTokenService {
 
     @Transactional
     public void logout(Long userId) {
-        jwtTokenProvider.deleteRefreshTokenByUserId(userId);
+        refreshTokenRepository.deleteById(userId);
     }
-
 }
