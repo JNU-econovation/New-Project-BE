@@ -22,9 +22,3 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     defer-datasource-initialization: true
-
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      password: ${REDIS_PASSWORD}
-      port: ${REDIS_PORT}
