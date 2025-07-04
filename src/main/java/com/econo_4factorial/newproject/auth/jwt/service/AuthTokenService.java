@@ -39,7 +39,7 @@ public class AuthTokenService {
     public AuthToken reissue(String refreshToken) {
         Long userId = jwtTokenProvider.getUserIdFromRefreshToken(refreshToken);
 
-        if (!jwtTokenProvider.isValidRefreshToken(refreshToken)) {
+        if (!refreshTokenRepository.existsByRefreshToken(refreshToken)) {
             throw new InvalidRefreshTokenException();
         }
 

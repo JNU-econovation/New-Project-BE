@@ -70,10 +70,6 @@ public class JwtTokenProvider {
         return claims.get("id", Long.class);
     }
 
-    public boolean isValidRefreshToken(String refreshToken) {
-        return refreshTokenRepository.existsByRefreshToken(refreshToken);
-    }
-
     private Claims getClaimsFromToken(String token, TokenType tokenType) {
         SecretKey secretKey = tokenType.equals(TokenType.ACCESS) ? accessSecretKey : refreshSecretKey;
         try {
