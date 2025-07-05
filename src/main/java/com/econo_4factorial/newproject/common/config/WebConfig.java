@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns(
-                        "https://localhost:3000",
+                        "https://localhost:3000", // local
                         "http://localhost:3000",
                         "http://172.30.1.15:3000", // KT Giga Wifi
                         "http://192.168.0.27:3000", // Econo 5G
@@ -18,7 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://10.20.10.176:3000", // JNU
                         "http://10.20.10.217:3000", // JNU
                         "http://192.168.0.240:3000", // JNU
-                        "https://api.soop.euichan.com" // Swagger
+                        "https://api.soop.euichan.com", // Swagger
+                        "https://api.soop.euichan.com"
                         )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
