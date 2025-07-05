@@ -17,7 +17,7 @@ public class webConfig implements WebMvcConfigurer {
                         "http://192.168.0.7:3000", // dding
                         "http://10.20.10.176:3000", // JNU
                         "http://10.20.10.217:3000", // JNU
-                        " http://192.168.0.240:3000" // JNU
+                        "http://192.168.0.240:3000" // JNU
                         )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
