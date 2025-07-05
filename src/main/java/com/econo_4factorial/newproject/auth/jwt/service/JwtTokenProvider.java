@@ -1,15 +1,13 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
-import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenException;
-import com.econo_4factorial.newproject.auth.jwt.RefreshToken;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.econo_4factorial.newproject.auth.jwt.TokenType;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -54,17 +52,12 @@ public class JwtTokenProvider {
 
     public String issueRefreshToken(Long userId) {
         Date now = new Date();
-        String refreshToken = Jwts.builder()
+        return Jwts.builder()
                 .claim("id", userId)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + Duration.ofSeconds(refreshTokenExpiredTime).toMillis()))
                 .signWith(refreshSecretKey)
                 .compact();
-
-        RefreshToken token = new RefreshToken(userId, refreshToken, refreshTokenExpiredTime);
-        refreshTokenRepository.save(token);
-
-        return refreshToken;
     }
 
     public Long getUserIdFromAccessToken(String accessToken) {
@@ -77,10 +70,6 @@ public class JwtTokenProvider {
         return claims.get("id", Long.class);
     }
 
-    public boolean existRefreshTokenByUserId(String refreshToken) {
-        return refreshTokenRepository.existsByRefreshToken(refreshToken);
-    }
-
     private Claims getClaimsFromToken(String token, TokenType tokenType) {
         SecretKey secretKey = tokenType.equals(TokenType.ACCESS) ? accessSecretKey : refreshSecretKey;
         try {
@@ -91,12 +80,8 @@ public class JwtTokenProvider {
                     .getPayload();
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException();
-        } catch (SignatureException e) {
-            throw new InvalidTokenException();
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            throw new SignatureException();
         }
-    }
-
-    public void deleteRefreshTokenByUserId(Long userId) {
-        refreshTokenRepository.deleteById(userId);
     }
 }

@@ -2,14 +2,13 @@ package com.econo_4factorial.newproject.auth.service.apple;
 
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.AppleTokenHeaderParsingException;
-import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,8 +43,8 @@ public class AppleJwtHandler {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (SignatureException | MalformedJwtException e) {
-            throw new InvalidTokenException();
+        } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
+            throw new SignatureException();
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException();
         }
