@@ -1,4 +1,4 @@
-INSERT INTO Mountain(name, location)
+INSERT INTO mountain(name, location)
 values ('무등산', '광주'),
        ('북한산', '서울'),
        ('지리산', '전남'),
