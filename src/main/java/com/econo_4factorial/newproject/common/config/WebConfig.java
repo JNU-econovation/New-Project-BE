@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class webConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -17,7 +17,8 @@ public class webConfig implements WebMvcConfigurer {
                         "http://192.168.0.7:3000", // dding
                         "http://10.20.10.176:3000", // JNU
                         "http://10.20.10.217:3000", // JNU
-                        "http://192.168.0.240:3000" // JNU
+                        "http://192.168.0.240:3000", // JNU
+                        "https://api.soop.euichan.com/swagger-ui/index.html" // Swagger
                         )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
