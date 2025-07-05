@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://10.20.10.176:3000", // JNU
                         "http://10.20.10.217:3000", // JNU
                         "http://192.168.0.240:3000", // JNU
-                        "https://api.soop.euichan.com/swagger-ui/index.html" // Swagger
+                        "https://api.soop.euichan.com" // Swagger
                         )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
