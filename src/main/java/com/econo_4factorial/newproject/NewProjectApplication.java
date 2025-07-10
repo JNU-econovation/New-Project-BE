@@ -1,5 +1,7 @@
 package com.econo_4factorial.newproject;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -8,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableFeignClients
+@OpenAPIDefinition(servers = {@Server(url = "/", description = "Default Server URL")}) // 추가
 public class NewProjectApplication {
 
     public static void main(String[] args) {
