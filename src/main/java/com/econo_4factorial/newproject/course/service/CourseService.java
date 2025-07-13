@@ -13,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseService {
     private final CourseCustomRepository courseCustomRepository;
-    private final UserService userService;
 
     public List<CourseDTO> getAllCoursesWithBookmark(Long userId, Long mountainId, String sortBy) {
         CourseSearchCondition courseSearchCondition = CourseSearchCondition.of(mountainId, sortBy);
