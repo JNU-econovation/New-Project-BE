@@ -11,6 +11,11 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"latitude", "longitude"})
+        }
+)
 public class Facility {
 
     @Id
