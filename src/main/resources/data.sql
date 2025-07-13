@@ -1,3 +1,6 @@
+-- 데이터 초기화 시 테이블 이름은 소문자로 해주세요
+-- ex)mountain(O) Mountain(X)
+
 INSERT INTO mountain(name, location)
 values ('무등산', '광주'),
        ('북한산', '서울'),
