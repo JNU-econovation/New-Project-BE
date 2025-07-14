@@ -22,6 +22,6 @@ public class BaseImage {
     @JoinColumn(name = "base_id")
     private Base base;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String imageUrl;
 }
