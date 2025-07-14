@@ -30,7 +30,7 @@ public class Base {
 
     private String weather;
 
-    private Float temperature;
+    private Double temperature;
 
     @Column(precision = 16, scale = 14, nullable = false)
     private BigDecimal latitude;
