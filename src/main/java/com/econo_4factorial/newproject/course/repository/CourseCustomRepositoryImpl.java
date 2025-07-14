@@ -20,7 +20,7 @@ import static com.econo_4factorial.newproject.course.domain.QCourse.course;
 @AllArgsConstructor
 public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private final String DIFFICULTY = "difficulty";
-    private final String LENGTH = "LENGTH";
+    private final String LENGTH = "length";
     private final Integer NUMBER_ONE = 1;
     private final Integer NUMBER_TWO = 2;
     private final Integer NUMBER_THREE = 3;
