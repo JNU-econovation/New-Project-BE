@@ -38,6 +38,7 @@ VALUES(1, '약사사', 'TOILET', 35.122349, 126.971828),
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- weather과 temperature은 추후 날씨 API를 받아와 구현합니다. 현재는 default값으로 hard coding 하였습니다.
+-- 현재 24개 컬럼
 -- 옛길갈림길, 용추삼거리, 도원마을 탐방 지원센터, 도원마을(영신마을)누락
 INSERT INTO base (mountain_id, name, weather, temperature, latitude, longitude)
 VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632),
@@ -65,3 +66,55 @@ VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632),
       (1, '증심사주차장', '맑음', 25.0, 35.1337932344148, 126.956774973978),
       (1, '토끼등', '맑음', 25.0, 35.13117145, 126.9779191)
 ON DUPLICATE KEY UPDATE name = VALUES(name);
+
+-- base_image는 mock data로서 각 baae마다 2개씩 존재합니다.
+INSERT INTO base_image (base_id, image_url)
+VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (2,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (2,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (3,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (3,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (4,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (4,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (5,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (5,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (6,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (6,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (7,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (7,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (8,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (8,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (9,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (9,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (10, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (10, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (11, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (11, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (12, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (12, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (13, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (13, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (14, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (14, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (15, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (15, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (16, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (16, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (17, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (17, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (18, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (18, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (19, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (19, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (20, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (20, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (21, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (21, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (22, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (22, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (23, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (23, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (24, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (24, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
+    ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
