@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"base_id", "image_url"})
+        }
+)
 public class BaseImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
