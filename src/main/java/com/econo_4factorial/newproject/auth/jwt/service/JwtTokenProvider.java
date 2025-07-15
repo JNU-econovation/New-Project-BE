@@ -71,6 +71,7 @@ public class JwtTokenProvider {
     }
 
     private Claims getClaimsFromToken(String token, TokenType tokenType) {
+        token = token.substring(AUTH_TOKEN_HEADER.length());
         SecretKey secretKey = tokenType.equals(TokenType.ACCESS) ? accessSecretKey : refreshSecretKey;
         try {
             return Jwts.parser()

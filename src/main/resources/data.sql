@@ -118,3 +118,14 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (24, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (24, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
     ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
+
+INSERT INTO course(mountain_id, name, length, duration, difficulty)
+VALUES (1, '세인봉-입석대 코스', 6.8, 210, 'NORMAL'),
+       (1, '늦재-옛길 코스', 10.4, 350, 'NORMAL'),
+       (1, '당산나무 코스', 4, 95, 'NORMAL'),
+       (1, '시무지기폭포 코스', 12, 355, 'NORMAL'),
+       (1, '너릿재-옛길코스', 14.5, 440, 'NORMAL'),
+       (1, '안양산-북산 코스', 14.6, 420, 'NORMAL'),
+       (1, '도원마을-규봉 코스', 7.5, 270, 'NORMAL'),
+       (1, '교리-만연산 코스', 7.5, 240, 'NORMAL')
+ON DUPLICATE KEY update name = VALUES(name);
