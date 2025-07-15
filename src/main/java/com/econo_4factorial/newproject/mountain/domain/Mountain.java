@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Mountain extends BaseEntity {
+public class Mountain{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
