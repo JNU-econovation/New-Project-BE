@@ -2,12 +2,12 @@ package com.econo_4factorial.newproject.course.domain;
 
 import com.econo_4factorial.newproject.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bookmark {
     @Id
