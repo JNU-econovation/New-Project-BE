@@ -8,12 +8,12 @@ public enum BaseErrorType implements ErrorType {
 
     private final String errorCode;
     private final HttpStatus httpStatus;
-    private final String Message;
+    private final String message;
 
-    BaseErrorType(String errorCode, HttpStatus httpStatus, String Message) {
+    BaseErrorType(String errorCode, HttpStatus httpStatus, String message) {
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
-        this.Message = Message;
+        this.message = message;
     }
 
     @Override
@@ -28,6 +28,6 @@ public enum BaseErrorType implements ErrorType {
 
     @Override
     public String getMessage() {
-        return Message;
+        return message;
     }
 }
