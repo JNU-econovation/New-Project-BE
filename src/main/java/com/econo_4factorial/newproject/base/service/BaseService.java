@@ -3,7 +3,6 @@ package com.econo_4factorial.newproject.base.service;
 import com.econo_4factorial.newproject.base.dto.BaseDTO;
 import com.econo_4factorial.newproject.base.exception.BadRequestException.BaseNotFoundException;
 import com.econo_4factorial.newproject.base.repository.BaseRepository;
-import com.econo_4factorial.newproject.common.exception.BadRequestException;
 import com.econo_4factorial.newproject.mountain.service.MountainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
