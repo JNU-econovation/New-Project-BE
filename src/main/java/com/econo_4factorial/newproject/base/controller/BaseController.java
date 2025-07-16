@@ -6,6 +6,7 @@ import com.econo_4factorial.newproject.base.service.BaseService;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class BaseController {
 
     @GetMapping
     @Operation(summary = "전체 거점 목록 조회", description = "해당 산의 모든 거점 위도, 경도를 반환합니다.")
+    @Parameter(name = "mountainId", description = "산 ID", required = true)
     public ApiResult<ApiResult.SuccessBody<GetBasesRes>> getBasesByMountain(@RequestParam Long mountainId) {
         List<BaseDTO> baseDTOS = baseService.getBasesByMountainId(mountainId);
         return ApiResponse.success(GetBasesRes.from(mountainId, baseDTOS), HttpStatus.OK);
