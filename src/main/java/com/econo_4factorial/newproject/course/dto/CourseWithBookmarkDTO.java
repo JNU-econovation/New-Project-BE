@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.course.dto;
 
+import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.domain.Difficulty;
 
 public record CourseWithBookmarkDTO(
@@ -10,4 +11,14 @@ public record CourseWithBookmarkDTO(
         Difficulty difficulty,
         Boolean bookmark
 ) {
+    public static CourseWithBookmarkDTO from(Course course, Boolean isBookmark){
+        return new CourseWithBookmarkDTO(
+                course.getId(),
+                course.getName(),
+                course.getLength(),
+                course.getDuration(),
+                course.getDifficulty(),
+                isBookmark
+        );
+    }
 }
