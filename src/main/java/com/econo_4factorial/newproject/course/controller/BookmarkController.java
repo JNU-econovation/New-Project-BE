@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/courses/bookmarks")
+@RequestMapping("/api/v1/bookmarks")
 @AllArgsConstructor
 public class BookmarkController {
     private final BookmarkService bookmarkService;
