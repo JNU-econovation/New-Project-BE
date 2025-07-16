@@ -1,8 +1,8 @@
-package com.econo_4factorial.newproject.course.dto.res;
+package com.econo_4factorial.newproject.course.dto;
 
 import com.econo_4factorial.newproject.course.domain.Difficulty;
 
-public record CourseDTO(
+public record CourseWithBookmarkDTO(
         Long id,
         String name,
         Double length,

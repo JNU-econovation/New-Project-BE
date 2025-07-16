@@ -2,11 +2,9 @@ package com.econo_4factorial.newproject.course.service;
 
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.dto.CourseSearchCondition;
-import com.econo_4factorial.newproject.course.dto.res.CourseDTO;
+import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
 import com.econo_4factorial.newproject.course.exception.BadRequestException.CourseNotFoundException;
-import com.econo_4factorial.newproject.course.repository.CourseCustomRepository;
 import com.econo_4factorial.newproject.course.repository.CourseRepository;
-import com.econo_4factorial.newproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ public class CourseService {
                 .orElseThrow(CourseNotFoundException::new);
     }
 
-    public List<CourseDTO> getAllCoursesWithBookmark(Long userId, Long mountainId, String sortBy) {
+    public List<CourseWithBookmarkDTO> getAllCoursesWithBookmark(Long userId, Long mountainId, String sortBy) {
         CourseSearchCondition courseSearchCondition = CourseSearchCondition.of(mountainId, sortBy);
         return courseRepository.findAllByMountainIdWithBookmark(courseSearchCondition, mountainId, userId);
     }
