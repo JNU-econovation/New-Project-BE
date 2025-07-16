@@ -29,6 +29,6 @@ public class BookmarkController {
             @PathVariable(name="courseId") Long courseId
     ) {
         bookmarkService.deleteBookmark(userId, courseId);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+        return ApiResponse.success(HttpStatus.OK);
     }
 }
