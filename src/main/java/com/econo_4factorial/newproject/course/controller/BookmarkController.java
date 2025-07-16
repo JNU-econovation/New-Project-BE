@@ -22,4 +22,13 @@ public class BookmarkController {
         bookmarkService.addBookmark(userId, courseId);
         return ApiResponse.success(HttpStatus.CREATED);
     }
+
+    @DeleteMapping({"/{courseId}"})
+    public ApiResult<ApiResult.SuccessBody<Void>> deleteBookmark (
+            @UserId Long userId,
+            @PathVariable(name="courseId") Long courseId
+    ) {
+        bookmarkService.deleteBookmark(userId, courseId);
+        return ApiResponse.success(HttpStatus.NO_CONTENT);
+    }
 }

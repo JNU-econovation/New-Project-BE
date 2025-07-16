@@ -1,6 +1,8 @@
 package com.econo_4factorial.newproject.course.service;
 
+import com.econo_4factorial.newproject.course.domain.Bookmark;
 import com.econo_4factorial.newproject.course.domain.Course;
+import com.econo_4factorial.newproject.course.exception.BadRequestException.BookmarkNotFoundException;
 import com.econo_4factorial.newproject.course.repository.BookmarkRepository;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.service.UserService;
@@ -22,5 +24,13 @@ public class BookmarkService {
         User user = userService.findUserByIdOrThrow(userId);
         Course course = courseService.findByIdOrThrow(courseId);
         bookmarkRepository.save(toEntity(user, course));
+    }
+
+    @Transactional
+    public void deleteBookmark(Long userId, Long courseId) {
+        Bookmark bookmark =  bookmarkRepository.findByUserIdAndCourseId(userId, courseId)
+                .orElseThrow(BookmarkNotFoundException::new);
+
+        bookmarkRepository.delete(bookmark);
     }
 }
