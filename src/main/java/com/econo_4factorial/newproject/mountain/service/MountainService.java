@@ -23,7 +23,7 @@ public class MountainService {
     }
 
     @Transactional(readOnly = true)
-    public void isMountainExistThrow(Long mountainId) {
+    public void isMountainExistOrThrow(Long mountainId) {
         if (!mountainRepository.existsById(mountainId)) {
             throw new MountainNotFoundException();
         }
