@@ -20,14 +20,9 @@ public class FacilityService {
     public List<FacilityDTO> getFacilitiesByMountainId(Long mountainId) {
         mountainService.isMountainExistOrThrow(mountainId);
 
-        List<FacilityDTO> facilityDTOS = facilityRepository.findByMountainId(mountainId)
+        return facilityRepository.findByMountainId(mountainId)
                 .stream()
                 .map(FacilityDTO::from)
                 .toList();
-
-        if(facilityDTOS.isEmpty()) {
-            throw new FacilityNotFoundException();
-        }
-        return facilityDTOS;
     }
 }
