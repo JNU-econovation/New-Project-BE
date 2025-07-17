@@ -18,7 +18,7 @@ public class BaseService {
 
     @Transactional(readOnly = true)
     public List<BaseDTO> getBasesByMountainId(Long mountainId) {
-        mountainService.isMountainExistThrow(mountainId);
+        mountainService.isMountainExistOrThrow(mountainId);
 
         List<BaseDTO> baseDTOS = baseRepository.findByMountainId(mountainId)
                 .stream()
