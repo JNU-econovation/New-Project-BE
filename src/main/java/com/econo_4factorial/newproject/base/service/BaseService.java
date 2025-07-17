@@ -20,15 +20,9 @@ public class BaseService {
     public List<BaseDTO> getBasesByMountainId(Long mountainId) {
         mountainService.isMountainExistOrThrow(mountainId);
 
-        List<BaseDTO> baseDTOS = baseRepository.findByMountainId(mountainId)
+        return baseRepository.findByMountainId(mountainId)
                 .stream()
                 .map(BaseDTO::from)
                 .toList();
-
-        if (baseDTOS.isEmpty()) {
-            throw new BaseNotFoundException();
-        }
-
-        return baseDTOS;
     }
 }
