@@ -18,7 +18,7 @@ public class FacilityService {
 
     @Transactional(readOnly = true)
     public List<FacilityDTO> getFacilitiesByMountainId(Long mountainId) {
-        mountainService.isMountainExistThrow(mountainId);
+        mountainService.isMountainExistOrThrow(mountainId);
 
         List<FacilityDTO> facilityDTOS = facilityRepository.findByMountainId(mountainId)
                 .stream()
