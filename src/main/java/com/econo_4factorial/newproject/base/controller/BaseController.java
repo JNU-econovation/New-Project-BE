@@ -1,6 +1,8 @@
 package com.econo_4factorial.newproject.base.controller;
 
 import com.econo_4factorial.newproject.base.dto.BaseDTO;
+import com.econo_4factorial.newproject.base.dto.BaseDetailDTO;
+import com.econo_4factorial.newproject.base.dto.res.GetBasesDetailsRes;
 import com.econo_4factorial.newproject.base.dto.res.GetBasesRes;
 import com.econo_4factorial.newproject.base.service.BaseService;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
@@ -27,5 +29,13 @@ public class BaseController {
     public ApiResult<ApiResult.SuccessBody<GetBasesRes>> getBasesByMountain(@RequestParam Long mountainId) {
         List<BaseDTO> baseDTOS = baseService.getBasesByMountainId(mountainId);
         return ApiResponse.success(GetBasesRes.from(mountainId, baseDTOS), HttpStatus.OK);
+    }
+
+    @GetMapping("/{mountainId}/details")
+    @Operation(summary = "전체 거점 상세 조회", description = "선택된 산의 모든 거점 상세정보를 반환합니다.")
+    @Parameter(name = "mountainId", description = "산 ID", required = true)
+    public ApiResult<ApiResult.SuccessBody<GetBasesDetailsRes>> getBaseDetailsByMountain(@PathVariable Long mountainId) {
+        List<BaseDetailDTO> baseDetailDTOS = baseService.getBaseDetailsByMountainId(mountainId);
+        return ApiResponse.success(GetBasesDetailsRes.from(mountainId, baseDetailDTOS), HttpStatus.OK);
     }
 }
