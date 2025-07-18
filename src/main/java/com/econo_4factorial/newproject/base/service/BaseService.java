@@ -4,7 +4,6 @@ import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.base.domain.BaseImage;
 import com.econo_4factorial.newproject.base.dto.BaseDTO;
 import com.econo_4factorial.newproject.base.dto.BaseDetailDTO;
-import com.econo_4factorial.newproject.base.exception.BadRequestException.BaseNotFoundException;
 import com.econo_4factorial.newproject.base.repository.BaseImageRepository;
 import com.econo_4factorial.newproject.base.repository.BaseRepository;
 import com.econo_4factorial.newproject.mountain.service.MountainService;
