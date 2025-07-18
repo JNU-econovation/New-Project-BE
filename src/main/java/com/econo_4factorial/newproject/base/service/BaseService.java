@@ -36,14 +36,9 @@ public class BaseService {
 
         List<Base> bases = baseRepository.findByMountainId(mountainId);
 
-        // System.out.println("가져온 Base 개수: " + bases.size());
-
         return bases.stream()
                 .map(base -> {
-                    // System.out.println("현재 처리 중인 Base ID: " + base.getId());
-                    // System.out.println("현재 처리 중인 Base 이름: " + base.getName());
                     List<BaseImage> baseImages = baseImageRepository.findByBaseId(base.getId());
-                    // System.out.println("연결된 이미지 수: " + baseImages.size());
                     return BaseDetailDTO.from(base, baseImages);
                 })
                 .toList();
