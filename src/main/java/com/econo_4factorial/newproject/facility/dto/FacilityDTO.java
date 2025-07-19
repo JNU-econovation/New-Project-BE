@@ -18,7 +18,7 @@ public record FacilityDTO(
                 facility.getId(),
                 facility.getName(),
                 facility.getType(),
-                List.of(facility.getLatitude(), facility.getLongitude())
+                List.of(facility.getLongitude(), facility.getLatitude())
         );
     }
 }
