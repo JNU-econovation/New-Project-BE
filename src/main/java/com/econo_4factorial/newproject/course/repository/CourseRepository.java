@@ -3,8 +3,8 @@ package com.econo_4factorial.newproject.course.repository;
 import com.econo_4factorial.newproject.course.domain.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<Course, Long>, CourseCustomRepository {
-    List<Course> findByCourseId(Long courseId);
+    Optional<Course> findByCourseId(Long courseId);
 }
