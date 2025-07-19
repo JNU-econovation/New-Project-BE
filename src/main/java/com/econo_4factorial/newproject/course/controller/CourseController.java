@@ -6,6 +6,7 @@ import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.course.dto.res.CourseDTO;
 import com.econo_4factorial.newproject.course.dto.res.GetCoursesRes;
 import com.econo_4factorial.newproject.course.service.CourseService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping("/mountains/{mountainId}/courses")
+    @Parameter(name = "mountainId", description = "산 ID", required = true)
     public ApiResult<ApiResult.SuccessBody<GetCoursesRes>> getAllCourses(
             @UserId Long userId,
             @PathVariable Long mountainId,
