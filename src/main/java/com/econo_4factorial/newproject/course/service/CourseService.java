@@ -6,6 +6,7 @@ import com.econo_4factorial.newproject.course.repository.CourseCustomRepository;
 import com.econo_4factorial.newproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class CourseService {
     private final CourseCustomRepository courseCustomRepository;
 
+    @Transactional(readOnly = true)
     public List<CourseDTO> getAllCoursesWithBookmark(Long userId, Long mountainId, String sortBy) {
         CourseSearchCondition courseSearchCondition = CourseSearchCondition.of(mountainId, sortBy);
         return courseCustomRepository.findAllByMountainIdWithBookmark(courseSearchCondition, mountainId, userId);
