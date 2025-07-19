@@ -24,7 +24,7 @@ public class BaseController {
     private final BaseService baseService;
 
     @GetMapping
-    @Operation(summary = "전체 거점 목록 조회", description = "해당 산의 모든 거점 위도, 경도를 반환합니다.")
+    @Operation(summary = "전체 거점 목록 조회", description = "해당 산의 모든 거점 경도, 위도를 반환합니다.")
     @Parameter(name = "mountainId", description = "산 ID", required = true)
     public ApiResult<ApiResult.SuccessBody<GetBasesRes>> getBasesByMountain(@RequestParam Long mountainId) {
         List<BaseDTO> baseDTOS = baseService.getBasesByMountainId(mountainId);
