@@ -26,6 +26,6 @@ public class CourseService {
     public CourseDetailDTO getCourseDetailsByCourseId(Long courseId) {
         return courseRepository.findById(courseId)
                 .map(CourseDetailDTO::from)
-                .orElseThrow(); // 머지 후 COURSENOTFOUNDEXCEPTION으로 리팩토링
+                .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다. courseId: " + courseId)); // 머지 후 COURSENOTFOUNDEXCEPTION으로 리팩토링
     }
 }
