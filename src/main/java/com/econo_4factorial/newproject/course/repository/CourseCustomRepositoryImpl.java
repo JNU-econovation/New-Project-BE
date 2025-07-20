@@ -2,7 +2,7 @@ package com.econo_4factorial.newproject.course.repository;
 
 import com.econo_4factorial.newproject.course.domain.Difficulty;
 import com.econo_4factorial.newproject.course.dto.CourseSearchCondition;
-import com.econo_4factorial.newproject.course.dto.res.CourseDTO;
+import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -28,9 +28,9 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CourseDTO> findAllByMountainIdWithBookmark(CourseSearchCondition searchCondition, Long mountainId, Long userId) {
+    public List<CourseWithBookmarkDTO> findAllByMountainIdWithBookmark(CourseSearchCondition searchCondition, Long mountainId, Long userId) {
         return queryFactory.
-                select(Projections.constructor(CourseDTO.class,
+                select(Projections.constructor(CourseWithBookmarkDTO.class,
                         course.id,
                         course.name,
                         course.length,
