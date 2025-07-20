@@ -6,4 +6,6 @@ public class ValidationMessage {
     public static final String GIVEN_NAME_REQUIRED = "givenName이 누락되었습니다";
     public static final String EMAIL_INVALID_PATTERN = "email이 올바르지 않은 패턴입니다";
     public static final String REFRESH_TOKEN_REQUIRED = "refreshToken이 누락되었습니다";
+    public static final String COURSE_ID_REQUIRED = "courseId가 누락되었습니다";
+    public static final String POSITIVE_NUMBER_REQUIRED = "body의 특정 필드가 양수여야 합니다";
 }
