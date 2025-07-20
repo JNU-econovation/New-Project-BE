@@ -26,6 +26,7 @@ public class CourseService {
     public List<CourseWithBookmarkDTO> getAllCoursesWithBookmark(Long userId, Long mountainId, String sortBy) {
         CourseSearchCondition courseSearchCondition = CourseSearchCondition.of(mountainId, sortBy);
         return courseRepository.findAllByMountainIdWithBookmark(courseSearchCondition, mountainId, userId);
+    }
 
     @Transactional(readOnly = true)
     public CourseDetailDTO getCourseDetailsByCourseId(Long courseId) {
