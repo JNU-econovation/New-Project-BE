@@ -16,7 +16,7 @@ public record BaseDTO(
         return new BaseDTO(
                 base.getId(),
                 base.getName(),
-                List.of(base.getLatitude(),base.getLongitude())
+                List.of(base.getLongitude(), base.getLatitude())
         );
     }
 }
