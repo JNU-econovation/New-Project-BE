@@ -1,0 +1,14 @@
+package com.econo_4factorial.newproject.course.repository;
+
+
+import com.econo_4factorial.newproject.course.domain.Bookmark;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+import java.util.Optional;
+
+@Repository
+public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
+    Optional<Bookmark> findByUserIdAndCourseId(Long userId, Long courseId);
+}
