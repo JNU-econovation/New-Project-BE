@@ -1,4 +1,4 @@
-package com.econo_4factorial.newproject.course.domain;
+package com.econo_4factorial.newproject.common.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
