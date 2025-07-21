@@ -1,7 +1,7 @@
 package com.econo_4factorial.newproject.base.dto;
 
 import com.econo_4factorial.newproject.course.domain.Course;
-import com.econo_4factorial.newproject.course.domain.Difficulty;
+import com.econo_4factorial.newproject.common.constant.Difficulty;
 
 public record CourseDetailDTO(
         Long courseId,

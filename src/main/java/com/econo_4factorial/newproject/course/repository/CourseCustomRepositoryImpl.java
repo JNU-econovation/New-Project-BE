@@ -1,6 +1,6 @@
 package com.econo_4factorial.newproject.course.repository;
 
-import com.econo_4factorial.newproject.course.domain.Difficulty;
+import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.course.dto.CourseSearchCondition;
 import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
 import com.querydsl.core.types.OrderSpecifier;

@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.course.domain;
 
+import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
