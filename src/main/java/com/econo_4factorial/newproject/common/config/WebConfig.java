@@ -44,9 +44,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/v1/oauth/**");
-                    // 추후 스웨거 등 추가.
-                    // /swagger-ui/**, /swagger-resources/**, /v3/api-docs/
+                .excludePathPatterns(
+                        "/api/v1/oauth/**",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**");
     }
 
 }
