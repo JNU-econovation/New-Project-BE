@@ -32,6 +32,7 @@ public class Pathway {
     @Column(nullable = false)
     private Long duration;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Difficulty difficulty;
 }
