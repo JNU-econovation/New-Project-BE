@@ -21,22 +21,24 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        String token = jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-        Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
-
+        // CORS Preflight 요청은 토큰 검증 X
         if(CorsUtils.isPreFlightRequest(request)) {
             return true;
         }
 
+        String token = jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+        System.out.println(request.getHeader(HttpHeaders.AUTHORIZATION));
+        System.out.println(token);
+
+        // 액세스토큰 재발급 요청에 대한 리프레시 토큰검증
         if (request.getRequestURI().startsWith(REISSUE_URI)) {
             return jwtTokenProvider.validateRefreshToken(token);
         }
 
+        Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
+        System.out.println(userId);
 
-        String uri = request.getRequestURI();
-        System.out.println("[INTERCEPTOR] URI: " + uri);
-        System.out.println("[INTERCEPTOR] Authorization: " + token);
-
-        return false;
+        // 로그아웃된 사용자의 요청 차단
+        return jwtTokenProvider.existByUserIdOrThrow(userId);
     }
 }
