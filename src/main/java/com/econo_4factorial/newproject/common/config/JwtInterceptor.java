@@ -21,11 +21,12 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
+        String token = jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+        Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
+
         if(CorsUtils.isPreFlightRequest(request)) {
             return true;
         }
-
-        String token = jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
 
         if (request.getRequestURI().startsWith(REISSUE_URI)) {
             return jwtTokenProvider.validateRefreshToken(token);
