@@ -85,4 +85,11 @@ public class JwtTokenProvider {
             throw new SignatureException();
         }
     }
+
+    public String extractToken(String header) {
+        if (header == null || !header.startsWith(AUTH_TOKEN_HEADER)) {
+            throw new ExpiredTokenException();
+        }
+        return header.substring(AUTH_TOKEN_HEADER.length());
+    }
 }
