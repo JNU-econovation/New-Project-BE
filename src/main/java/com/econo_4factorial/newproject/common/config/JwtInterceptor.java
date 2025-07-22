@@ -27,8 +27,6 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         String token = jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-        System.out.println(request.getHeader(HttpHeaders.AUTHORIZATION));
-        System.out.println(token);
 
         // 액세스토큰 재발급 요청에 대한 리프레시 토큰검증
         if (request.getRequestURI().startsWith(REISSUE_URI)) {
@@ -36,7 +34,6 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
-        System.out.println(userId);
 
         // 로그아웃된 사용자의 요청 차단
         return jwtTokenProvider.existByUserIdOrThrow(userId);
