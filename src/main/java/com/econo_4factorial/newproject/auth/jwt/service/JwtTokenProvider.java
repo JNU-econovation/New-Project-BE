@@ -92,4 +92,9 @@ public class JwtTokenProvider {
         }
         return header.substring(AUTH_TOKEN_HEADER.length());
     }
+
+    public boolean validateRefreshToken(String token) {
+        getClaimsFromToken(token, TokenType.REFRESH);
+        return true;
+    }
 }
