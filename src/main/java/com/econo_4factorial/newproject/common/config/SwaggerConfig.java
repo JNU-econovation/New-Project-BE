@@ -2,9 +2,12 @@ package com.econo_4factorial.newproject.common.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.*;
+import io.swagger.v3.oas.models.servers.Server;
 import jakarta.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 //@SecurityScheme(
 //        name = "BearerAuth",
@@ -18,7 +21,10 @@ public class SwaggerConfig {
         @Bean
         public OpenAPI OpenAPI(ServletContext servletContext) {
 
+                Server server = new Server().url(servletContext.getContextPath());
+
                 return new OpenAPI()
+                        .servers(List.of(server))
                         .info(swaggerInfo());
 
         }
@@ -26,7 +32,7 @@ public class SwaggerConfig {
         private  Info swaggerInfo() {
                 License license = new License();
                 license.setUrl("https://github.com/JNU-econovation/New-Project-BE.git");
-                license.setName("산결");
+                license.setName("산결 레포지토리");
 
                 return new Info()
                         .version("v1.0.0")
