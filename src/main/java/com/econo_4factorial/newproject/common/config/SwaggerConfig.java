@@ -1,7 +1,10 @@
 package com.econo_4factorial.newproject.common.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.*;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +26,12 @@ public class SwaggerConfig {
 
                 Server server = new Server().url(servletContext.getContextPath());
 
+                SecurityRequirement securityRequirement = new SecurityRequirement().addList("access-token");
+
                 return new OpenAPI()
                         .servers(List.of(server))
+                        .components(authSetting())
+                        .addSecurityItem(securityRequirement)
                         .info(swaggerInfo());
 
         }
@@ -39,5 +46,18 @@ public class SwaggerConfig {
                         .title("San-Gyeol API")
                         .description("산결 API 문서입니다.")
                         .license(license);
+        }
+
+        private Components authSetting() {
+                return new Components()
+                        .addSecuritySchemes(
+                                "access-token",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .in(SecurityScheme.In.HEADER)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .name("Authorization")
+                        );
         }
 }
