@@ -2,12 +2,16 @@ package com.econo_4factorial.newproject.common.util;
 
 
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@UtilityClass
+@Component
+@RequiredArgsConstructor
 public class RedirectUriBuilder {
-    private final String baseUri = "http://soop.euichan.com/social-login-loading";
+    @Value("${auth.login_success.base_uri}")
+    private String baseUri;
 
     public String buildLoginSuccessUri (AuthToken authToken) {
         return UriComponentsBuilder.fromUriString(baseUri)

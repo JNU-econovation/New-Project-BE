@@ -1,7 +1,7 @@
-package com.econo_4factorial.newproject.course.domain;
+package com.econo_4factorial.newproject.pathway.domain;
 
+import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.common.constant.Difficulty;
-import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,17 +10,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Course {
+public class Pathway {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mountain_id")
-    private Mountain mountain;
+    @JoinColumn(name = "departure_id", nullable = false)
+    private Base departure;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_id", nullable = false)
+    private Base destination;
+
+    @Column(columnDefinition = "TEXT",nullable = false)
+    private String Coordinates;
 
     @Column(nullable = false)
     private Double length;
@@ -29,5 +33,6 @@ public class Course {
     private Long duration;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Difficulty difficulty;
 }

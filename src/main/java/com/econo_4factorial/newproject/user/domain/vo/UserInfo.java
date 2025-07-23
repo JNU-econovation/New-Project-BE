@@ -25,8 +25,6 @@ public class UserInfo {
     private String phoneNumber;
 
     public UserInfo(String email, String name){
-        validateEmail(email);
-        validateName(name);
         this.email = email;
         this.name = name;
         this.phoneNumber = null;
