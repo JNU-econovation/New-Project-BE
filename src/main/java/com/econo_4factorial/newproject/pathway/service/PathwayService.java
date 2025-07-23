@@ -19,16 +19,14 @@ public class PathwayService {
 
     @Transactional(readOnly = true)
     public List<PathwayDTO> getPathwaysOfCourse(Long courseId) {
-        List<CoursePathwaySequence> sequences = coursePathwaySequenceService.findByCourseId(courseId);
+        List<CoursePathwaySequence> sequences = coursePathwaySequenceService.findByCourseIdWithPathwayAndBase(courseId);
         return makePathways(sequences);
     }
 
     private List<PathwayDTO> makePathways(List<CoursePathwaySequence> sequences) {
         return sequences
                 .stream()
-                .map(sequence -> {
-                    return pathwayMapper.toDTO(sequence.getPathway());
-                })
+                .map(sequence -> pathwayMapper.toDTO(sequence.getPathway()))
                 .toList();
     }
 }
