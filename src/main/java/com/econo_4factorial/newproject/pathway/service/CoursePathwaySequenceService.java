@@ -12,7 +12,7 @@ import java.util.List;
 public class CoursePathwaySequenceService {
     private final CoursePathwaySequenceRepository coursePathwaySequenceRepository;
 
-    public List<CoursePathwaySequence> findByCourseId(Long courseId) {
+    public List<CoursePathwaySequence> findByCourseIdWithPathwayAndBase(Long courseId) {
         return coursePathwaySequenceRepository.findByCourseIdOrderBySequence(courseId);
     }
 }
