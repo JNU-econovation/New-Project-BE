@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.auth.controller;
 
+import com.econo_4factorial.newproject.auth.dto.Res.AppleLoginRes;
 import com.econo_4factorial.newproject.auth.dto.Res.KakaoUriRes;
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
@@ -44,9 +45,8 @@ public class OAuthController {
 
     @PostMapping("/apple/login")
     @Operation(summary = "애플 로그인", description = "애플 ID 토큰을 기반으로 로그인 처리합니다.")
-    public ApiResult<ApiResult.SuccessBody<Void>> loginWithApple (@RequestBody @Valid AppleLoginReq appleLoginReq) {
+    public ApiResult<ApiResult.SuccessBody<AppleLoginRes>> loginWithApple (@RequestBody @Valid AppleLoginReq appleLoginReq) {
         AuthToken authToken = oAuthService.loginWithApple(appleLoginReq);
-        HttpHeaders headers = HttpHeadersGenerator.setLocation(redirectUriBuilder.buildLoginSuccessUri(authToken));
-        return ApiResponse.success(headers, HttpStatus.FOUND);
+        return ApiResponse.success(AppleLoginRes.from(authToken), HttpStatus.FOUND);
     }
 }
