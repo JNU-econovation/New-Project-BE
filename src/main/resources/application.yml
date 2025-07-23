@@ -12,3 +12,7 @@ spring:
         - kakao
         - apple
         - metrics
+
+auth:
+  login_success:
+    base_uri: ${LOGIN_SUCCESS_BASE_URI}
