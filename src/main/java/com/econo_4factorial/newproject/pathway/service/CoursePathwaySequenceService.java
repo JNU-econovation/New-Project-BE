@@ -5,7 +5,6 @@ import com.econo_4factorial.newproject.pathway.repository.CoursePathwaySequenceR
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -14,9 +13,6 @@ public class CoursePathwaySequenceService {
     private final CoursePathwaySequenceRepository coursePathwaySequenceRepository;
 
     public List<CoursePathwaySequence> findByCourseId(Long courseId) {
-        return coursePathwaySequenceRepository.findByCourseId(courseId)
-                .stream()
-                .sorted(Comparator.comparing(CoursePathwaySequence::getSequence))
-                .toList();
+        return coursePathwaySequenceRepository.findByCourseIdOrderBySequence(courseId);
     }
 }
