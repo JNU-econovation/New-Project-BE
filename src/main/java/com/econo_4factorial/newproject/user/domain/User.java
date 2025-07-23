@@ -18,8 +18,8 @@ public class User extends BaseEntity {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "email", column = @Column(name = "email", nullable = false, unique = true)),
-            @AttributeOverride(name = "name", column = @Column(name = "name", nullable=false)),
+            @AttributeOverride(name = "email", column = @Column(name = "email", unique = true)),
+            @AttributeOverride(name = "name", column = @Column(name = "name")),
             @AttributeOverride(name = "phoneNumber", column = @Column(name = "phone_number"))
     })
     private UserInfo userInfo;
