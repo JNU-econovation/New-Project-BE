@@ -18,7 +18,7 @@ public class PathwayService {
     private final PathwayMapper pathwayMapper;
 
     @Transactional(readOnly = true)
-    public List<PathwayDTO> getPathwaysOfCourse(Long courseId) {
+    public List<PathwayDTO> getPathwaysByCourseId(Long courseId) {
         List<CoursePathwaySequence> sequences = coursePathwaySequenceService.findByCourseIdWithPathwayAndBase(courseId);
         return makePathways(sequences);
     }

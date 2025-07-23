@@ -24,7 +24,7 @@ public class PathwayController {
     public ApiResult<ApiResult.SuccessBody<GetPathwaysOfCourseRes>> getPathwaysOfCourse(
             @RequestParam(name = "courseId") Long courseId
     ) {
-        List<PathwayDTO> pathways = pathwayService.getPathwaysOfCourse(courseId);
+        List<PathwayDTO> pathways = pathwayService.getPathwaysByCourseId(courseId);
         return ApiResponse.success(GetPathwaysOfCourseRes.from(pathways), HttpStatus.OK);
     }
 }
