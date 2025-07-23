@@ -38,7 +38,8 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                         course.difficulty,
                         new CaseBuilder()
                                 .when(bookmark.id.isNotNull()).then(true)
-                                .otherwise(false)
+                                .otherwise(false),
+                        course.imageUrl
                 ))
                 .from(course)
                 .leftJoin(bookmark).on(
