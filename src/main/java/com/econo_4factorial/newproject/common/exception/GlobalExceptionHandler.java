@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RequiredArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String ERROR = "error";
+    private final RedirectUriBuilder redirectUriBuilder;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -86,7 +87,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorType errorType = ex.getErrorType();
         log.error("[예외 발생] {}, {}", errorType.getErrorCode(), errorType.getMessage(), ex);
 
-        HttpHeaders headers = HttpHeadersGenerator.setLocation(RedirectUriBuilder.buildLoginFailUri());
+        HttpHeaders headers = HttpHeadersGenerator.setLocation(redirectUriBuilder.buildLoginFailUri());
         return ApiResponse.fail(
                 errorType.getErrorCode(),
                 errorType.getMessage(),
