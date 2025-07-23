@@ -104,6 +104,10 @@
                 {
                     "name": "REDIS_PORT",
                     "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:REDIS_PORT::"
+                },
+                {
+                    "name": "LOGIN_SUCCESS_BASE_URI",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:650553045794:secret:java-b6ARto:LOGIN_SUCCESS_BASE_URI::"
                 }
             ],
             "ulimits": [],
