@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CoursePathwaySequenceRepository extends JpaRepository<CoursePathwaySequence, Long> {
-    List<CoursePathwaySequence> findByCourseId(Long courseId);
+    List<CoursePathwaySequence> findByCourseIdOrderBySequence(Long courseId);
 }
