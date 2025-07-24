@@ -103,6 +103,6 @@ public class JwtTokenProvider {
         if(!refreshTokenRepository.existsById(userId)) {
             throw new LoggedOutTokenException();
         }
-        return refreshTokenRepository.existsById(userId);
+        return true;
     }
 }
