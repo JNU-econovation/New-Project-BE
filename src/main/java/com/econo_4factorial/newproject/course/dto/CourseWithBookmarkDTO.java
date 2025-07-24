@@ -9,7 +9,8 @@ public record CourseWithBookmarkDTO(
         Double length,
         Long duration,
         Difficulty difficulty,
-        Boolean bookmark
+        Boolean bookmark,
+        String image
 ) {
     public static CourseWithBookmarkDTO from(Course course, Boolean isBookmark){
         return new CourseWithBookmarkDTO(
@@ -18,7 +19,8 @@ public record CourseWithBookmarkDTO(
                 course.getLength(),
                 course.getDuration(),
                 course.getDifficulty(),
-                isBookmark
+                isBookmark,
+                course.getImageUrl()
         );
     }
 }

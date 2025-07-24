@@ -30,4 +30,7 @@ public class Course {
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+
+    @Column(nullable = false)
+    private String imageUrl;
 }
