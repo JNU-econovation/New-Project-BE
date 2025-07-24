@@ -1,6 +1,7 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.LoggedOutTokenException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.econo_4factorial.newproject.auth.jwt.TokenType;
@@ -88,7 +89,7 @@ public class JwtTokenProvider {
 
     public String extractToken(String header) {
         if (header == null || !header.startsWith(AUTH_TOKEN_HEADER)) {
-            throw new ExpiredTokenException();
+            throw new InvalidTokenHeaderException();
         }
         return header.substring(AUTH_TOKEN_HEADER.length());
     }
