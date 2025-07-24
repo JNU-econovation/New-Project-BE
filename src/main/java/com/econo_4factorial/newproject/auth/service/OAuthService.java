@@ -12,9 +12,11 @@
     import com.econo_4factorial.newproject.user.domain.User;
     import com.econo_4factorial.newproject.user.service.UserService;
     import lombok.RequiredArgsConstructor;
+    import lombok.extern.slf4j.Slf4j;
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
 
+    @Slf4j
     @Service
     @RequiredArgsConstructor
     public class OAuthService {
@@ -42,7 +44,9 @@
         public AuthToken loginWithApple (AppleLoginReq appleLoginReq) {
             try {
                 AppleUserInfoDTO userInfo =appleOAuthService.getUserInfo(appleLoginReq);
+                log.info("애플 유저 정보: {}", userInfo);
                 User loginUser = userService.findOrCreateUserByAppleUserInfo(userInfo);
+                log.info("생성된 유저 정보: {}", loginUser.getId());
                 return authTokenService.issueAuthToken(loginUser.getId());
             } catch (BadRequestException e) {
                 throw new AuthException();
