@@ -3,14 +3,17 @@ package com.econo_4factorial.newproject.course.repository;
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.course.dto.CourseSearchCondition;
 import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.econo_4factorial.newproject.course.domain.QBookmark.bookmark;
@@ -29,6 +32,8 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
 
     @Override
     public List<CourseWithBookmarkDTO> findAllByMountainIdWithBookmark(CourseSearchCondition searchCondition, Long mountainId, Long userId) {
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(searchCondition.sortBy());
+
         return queryFactory.
                 select(Projections.constructor(CourseWithBookmarkDTO.class,
                         course.id,
@@ -47,7 +52,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                                 .and(bookmark.user.id.eq(userId))
                 )
                 .where(mountainIdEq(searchCondition.mountainId()))
-                .orderBy(getSortOrder(searchCondition.sortBy()))
+                .orderBy(orderSpecifiers)
                 .fetch();
     }
 
@@ -55,14 +60,17 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
         return mountainId != null ? course.mountain.id.eq(mountainId) : null;
     }
 
-    private OrderSpecifier<?> getSortOrder(String sortBy) {
-        if (sortBy == null)
-            return course.id.asc();
+    private OrderSpecifier[] createOrderSpecifier(String sortBy) {
+        List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
+
         if (DIFFICULTY.equalsIgnoreCase(sortBy))
-            return orderByDifficultyAsc();
-        if (LENGTH.equalsIgnoreCase(sortBy))
-            return course.length.asc();
-        return course.id.asc();
+            orderSpecifiers.add(orderByDifficultyAsc());
+        else if (LENGTH.equalsIgnoreCase(sortBy))
+            orderSpecifiers.add(orderByLengthAsc());
+        else
+            orderSpecifiers.add(orderByBookmarkAsc());
+
+        return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }
 
     private OrderSpecifier<Integer> orderByDifficultyAsc() {
@@ -71,7 +79,17 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                 .when(course.difficulty.eq(Difficulty.NORMAL)).then(NUMBER_TWO)
                 .otherwise(NUMBER_THREE)
                 .asc();
+    }
 
+    private OrderSpecifier orderByLengthAsc() {
+        return new OrderSpecifier(Order.ASC, course.length);
+    }
+
+    private OrderSpecifier<Integer> orderByBookmarkAsc() {
+        return new CaseBuilder()
+                .when(bookmark.id.isNotNull()).then(NUMBER_ONE)
+                .otherwise(NUMBER_TWO)
+                .asc();
     }
 
 }
