@@ -32,29 +32,29 @@ public class JwtInterceptor implements HandlerInterceptor {
         return !isLoggedOutRequest(request);
     }
 
-    public boolean isPreFlightRequest(HttpServletRequest request) {
+    private boolean isPreFlightRequest(HttpServletRequest request) {
         return CorsUtils.isPreFlightRequest(request);
     }
 
-    public boolean isReissueRequest(HttpServletRequest request) {
+    private boolean isReissueRequest(HttpServletRequest request) {
         return request.getRequestURI().startsWith(REISSUE_URI);
     }
 
-    public boolean validateRefreshToken(HttpServletRequest request) {
+    private boolean validateRefreshToken(HttpServletRequest request) {
         String token = extractToken(request);
         return jwtTokenProvider.validateRefreshToken(token);
     }
 
-    public boolean isLoggedOutRequest(HttpServletRequest request) {
+    private boolean isLoggedOutRequest(HttpServletRequest request) {
         Long userId = getUserIdFromAccessToken(request);
         return jwtTokenProvider.existByUserIdOrThrow(userId);
     }
 
-    public String extractToken(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
         return jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
     }
 
-    public Long getUserIdFromAccessToken(HttpServletRequest request) {
+    private Long getUserIdFromAccessToken(HttpServletRequest request) {
         return jwtTokenProvider.getUserIdFromAccessToken(extractToken(request));
     }
 }
