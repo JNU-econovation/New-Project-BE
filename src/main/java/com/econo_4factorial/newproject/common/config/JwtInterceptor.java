@@ -21,21 +21,40 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        // CORS Preflight 요청은 토큰 검증 X
-        if(CorsUtils.isPreFlightRequest(request)) {
+        if(isPreFlightRequest(request)) {
             return true;
         }
 
-        String token = jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-
-        // 액세스토큰 재발급 요청에 대한 리프레시 토큰검증
-        if (request.getRequestURI().startsWith(REISSUE_URI)) {
-            return jwtTokenProvider.validateRefreshToken(token);
+        if(isReissueRequest(request)) {
+            return validateRefreshToken(request);
         }
 
-        Long userId = jwtTokenProvider.getUserIdFromAccessToken(token);
+        return !isLoggedOutRequest(request);
+    }
 
-        // 로그아웃된 사용자의 요청 차단
+    public boolean isPreFlightRequest(HttpServletRequest request) {
+        return CorsUtils.isPreFlightRequest(request);
+    }
+
+    public boolean isReissueRequest(HttpServletRequest request) {
+        return request.getRequestURI().startsWith(REISSUE_URI);
+    }
+
+    public boolean validateRefreshToken(HttpServletRequest request) {
+        String token = extractToken(request);
+        return jwtTokenProvider.validateRefreshToken(token);
+    }
+
+    public boolean isLoggedOutRequest(HttpServletRequest request) {
+        Long userId = getUserIdFromAccessToken(request);
         return jwtTokenProvider.existByUserIdOrThrow(userId);
+    }
+
+    public String extractToken(HttpServletRequest request) {
+        return jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+    }
+
+    public Long getUserIdFromAccessToken(HttpServletRequest request) {
+        return jwtTokenProvider.getUserIdFromAccessToken(extractToken(request));
     }
 }
