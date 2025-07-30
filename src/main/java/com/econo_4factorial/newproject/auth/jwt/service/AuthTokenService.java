@@ -58,9 +58,10 @@ public class AuthTokenService {
         refreshTokenRepository.deleteById(userId);
     }
 
-    @Transactional
-    public boolean existByUserIdOrThrow(Long userId) {
-        if(!refreshTokenRepository.existsById(userId)) {
+    @Transactional(readOnly = true)
+    public boolean hasActiveRefreshToken(Long userId) {
+        boolean exists = refreshTokenRepository.existsById(userId);
+        if (!exists) {
             throw new LoggedOutTokenException();
         }
         return true;
