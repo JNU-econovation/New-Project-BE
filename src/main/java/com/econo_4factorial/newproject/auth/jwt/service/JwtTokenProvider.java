@@ -99,10 +99,4 @@ public class JwtTokenProvider {
         return true;
     }
 
-    public boolean existByUserIdOrThrow(Long userId) {
-        if(!refreshTokenRepository.existsById(userId)) {
-            throw new LoggedOutTokenException();
-        }
-        return true;
-    }
 }
