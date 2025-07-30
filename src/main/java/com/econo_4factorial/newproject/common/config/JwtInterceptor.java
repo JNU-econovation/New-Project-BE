@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.common.config;
 
+import com.econo_4factorial.newproject.auth.jwt.service.AuthTokenService;
 import com.econo_4factorial.newproject.auth.jwt.service.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,9 +14,11 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     private static final String REISSUE_URI = "/api/v1/oauth/reissue";
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthTokenService authTokenService;
 
-    public JwtInterceptor(JwtTokenProvider jwtTokenProvider) {
+    public JwtInterceptor(JwtTokenProvider jwtTokenProvider, AuthTokenService authTokenService) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.authTokenService = authTokenService;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     private boolean isLoggedOutRequest(HttpServletRequest request) {
         Long userId = getUserIdFromAccessToken(request);
-        return jwtTokenProvider.existByUserIdOrThrow(userId);
+        return authTokenService.existByUserIdOrThrow(userId);
     }
 
     private String extractToken(HttpServletRequest request) {
