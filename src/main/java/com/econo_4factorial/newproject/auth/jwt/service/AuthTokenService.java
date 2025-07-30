@@ -1,6 +1,7 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidRefreshTokenException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.LoggedOutTokenException;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
 import com.econo_4factorial.newproject.auth.jwt.RefreshToken;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
@@ -55,5 +56,13 @@ public class AuthTokenService {
     @Transactional
     public void logout(Long userId) {
         refreshTokenRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public boolean existByUserIdOrThrow(Long userId) {
+        if(!refreshTokenRepository.existsById(userId)) {
+            throw new LoggedOutTokenException();
+        }
+        return true;
     }
 }
