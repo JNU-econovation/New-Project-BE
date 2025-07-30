@@ -50,7 +50,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     private boolean isLoggedOutRequest(HttpServletRequest request) {
         Long userId = getUserIdFromAccessToken(request);
-        return authTokenService.existByUserIdOrThrow(userId);
+        return authTokenService.hasActiveRefreshToken(userId);
     }
 
     private String extractToken(HttpServletRequest request) {
