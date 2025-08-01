@@ -46,10 +46,9 @@ VALUES(1, '약사사', 'TOILET', 35.122349, 126.971828),
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- weather과 temperature은 추후 날씨 API를 받아와 구현합니다. 현재는 default값으로 hard coding 하였습니다.
--- 총 29개 컬럼
+-- 총 28개 컬럼
 INSERT INTO base (mountain_id, name, weather, temperature, latitude, longitude)
 VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632),
-      (1, '규봉', '맑음', 25.0, 35.1185479, 127.0160852),
       (1, '규봉암', '맑음', 25.0, 35.1183113, 127.0161729),
       (1, '너릿재', '맑음', 25.0, 35.077089549970225, 126.95648210924638),
       (1, '늦재', '맑음', 25.0, 35.143169369692444, 126.98197203529612),
@@ -136,9 +135,7 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
       (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
-      (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
-      (29, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
-      (29, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
+      (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
 ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
 
 INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url)
