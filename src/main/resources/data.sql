@@ -46,7 +46,7 @@ VALUES(1, '약사사', 'TOILET', 35.122349, 126.971828),
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- weather과 temperature은 추후 날씨 API를 받아와 구현합니다. 현재는 default값으로 hard coding 하였습니다.
--- 총 28개 컬럼
+-- 총 29개 컬럼
 INSERT INTO base (mountain_id, name, weather, temperature, latitude, longitude)
 VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632),
       (1, '규봉', '맑음', 25.0, 35.1185479, 127.0160852),
@@ -76,11 +76,7 @@ VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632),
       (1, '도원마을(영신마을)', '맑음', 25.0, 35.1195930318044, 127.033604792924), -- 추가 데이터 부정확할 수 있음
       (1, '용추삼거리', '맑음', 25.0, 35.11941906644682, 126.99410503013233),
       (1, '옛길갈림길', '맑음', 25.0, 35.1207594, 126.9979485),
-      (1, '수레바위산', '맑음', 25.0, 35.0948959, 126.9884253),
-      (1, '당산나무', '맑음', 25.0, 35.12620271323359, 126.97162166555498),
-      (1, '봉황대', '맑음', 25.0, 35.12698756545397, 126.97843560216471),
-      (1, '규봉암', '맑음', 25.0, 35.11788174442607, 127.01608548515756),
-      (1, '인계리', '맑음', 25.0, 35.1247347, 127.0336353)
+      (1, '수레바위산', '맑음', 25.0, 35.0948959, 126.9884253)
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- base_image는 mock data로서 각 baae마다 2개씩 존재합니다.
@@ -140,7 +136,9 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
       (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
-      (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
+      (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (29, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (29, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
 ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
 
 INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url)
