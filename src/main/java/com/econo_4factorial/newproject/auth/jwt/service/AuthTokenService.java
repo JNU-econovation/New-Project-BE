@@ -60,8 +60,7 @@ public class AuthTokenService {
 
     @Transactional(readOnly = true)
     public boolean isLoggedIn(Long userId) {
-        boolean exists = refreshTokenRepository.existsById(userId);
-        if (!exists) {
+        if (!refreshTokenRepository.existsById(userId)) {
             throw new LoggedOutTokenException();
         }
         return true;
