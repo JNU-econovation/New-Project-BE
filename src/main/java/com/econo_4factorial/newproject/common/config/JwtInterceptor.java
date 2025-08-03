@@ -32,7 +32,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             return validateRefreshToken(request);
         }
 
-        return !isLoggedOutRequest(request);
+        return isLoggedInRequest(request);
     }
 
     private boolean isPreFlightRequest(HttpServletRequest request) {
@@ -48,7 +48,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         return jwtTokenProvider.validateRefreshToken(token);
     }
 
-    private boolean isLoggedOutRequest(HttpServletRequest request) {
+    private boolean isLoggedInRequest(HttpServletRequest request) {
         Long userId = getUserIdFromAccessToken(request);
         return authTokenService.hasActiveRefreshToken(userId);
     }
