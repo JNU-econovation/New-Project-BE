@@ -26,8 +26,10 @@ public class FacilityController {
 
     @GetMapping
     @Operation(summary = "전체 시설 목록 조회", description = "해당 산의 모든 시설들의 경도, 위도를 반환합니다.")
-    @Parameter(name = "mountainId", description = "산 ID", required = true)
-    public ApiResult<ApiResult.SuccessBody<GetFacilitiesRes>> getFacilitiesByMountain(@RequestParam Long mountainId) {
+    public ApiResult<ApiResult.SuccessBody<GetFacilitiesRes>> getFacilitiesByMountain(
+            @Parameter(name = "mountainId", description = "산 ID", required = true)
+            @RequestParam Long mountainId
+    ) {
         List<FacilityDTO> facilityDTOS = facilityService.getFacilitiesByMountainId(mountainId);
         return ApiResponse.success(GetFacilitiesRes.from(mountainId, facilityDTOS), HttpStatus.OK);
     }
