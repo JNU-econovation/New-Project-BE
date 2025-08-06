@@ -26,10 +26,14 @@ public class CourseController {
 
     @GetMapping("/mountains/{mountainId}/courses")
     @Operation(summary = "선택된 산의 코스 조회", description = "선택된 산의 모든 코스 정보를 필터링을 통해 반환합니다.")
-    @Parameter(name = "mountainId", description = "산 ID", required = true)
     public ApiResult<ApiResult.SuccessBody<GetCoursesRes>> getAllCourses(
+            @Parameter(name = "userId", description = "사용자 ID", required = true)
             @UserId Long userId,
+
+            @Parameter(name = "mountainId", description = "산 ID", required = true)
             @PathVariable Long mountainId,
+
+            @Parameter(name = "sortBy", description = "정렬 기준 (length, difficulty)")
             @RequestParam(name = "sortBy", required = false) String sortBy
     ){
         List<CourseWithBookmarkDTO> courses = courseService.getAllCoursesWithBookmark(userId, mountainId, sortBy);
@@ -38,8 +42,8 @@ public class CourseController {
 
     @GetMapping("/courses/{courseId}/details")
     @Operation(summary = "코스 상세 조회", description = "선택된 코스의 상세정보를 반환합니다.")
-    @Parameter(name = "courseId", description = "코스 ID", required = true)
     public ApiResult<ApiResult.SuccessBody<GetCourseDetailsRes>> getCourseDetails(
+            @Parameter(name = "courseId", description = "코스 ID", required = true)
             @PathVariable Long courseId
     ){
         CourseDetailDTO courseDetailDTO = courseService.getCourseDetailsByCourseId(courseId);
