@@ -16,3 +16,7 @@ spring:
 auth:
   login_success:
     base_uri: ${LOGIN_SUCCESS_BASE_URI}
+
+weather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
