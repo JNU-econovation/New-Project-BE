@@ -37,4 +37,6 @@ public class Base {
 
     @Column(precision = 17, scale = 14, nullable = false)
     private BigDecimal longitude;
+
+    private Long altitude;
 }
