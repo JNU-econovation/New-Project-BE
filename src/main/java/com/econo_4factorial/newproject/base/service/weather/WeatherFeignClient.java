@@ -1,6 +1,6 @@
 package com.econo_4factorial.newproject.base.service.weather;
 
-import com.econo_4factorial.newproject.base.dto.weather.GetWeatherRes;
+import com.econo_4factorial.newproject.base.dto.weather.WeatherRes;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface WeatherFeignClient {
 
     @GetMapping("/weather")
-    GetWeatherRes getWeather(
+    WeatherRes getWeather(
             @RequestParam("lat") Double latitude,
             @RequestParam("lon") Double longitude,
             @RequestParam("appid") String apikey
