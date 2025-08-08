@@ -39,4 +39,9 @@ public class Base {
     private BigDecimal longitude;
 
     private Long altitude;
+
+    public void updateWeather(String weather, Double temperature) {
+        this.weather = weather;
+        this.temperature = temperature;
+    }
 }
