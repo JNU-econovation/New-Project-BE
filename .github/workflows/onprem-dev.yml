@@ -1,0 +1,54 @@
+name: Raspberry Pi Spring Boot CICD
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      #- name: Cache Gradle #캐시는 잠시 보류
+        #uses: actions/cache@v4
+        #with:
+          #path: |
+            #~/.gradle/caches
+            #~/.gradle/wrapper
+          #key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          #restore-keys: |
+            #${{ runner.os }}-gradle-
+
+      - name: Build Spring Boot app
+        run: ./gradlew clean build -x test
+
+      - name: Deploy JAR to Raspberry Pi
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.ONPREM_HOST }}
+          username: ${{ secrets.ONPREM_USER }}
+          password: ${{ secrets.ONPREM_SSH_PASSWORD }}
+          port: ${{ secrets.ONPREM_SSH_PORT }}
+          source: build/libs/*.jar
+          target: /home/${{ secrets.ONPREM_USER }}/soop/infra/backend/New-Project-BE/
+
+      - name: Restart Spring Boot on Raspberry Pi
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.ONPREM_HOST }}
+          username: ${{ secrets.ONPREM_USER }}
+          password: ${{ secrets.ONPREM_SSH_PASSWORD }}
+          port: ${{ secrets.ONPREM_SSH_PORT }}
+          script: |
+            pkill -f 'java -jar' || true #우아하게 종료할 수 있도록 gracefull shutdown 추가
+            nohup java -jar /home/${{ secrets.ONPREM_USER }}/soop/infra/backend/New-Project-BE/build/libs/NewProject-0.0.1-SNAPSHOT.jar --server.port=8080 > app.log 2>&1 & #애플리케이션에서 로거가 추가 되면 삭제
