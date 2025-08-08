@@ -38,6 +38,7 @@ public class Base {
     @Column(precision = 17, scale = 14, nullable = false)
     private BigDecimal longitude;
 
+    @Column(nullable = false)
     private Long altitude;
 
     public void updateWeather(String weather, Double temperature) {
