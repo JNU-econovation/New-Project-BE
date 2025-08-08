@@ -12,6 +12,13 @@ spring:
         - kakao
         - apple
         - metrics
+  cloud:
+    openfeign:
+      client:
+        config:
+          weatherClient:
+            connectTimeout: 2000   # 연결(소켓) 수립까지 최대 2초
+            readTimeout: 5000      # 요청 전송 후 응답 바디 읽기까지 최대 5초
 
 auth:
   login_success:
@@ -20,3 +27,6 @@ auth:
 weather:
   api:
     key: ${OPENWEATHER_API_KEY}
+  scheduler:
+    # 초 분 시 일 월 요일
+    cron: 0 0 * * * *
