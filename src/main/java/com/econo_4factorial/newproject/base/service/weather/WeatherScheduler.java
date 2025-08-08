@@ -22,6 +22,8 @@ public class WeatherScheduler {
 
     @EventListener(org.springframework.boot.context.event.ApplicationReadyEvent.class)
     public void runOnceOnStartup() {
+        log.info("Initial Weather update started");
         weatherService.updateAllBaseWeather();
+        log.info("Initial Weather update finished");
     }
 }
