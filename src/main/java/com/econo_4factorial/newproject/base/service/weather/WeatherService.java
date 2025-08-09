@@ -67,7 +67,7 @@ public class WeatherService {
     }
 
     private double applyAltitudeCorrection(double temperature, long altitude) {
-        return temperature - (altitude * 0.0065);
+        return Math.ceil(temperature - (altitude * 0.0065));
     }
 
 }
