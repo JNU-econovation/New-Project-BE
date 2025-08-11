@@ -29,8 +29,10 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) {
-        return Optional.ofNullable(webRequest.getHeader(HttpHeaders.AUTHORIZATION))
-                .map(jwtTokenProvider::getUserIdFromAccessToken)
-                .orElseThrow(NotExistTokenException::new);
+        String header = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        if (header == null) throw new NotExistTokenException();
+
+        String token = jwtTokenProvider.extractToken(header);
+        return jwtTokenProvider.getUserIdFromAccessToken(token);
     }
 }
