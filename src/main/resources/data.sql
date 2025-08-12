@@ -46,7 +46,7 @@ VALUES(1, '약사사', 'TOILET', 35.122349, 126.971828),
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- weather과 temperature은 추후 날씨 API를 받아와 구현합니다. 현재는 default값으로 hard coding 하였습니다.
--- 총 27개 컬럼
+-- 총 28개 컬럼
 INSERT INTO base (mountain_id, name, weather, temperature, latitude, longitude, altitude)
 VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632, 120),
       (1, '규봉암', '맑음', 25.0, 35.1183113, 127.0161729, 828),
@@ -74,7 +74,8 @@ VALUES(1, '교리터널', '맑음', 25.0, 35.070906194893, 126.979223621632, 120
       (1, '도원마을(영신마을)', '맑음', 25.0, 35.1195930318044, 127.033604792924, 350), -- 추가 데이터 부정확할 수 있음
       (1, '용추삼거리', '맑음', 25.0, 35.11941906644682, 126.99410503013233, 760),
       (1, '옛길갈림길', '맑음', 25.0, 35.1207594, 126.9979485, 885),
-      (1, '수레바위산', '맑음', 25.0, 35.0948959, 126.9884253, 504)
+      (1, '수레바위산', '맑음', 25.0, 35.0948959, 126.9884253, 504),
+      (1, '입석대', '맑음', 25.0, 35.116271104289275, 126.9884253, 504)
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- base_image는 mock data로서 각 baae마다 2개씩 존재합니다.
@@ -132,12 +133,18 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (26, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (26, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
       (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
-      (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
+      (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png'),
+      (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
+      (28, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
 ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
 
 INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url)
-VALUES (1, '늦재-옛길 코스', 10.4, 350, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길.png'),
-       (1, '당산나무 코스', 4, 95, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/당산나무+코스.png'),
-       (1, '시무지기폭포 코스', 12, 355, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/시무지기폭포+코스.png'),
-       (1, '너릿재-옛길코스', 14.5, 440, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png')
+VALUES (1, '세인봉-서석대 코스', 6.3, 200, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png'),
+       (1, '늦재-옛길 코스', 10.4, 290, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길.png'),
+       (1, '당산나무 코스', 3.3, 105, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/당산나무+코스.png'),
+       (1, '시무지기폭포 코스', 10.7, 275, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/시무지기폭포+코스.png'),
+       (1, '너릿재-옛길코스', 14.5,35, 'NORMAL', ''),
+       (1, '안양산-북산코스', 14.6, 420, 'NORMAL', ''),
+       (1, '도원마을-규봉코스', 7.5, 260, 'NORMAL', ''),
+       (1, '교리-만연산코스', 6.1, 210, 'NORMAL', '')
 ON DUPLICATE KEY update name = VALUES(name);
