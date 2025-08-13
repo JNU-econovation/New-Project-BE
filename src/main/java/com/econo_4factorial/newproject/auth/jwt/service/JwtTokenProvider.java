@@ -2,7 +2,6 @@ package com.econo_4factorial.newproject.auth.jwt.service;
 
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException;
-import com.econo_4factorial.newproject.auth.exception.BadRequestException.LoggedOutTokenException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.econo_4factorial.newproject.auth.jwt.TokenType;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;

@@ -48,10 +48,7 @@ public class OAuthController {
     @PostMapping("/apple/login")
     @Operation(summary = "애플 로그인", description = "애플 ID 토큰을 기반으로 로그인 처리합니다.")
     public ApiResult<ApiResult.SuccessBody<AppleLoginRes>> loginWithApple (@RequestBody @Valid AppleLoginReq appleLoginReq) {
-        log.info("애플 로그인 요청: {}", appleLoginReq);
-
         AuthToken authToken = oAuthService.loginWithApple(appleLoginReq);
-        log.info("생성된 토큰 : {}", authToken);
         return ApiResponse.success(AppleLoginRes.from(authToken), HttpStatus.CREATED);
     }
 }
