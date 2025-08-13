@@ -136,8 +136,12 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
 ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
 
 INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url)
-VALUES (1, '늦재-옛길 코스', 10.4, 350, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길+코스.png'),
-       (1, '당산나무 코스', 4, 95, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/당산나무+코스.png'),
-       (1, '시무지기폭포 코스', 12, 355, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/시무지기폭포+코스.png'),
-       (1, '너릿재-옛길코스', 14.5, 440, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png')
+VALUES (1, '세인봉-서석대 코스', 6.3, 200, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png'),
+       (1, '늦재-옛길 코스', 10.4, 290, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길.png'),
+       (1, '당산나무 코스', 3.3, 105, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/당산나무+코스.png'),
+       (1, '시무지기폭포 코스', 10.7, 275, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/시무지기폭포+코스.png'),
+       (1, '너릿재-옛길코스', 14.5,35, 'NORMAL', ''),
+       (1, '안양산-북산코스', 14.6, 420, 'NORMAL', ''),
+       (1, '도원마을-규봉코스', 7.5, 260, 'NORMAL', ''),
+       (1, '교리-만연산코스', 6.1, 210, 'NORMAL', '')
 ON DUPLICATE KEY update name = VALUES(name);
