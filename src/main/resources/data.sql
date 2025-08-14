@@ -1,5 +1,7 @@
+-- mountain, facility, base, base_image, course 엔티티에 대한 데이터 초기화
 -- 데이터 초기화 시 테이블 이름은 소문자로 해주세요
 -- ex)mountain(O) Mountain(X)
+-- 칼럼명은 camelCase가 아닌 snake_case로 해주세요
 
 INSERT INTO mountain(name, location)
 values ('무등산', '광주'),
