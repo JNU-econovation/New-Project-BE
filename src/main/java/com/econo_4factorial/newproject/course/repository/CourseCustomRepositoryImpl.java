@@ -38,6 +38,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                 select(Projections.constructor(CourseWithBookmarkDTO.class,
                         course.id,
                         course.name,
+                        course.displayName,
                         course.length,
                         course.duration,
                         course.difficulty,

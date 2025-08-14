@@ -6,6 +6,7 @@ import com.econo_4factorial.newproject.common.constant.Difficulty;
 public record CourseWithBookmarkDTO(
         Long id,
         String name,
+        String displayName,
         Double length,
         Long duration,
         Difficulty difficulty,
@@ -16,6 +17,7 @@ public record CourseWithBookmarkDTO(
         return new CourseWithBookmarkDTO(
                 course.getId(),
                 course.getName(),
+                course.getDisplayName(),
                 course.getLength(),
                 course.getDuration(),
                 course.getDifficulty(),
