@@ -33,4 +33,7 @@ public class Course {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @Column(nullable = false)
+    private String displayName;
 }
