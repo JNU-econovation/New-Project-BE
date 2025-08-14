@@ -135,12 +135,12 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
       (27, 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock2.png')
 ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
 
-INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url, displayName)
+INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url, display_name)
 VALUES (1, '새인봉-입석대 코스', 6.3, 200, 'NORMAL', '','새인봉 - 서석대'),
        (1, '늦재-옛길 코스', 10.4, 290, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길.png','원효사 입구 - 장불재 - 원효사 입구'),
        (1, '당산나무 코스', 3.3, 105, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/당산나무+코스.png','증심사 주차장 - 중머리재'),
        (1, '시무지기폭포 코스', 10.7, 275, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/시무지기폭포+코스.png','증심교 - 규봉 - 인계리'),
-       (1, '너릿재-옛길코스', 14.5,35, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png','이십곡리 - 서석대 - 원효사'),
+       (1, '너릿재-옛길코스', 14.5,440, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png','이십곡리 - 서석대 - 원효사'),
        (1, '안양산-북산코스', 14.6, 420, 'NORMAL', '', '안양산 휴양림 - 북산 - 담양 경상리'),
        (1, '도원마을-규봉코스', 7.5, 260, 'NORMAL', '', '도원마을 - 규봉 - 영신마을'),
        (1, '교리-만연산코스', 6.1, 210, 'NORMAL', '', '교리 - 수레바위산 - 만연사')
