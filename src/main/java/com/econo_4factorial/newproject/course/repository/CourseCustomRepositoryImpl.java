@@ -39,6 +39,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                         course.id,
                         course.name,
                         course.displayName,
+                        course.peakBaseId,
                         course.length,
                         course.duration,
                         course.difficulty,
