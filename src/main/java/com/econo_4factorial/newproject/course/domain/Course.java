@@ -21,7 +21,7 @@ public class Course {
     private Mountain mountain;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "peak_base_id")
+    @JoinColumn(name = "peak_base_id", nullable = false)
     private Base peakBase;
 
     @Column(nullable = false, unique = true)
