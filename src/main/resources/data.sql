@@ -151,4 +151,5 @@ VALUES (1, '새인봉-입석대 코스', 6.2, 210, 'NORMAL', '','새인봉 - 입
        (1, '교리-만연산코스', 7.5, 240, 'NORMAL', '', '교리 - 수레바위산 - 만연사',27)
 ON DUPLICATE KEY UPDATE
     name = VALUES(name),
+    display_name = VALUES(display_name),
     peak_base_id = VALUES(peak_base_id);
