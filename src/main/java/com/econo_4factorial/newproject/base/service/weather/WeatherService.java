@@ -20,6 +20,8 @@ public class WeatherService {
 
     private final WeatherFeignClient weatherFeignClient;
     private final BaseRepository baseRepository;
+    static final double KELVIN_TO_CELSIUS_OFFSET = 273.15; // [°C]
+    static final double ISA_LAPSE_RATE_C_PER_M   = 0.0065; // [°C/m] (표준대기 감률: 6.5°C/km)
 
     @Value("${weather.api.key}")
     private String apiKey;
@@ -63,11 +65,11 @@ public class WeatherService {
     }
 
     private double kelvinToCelsius(double kelvin) {
-        return kelvin - 273.15;
+        return kelvin - KELVIN_TO_CELSIUS_OFFSET;
     }
 
     private double applyAltitudeCorrection(double temperature, long altitude) {
-        return Math.ceil(temperature - (altitude * 0.0065));
+        return Math.ceil(temperature - (altitude * ISA_LAPSE_RATE_C_PER_M));
     }
 
 }
