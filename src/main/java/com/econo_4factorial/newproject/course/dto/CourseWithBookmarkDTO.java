@@ -19,7 +19,7 @@ public record CourseWithBookmarkDTO(
                 course.getId(),
                 course.getName(),
                 course.getDisplayName(),
-                course.getPeakBaseId(),
+                course.getPeakBase().getId(),
                 course.getLength(),
                 course.getDuration(),
                 course.getDifficulty(),
