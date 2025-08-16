@@ -141,12 +141,12 @@ VALUES(1,  'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/mock1.png'),
 ON DUPLICATE KEY UPDATE image_url = VALUES(image_url);
 
 INSERT INTO course(mountain_id, name, length, duration, difficulty, image_url, display_name, peak_base_id)
-VALUES (1, '새인봉-입석대 코스', 6.2, 210, 'NORMAL', '','새인봉 - 입석대',12),
-       (1, '늦재-옛길 코스', 10.4, 350, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길.png','원효사 입구 - 입석대 - 원효사 입구',18),
+VALUES (1, '새인봉-입석대 코스', 6.2, 210, 'NORMAL', '','새인봉 - 입석대',28),
+       (1, '늦재-옛길 코스', 10.4, 350, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/늦재-옛길.png','원효사 입구 - 입석대 - 원효사 입구',28),
        (1, '당산나무 코스', 4, 95, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/당산나무+코스.png','증심사 주차장 - 중머리재',19),
        (1, '시무지기폭포 코스', 12, 355, 'NORMAL','https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/시무지기폭포+코스.png','증심교 - 장불재 - 인계리',18),
        (1, '너릿재-옛길코스', 14.5,440, 'NORMAL', 'https://oasis-joa.s3.ap-northeast-2.amazonaws.com/soop/너릿재-옛길+코스.png','너릿재 - 서석대 - 원효사 입구',12),
-       (1, '안양산-북산코스', 14.6, 420, 'NORMAL', '', '무등산편백자연휴양림 - 장불재 - 담양 경상리',10),
+       (1, '안양산-북산코스', 14.6, 420, 'NORMAL', '', '무등산편백자연휴양림 - 장불재 - 담양 경상리',18),
        (1, '도원마을-규봉코스', 7.5, 270, 'NORMAL', '', '도원탐방지원센터 - 장불재 - 영신마을',18),
        (1, '교리-만연산코스', 7.5, 240, 'NORMAL', '', '교리 - 수레바위산 - 만연사',27)
 ON DUPLICATE KEY UPDATE
