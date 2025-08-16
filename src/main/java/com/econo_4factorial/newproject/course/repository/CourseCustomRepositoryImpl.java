@@ -10,7 +10,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                         course.id,
                         course.name,
                         course.displayName,
-                        course.peakBaseId,
+                        course.peakBase.id,
                         course.length,
                         course.duration,
                         course.difficulty,
