@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.course.domain;
 
+import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import jakarta.persistence.*;
@@ -19,6 +20,10 @@ public class Course {
     @JoinColumn(name = "mountain_id")
     private Mountain mountain;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "peak_base_id", nullable = false)
+    private Base peakBase;
+
     @Column(nullable = false, unique = true)
     private String name;
 
@@ -33,4 +38,7 @@ public class Course {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @Column(nullable = false)
+    private String displayName;
 }
