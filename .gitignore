@@ -40,3 +40,6 @@ out/
 .env
 **/META-INF/MANIFEST.MF
 .DS_Store
+/app.log
+/nohup.out
+/restart.sh

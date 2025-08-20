@@ -28,8 +28,10 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://10.20.10.176:3000", // JNU
                         "http://10.20.10.217:3000", // JNU
                         "http://192.168.0.240:3000", // JNU
-                        "https://soop.euichan.com/", // 프론트 배포 주소
-                        "econo.soop.euichan.com:17779"// 동방
+                        "https://soop.euichan.com", // 프론트 배포 주소
+                        "https://econo.soop.euichan.com:17779",// 동방
+                        "http://192.168.0.100:3000", // Econo 5G 라즈베리파이 프론트
+                        "https://soop.euichan.com/" // 프론트 배포 주소
                         )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
