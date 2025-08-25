@@ -30,6 +30,8 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String appleSub;
 
+    private String nickname;
+
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
         this.userInfo = new UserInfo(email, name);
@@ -41,4 +43,23 @@ public class User extends BaseEntity {
         this.userInfo = new UserInfo(email, name);
         this.appleSub = appleSub;
     }
+
+    public Boolean isProfileComplete() {
+        return isNicknameNotNull()
+        && isEmailNotNull()
+        && isPhoneNumberNotNull();
+    }
+
+    private Boolean isNicknameNotNull() {
+        return this.nickname != null;
+    }
+
+    private boolean isEmailNotNull() {
+        return this.userInfo.getEmail() != null;
+    }
+
+    private boolean isPhoneNumberNotNull() {
+        return this.userInfo.getPhoneNumber() != null;
+    }
+
 }
