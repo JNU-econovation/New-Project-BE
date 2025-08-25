@@ -49,14 +49,16 @@ public class WeatherService {
                 Double kelvinObj = WeatherDTO.temperature();
                 String weather = WeatherDTO.weather();
 
-                if (kelvinObj == null) {
-                    log.warn("No temperature for baseId={}", base.getId());
+                if (kelvinObj == null || weather == null) {
+                    if (kelvinObj == null) {
+                        log.warn("No temperature for baseId={}", base.getId());
+                    }
+                    if (weather == null) {
+                        log.warn("No weather for baseId={}", base.getId());
+                    }
                     continue;
                 }
 
-                if (weather == null) {
-                    log.warn("No weather for baseId={}", base.getId());
-                }
 
                 double celsius = kelvinToCelsius(kelvinObj);
                 double correctedTemperature = applyAltitudeCorrection(celsius, altitude);
