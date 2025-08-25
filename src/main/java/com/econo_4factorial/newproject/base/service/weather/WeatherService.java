@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,11 +36,14 @@ public class WeatherService {
                 BigDecimal lon = base.getLongitude();
                 Long altitude = base.getAltitude();
 
-                WeatherRes weatherRes = weatherFeignClient.getWeather(lat, lon, apiKey);
-                if (weatherRes == null) {
+                Optional<WeatherRes> weatherOpt = Optional.ofNullable(weatherFeignClient.getWeather(lat, lon, apiKey));
+
+                if (weatherOpt.isEmpty()) {
                     log.warn("No response, baseId={}", base.getId());
                     continue;
                 }
+
+                WeatherRes weatherRes = weatherOpt.get();
 
                 WeatherDTO WeatherDTO = weatherRes.toDTO();
                 Double kelvinObj = WeatherDTO.temperature();
