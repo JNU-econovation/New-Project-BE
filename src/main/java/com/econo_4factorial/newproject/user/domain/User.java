@@ -44,21 +44,21 @@ public class User extends BaseEntity {
         this.appleSub = appleSub;
     }
 
-    public Boolean isProfileComplete() {
-        return isNicknameNotNull()
-        && isEmailNotNull()
-        && isPhoneNumberNotNull();
+    public Boolean isProfileFilled() {
+        return hasNickname()
+                && hasEmail()
+                && hasPhoneNumber();
     }
 
-    private Boolean isNicknameNotNull() {
+    private Boolean hasNickname() {
         return this.nickname != null;
     }
 
-    private boolean isEmailNotNull() {
+    private boolean hasEmail() {
         return this.userInfo.getEmail() != null;
     }
 
-    private boolean isPhoneNumberNotNull() {
+    private boolean hasPhoneNumber() {
         return this.userInfo.getPhoneNumber() != null;
     }
 
