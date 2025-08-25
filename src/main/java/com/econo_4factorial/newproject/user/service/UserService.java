@@ -42,8 +42,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean isProfileComplete(Long userId) {
+    public Boolean isProfileFilled(Long userId) {
         User user = findUserByIdOrThrow(userId);
-        return user.isProfileComplete();
+        return user.isProfileFilled();
     }
 }

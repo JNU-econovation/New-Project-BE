@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/profile/status")
     public ApiResult<ApiResult.SuccessBody<GetProfileStatusRes>> getProfileStatus (@UserId Long userId) {
-        Boolean result = userService.isProfileComplete(userId);
+        Boolean result = userService.isProfileFilled(userId);
         return ApiResponse.success(GetProfileStatusRes.from(result), HttpStatus.OK);
     }
 
