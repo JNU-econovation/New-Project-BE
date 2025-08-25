@@ -40,4 +40,10 @@ public class UserService {
     private User addAppleUser(AppleUserInfoDTO userInfo) {
         return userRepository.save(toEntity(userInfo));
     }
+
+    @Transactional(readOnly = true)
+    public Boolean isProfileComplete(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return user.isProfileComplete();
+    }
 }
