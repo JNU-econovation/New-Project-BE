@@ -1,4 +1,4 @@
-package com.econo_4factorial.newproject.user;
+package com.econo_4factorial.newproject.user.controller;
 
 import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
