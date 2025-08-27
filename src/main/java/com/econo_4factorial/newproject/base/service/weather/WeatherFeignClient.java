@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 
-@FeignClient(name = "weatherClient", url = "https://api.openweathermap.org/data/2.5")
+@FeignClient(name = "weatherClient", url = "${weather.api.url}")
 public interface WeatherFeignClient {
 
     @GetMapping("/weather")
