@@ -1,10 +1,11 @@
 package com.econo_4factorial.newproject.mountain.domain;
 
-import com.econo_4factorial.newproject.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -18,4 +19,10 @@ public class Mountain{
     private String name;
 
     private String location;
+
+    @Column(precision = 16, scale = 14)
+    private BigDecimal latitude;
+
+    @Column(precision = 17, scale = 14)
+    private BigDecimal longitude;
 }
