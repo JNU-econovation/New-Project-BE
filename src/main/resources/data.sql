@@ -3,19 +3,24 @@
 -- ex)mountain(O) Mountain(X)
 -- 칼럼명은 camelCase가 아닌 snake_case로 해주세요
 
-INSERT INTO mountain(name, location)
-values ('무등산', '광주'),
-       ('북한산', '서울'),
-       ('지리산', '전남'),
-       ('설악산', '강원도'),
-       ('한라산', '제주도'),
-       ('덕유산', '전북'),
-       ('태백산', '강원도'),
-       ('오대산', '강원도'),
-       ('소백산', '충북'),
-       ('가야산', '경남'),
-       ('월출산', '전남')
-ON DUPLICATE KEY update name = VALUES(name);
+INSERT INTO mountain(name, location, latitude, longitude)
+values ('무등산', '광주', 35.13349412111848, 126.99068462647199),
+       ('북한산', '서울', NULL, NULL),
+       ('지리산', '전남', NULL, NULL),
+       ('설악산', '강원도', NULL, NULL),
+       ('한라산', '제주도', NULL, NULL),
+       ('덕유산', '전북', NULL, NULL),
+       ('태백산', '강원도', NULL, NULL),
+       ('오대산', '강원도', NULL, NULL),
+       ('소백산', '충북', NULL, NULL),
+       ('가야산', '경남', NULL, NULL),
+       ('월출산', '전남', NULL, NULL)
+AS new
+ON DUPLICATE KEY UPDATE
+    name = new.name,
+    latitude = new.latitude,
+    longitude = new.longitude;
+
 
 -- 화장실 이름은 EXCEL 파일에 있는 지점명
 -- 응급키트 이름은 EXCEL 파일에 있는 설치장소, 모름 데이터 제외하고 진행
