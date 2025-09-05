@@ -3,6 +3,7 @@
 -- ex)mountain(O) Mountain(X)
 -- 칼럼명은 camelCase가 아닌 snake_case로 해주세요
 
+-- 무등산을 제외한 나머지 위도, 경도 값들은 목 데이터.
 INSERT INTO mountain(name, location, latitude, longitude)
 values ('무등산', '광주', 35.13349412111848, 126.99068462647199),
        ('북한산', '서울', 38, 130),
