@@ -20,9 +20,9 @@ public class Mountain{
 
     private String location;
 
-    @Column(precision = 16, scale = 14)
+    @Column(precision = 16, scale = 14, nullable = false)
     private BigDecimal latitude;
 
-    @Column(precision = 17, scale = 14)
+    @Column(precision = 17, scale = 14, nullable = false)
     private BigDecimal longitude;
 }
