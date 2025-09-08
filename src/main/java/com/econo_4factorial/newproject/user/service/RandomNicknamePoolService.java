@@ -22,4 +22,9 @@ public class RandomNicknamePoolService {
         log.info("현재 랜덤 닉네임 숫자 갯수: {}", nicknameSuffixCount);
         return nicknameSuffixCount;
     }
+
+    public void addNewSuffixes(String[] suffixes, Long start, Long end) {
+        redisTemplate.opsForSet().add(NICKNAME_POOL_KEY, suffixes);
+        log.info("랜덤 닉네임 숫자 추가 완료. 범위: {} ~ {}. 추가한 숫자 갯수: {}. 현재 숫자 갯수: {} ", start, end, suffixes.length, getPoolSize());
+    }
 }
