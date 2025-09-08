@@ -30,3 +30,7 @@ weather:
   scheduler:
     # 초 분 시 일 월 요일
     cron: 0 0 * * * *
+
+nickname:
+  scheduler:
+    cron: 0 0 * * * *
