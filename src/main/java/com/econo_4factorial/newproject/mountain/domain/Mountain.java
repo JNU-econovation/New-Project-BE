@@ -18,6 +18,9 @@ public class Mountain{
     @Column(unique = true)
     private String name;
 
+    @Column(nullable = false)
+    private String initials;
+
     private String location;
 
     @Column(precision = 16, scale = 14, nullable = false)
