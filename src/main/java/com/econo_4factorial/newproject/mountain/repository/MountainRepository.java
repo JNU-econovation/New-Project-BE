@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface MountainRepository extends JpaRepository<Mountain, Long> {
     List<Mountain> findAllByOrderByNameAsc();
-
-    List<Mountain> findByNameContaining(String keyword);
+    List<Mountain> findByInitials(String keyword);
+    List<Mountain> findByMountainName(String keyword);
 }
