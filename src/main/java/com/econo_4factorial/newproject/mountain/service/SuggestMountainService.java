@@ -32,7 +32,6 @@ public class SuggestMountainService {
     }
 
     private boolean isInitials(String s) {
-        if (s == null || s.isBlank()) return false;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (COMPAT_INITIALS.indexOf(c) < 0) return false;
