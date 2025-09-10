@@ -14,7 +14,7 @@ public class SuggestMountainService {
     private final MountainService mountainService;
 
     public List<SuggestedMountainDTO> suggestMountains(String keyword) {
-        if (keyword == null || keyword.isBlank()) {
+        if (isInvalidKeyword(keyword)) {
             return List.of();
         }
 
@@ -37,5 +37,9 @@ public class SuggestMountainService {
             if (INITIAL_CONSTANTS.indexOf(c) < 0) return false;
         }
         return true;
+    }
+
+    private boolean isInvalidKeyword(String keyword) {
+        return keyword == null || keyword.isBlank();
     }
 }
