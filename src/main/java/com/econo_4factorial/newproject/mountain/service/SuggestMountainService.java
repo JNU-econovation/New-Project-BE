@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SuggestMountainService {
-    private static final String COMPAT_INITIALS = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+    private static final String INITIAL_CONSTANTS = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
     private final MountainService mountainService;
 
     public List<SuggestedMountainDTO> suggestMountains(String keyword) {
@@ -34,7 +34,7 @@ public class SuggestMountainService {
     private boolean isInitials(String s) {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (COMPAT_INITIALS.indexOf(c) < 0) return false;
+            if (INITIAL_CONSTANTS.indexOf(c) < 0) return false;
         }
         return true;
     }
