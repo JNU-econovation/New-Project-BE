@@ -28,8 +28,10 @@ public class SuggestMountainService {
     }
 
     private String normalize(String beforeNormalized) {
-        return Normalizer.normalize(beforeNormalized.trim(), Normalizer.Form.NFC);
+        String trimmed = beforeNormalized.trim();
+        return Normalizer.normalize(trimmed, Normalizer.Form.NFC);
     }
+
 
     private boolean isInitials(String s) {
         for (int i = 0; i < s.length(); i++) {
