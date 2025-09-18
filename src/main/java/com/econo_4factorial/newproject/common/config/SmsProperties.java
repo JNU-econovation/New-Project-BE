@@ -13,4 +13,6 @@ public class SmsProperties {
     private String key;
     private String secret;
     private String senderNumber;
+    private String prefix;
+    private int ttl;
 }
