@@ -36,5 +36,5 @@ coolsms:
     key: ${COOLSMS_API_KEY}
     secret: ${COOLSMS_API_SECRET}
     sender-number: ${COOLSMS_SENDER_NUMBER}
-    prefix: '산결'
+    sms-prefix: '산결'
     ttl: 180
