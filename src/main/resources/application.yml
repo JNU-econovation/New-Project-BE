@@ -35,4 +35,4 @@ coolsms:
   api:
     key: ${COOLSMS_API_KEY}
     secret: ${COOLSMS_API_SECRET}
-    number: ${COOLSMS_SENDER_NUMBER}
+    sender_number: ${COOLSMS_SENDER_NUMBER}

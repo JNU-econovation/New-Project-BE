@@ -12,5 +12,5 @@ import org.springframework.stereotype.Component;
 public class SmsProperties {
     private String key;
     private String secret;
-    private String number;
+    private String senderNumber;
 }
