@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(name = "idx_mountain_initials", columnList = "initials"),
+})
 public class Mountain{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +20,9 @@ public class Mountain{
 
     @Column(unique = true)
     private String name;
+
+    @Column(nullable = false)
+    private String initials;
 
     private String location;
 
