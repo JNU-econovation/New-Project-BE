@@ -15,19 +15,19 @@ public class SmsRepository {
 
     static final String REDIS_PREFIX = "sms:";
 
-    public void createSmsCertification(String phoneNumber, String certificationCode) {
-        redisTemplate.opsForValue().set(REDIS_PREFIX + phoneNumber, certificationCode, Duration.ofSeconds(smsProperties.getTtl()));
+    public void createSmsVerification(String phoneNumber, String verificationCode) {
+        redisTemplate.opsForValue().set(REDIS_PREFIX + phoneNumber, verificationCode, Duration.ofSeconds(smsProperties.getTtl()));
     }
 
-    public String getSmsCertification(String phoneNumber) {
+    public String getSmsVerification(String phoneNumber) {
         return redisTemplate.opsForValue().get(REDIS_PREFIX + phoneNumber);
     }
 
-    public void deleteSmsCertification(String phoneNumber) {
+    public void deleteSmsVerification(String phoneNumber) {
         redisTemplate.delete(REDIS_PREFIX + phoneNumber);
     }
 
-    public boolean existsSmsCertification(String phoneNumber) {
+    public boolean existsSmsVerification(String phoneNumber) {
         return redisTemplate.hasKey(REDIS_PREFIX + phoneNumber);
     }
 }
