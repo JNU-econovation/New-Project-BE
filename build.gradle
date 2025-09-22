@@ -59,7 +59,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     //CoolSMS
-    implementation 'net.nurigo:sdk:4.3.2'
+    implementation 'com.solapi:sdk:1.0.3'
 }
 
 tasks.named('test') {
