@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.auth.service;
 
+import com.econo_4factorial.newproject.auth.exception.InternalServerException.FailToSendSmsException;
 import com.econo_4factorial.newproject.common.config.SmsProperties;
 import com.solapi.sdk.message.dto.response.MultipleDetailMessageSentResponse;
 import com.solapi.sdk.message.model.Message;
@@ -38,6 +39,7 @@ public class SmsUtilService {
                     response.getGroupInfo().getCount().getTotal());
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            throw new FailToSendSmsException();
         }
         return null;
     }
