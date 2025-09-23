@@ -34,10 +34,8 @@ public class SmsUtilService {
             message.setText(smsProperties.getSmsPrefix() + " 본인확인 인증번호는 "+verificationCode+" 입니다.");
 
             MultipleDetailMessageSentResponse response = this.messageService.send(message);
-            log.info("SMS-LOG: TO = {}, From = {}, Text = {}, Total = {}",
-                    message.getTo(),message.getFrom(),message.getText(),
-                    //NPE 오류 발생 할 수 있음
-                    response.getGroupInfo().getCount().getTotal());
+            log.info("SMS-LOG: TO = {}, From = {}, Text = {}",
+                    message.getTo(),message.getFrom(),message.getText());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new FailToSendSmsException();
