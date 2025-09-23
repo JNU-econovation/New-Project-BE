@@ -36,6 +36,7 @@ public class SmsUtilService {
             MultipleDetailMessageSentResponse response = this.messageService.send(message);
             log.info("SMS-LOG: TO = {}, From = {}, Text = {}, Total = {}",
                     message.getTo(),message.getFrom(),message.getText(),
+                    //NPE 오류 발생 할 수 있음
                     response.getGroupInfo().getCount().getTotal());
         } catch (Exception e) {
             System.out.println(e.getMessage());

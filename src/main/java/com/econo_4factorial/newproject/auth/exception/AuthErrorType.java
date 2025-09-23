@@ -17,7 +17,9 @@ public enum AuthErrorType implements ErrorType {
     APPLE_PUBLIC_KEY_GENERATE_EXCEPTION ("AUTH500_003", HttpStatus.INTERNAL_SERVER_ERROR, "애플 identityToken의 서명(signature) 검증에서 사용되는 공개키 생성 중 에러가 발생했습니다"),
     NOT_APPLE_ISSUER_EXCEPTION("AUTH500_004", HttpStatus.INTERNAL_SERVER_ERROR, "애플 identityToken 검증 중 issuer가 애플이 아닙니다"),
     INVALID_AUDIENCE_EXCEPTION("AUTH500_005", HttpStatus.INTERNAL_SERVER_ERROR, "애플 identityToken 검증 중 audience가 client_id가 아닙니다"),
-    FAIL_TO_SEND_SMS_EXCEPTION("AUTH500_006", HttpStatus.INTERNAL_SERVER_ERROR, "SMS 발송에 실패했습니다.");
+    FAIL_TO_SEND_SMS_EXCEPTION("AUTH500_006", HttpStatus.INTERNAL_SERVER_ERROR, "SMS 발송에 실패했습니다."),
+    INVALID_VERIFICATION_CODE_EXCEPTION("AUTH500_007", HttpStatus.INTERNAL_SERVER_ERROR, "인증번호가 만료되었거나 존재하지 않습니다."),
+    INCORRECT_VERIFICATION_CODE_EXCEPTION("AUTH500_008", HttpStatus.INTERNAL_SERVER_ERROR, "인증번호가 일치하지 않습니다.");
 
     private final String errorCode;
     private final HttpStatus httpStatus;
