@@ -5,6 +5,7 @@ import com.econo_4factorial.newproject.auth.dto.Req.VerifySmsReq;
 import com.econo_4factorial.newproject.auth.dto.Res.SendSmsRes;
 import com.econo_4factorial.newproject.auth.dto.Res.VerifySmsRes;
 import com.econo_4factorial.newproject.auth.service.SmsService;
+import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,10 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SmsController {
     private final SmsService smsService;
 
-    // 토큰 같이 던져서 보내기
     @PostMapping
     @Operation(summary = "인증번호 전송", description = "인증번호를 전송합니다.")
     public ApiResult<ApiResult.SuccessBody<SendSmsRes>> sendSms(
+            @UserId Long userId,
             @RequestBody @Valid SendSmsReq sendSmsReq
     ) {
         smsService.sendSms(sendSmsReq.phoneNumber());
@@ -39,6 +40,7 @@ public class SmsController {
     @PostMapping("/verify")
     @Operation(summary = "인증번호 확인", description = "인증번호를 확인합니다.")
     public ApiResult<ApiResult.SuccessBody<VerifySmsRes>> verifySms(
+            @UserId Long userId,
             @RequestBody @Valid VerifySmsReq verifySmsReq
     ) {
         smsService.verifySms(verifySmsReq.phoneNumber(),verifySmsReq.verificationCode());
