@@ -36,11 +36,11 @@ public class SmsUtilService {
             MultipleDetailMessageSentResponse response = this.messageService.send(message);
             log.info("SMS-LOG: TO = {}, From = {}, Text = {}",
                     message.getTo(),message.getFrom(),message.getText());
+            return response;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new FailToSendSmsException();
         }
-        return null;
     }
 
     public String generateVerificationCode() {
