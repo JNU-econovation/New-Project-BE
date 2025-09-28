@@ -11,7 +11,7 @@ import com.solapi.sdk.SolapiClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 @Slf4j
 @Component
@@ -44,10 +44,10 @@ public class SmsUtilService {
     }
 
     public String generateVerificationCode() {
-        Random rand = new Random();
+        SecureRandom random = new SecureRandom();
         StringBuilder numStr = new StringBuilder();
         for (int i = 0; i < 6; i++) {
-            numStr.append(rand.nextInt(10));
+            numStr.append(random.nextInt(10));
         }
         return numStr.toString();
     }
