@@ -26,8 +26,4 @@ public class SmsRepository {
     public void deleteSmsVerification(String phoneNumber) {
         redisTemplate.delete(REDIS_PREFIX + phoneNumber);
     }
-
-    public boolean existsSmsVerification(String phoneNumber) {
-        return redisTemplate.hasKey(REDIS_PREFIX + phoneNumber);
-    }
 }
