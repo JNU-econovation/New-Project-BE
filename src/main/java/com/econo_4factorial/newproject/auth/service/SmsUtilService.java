@@ -38,7 +38,7 @@ public class SmsUtilService {
                     message.getTo(),message.getFrom(),message.getText());
             return response;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("SMS 발송 실패 - to={}", toPhoneNumber, e);
             throw new FailToSendSmsException();
         }
     }
