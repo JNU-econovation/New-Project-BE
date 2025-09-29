@@ -48,7 +48,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean isNicknameUnique(String nickname) {
+    public boolean isNicknameUnique(String nickname) {
         return !userRepository.existsByNickname(nickname);
     }
 

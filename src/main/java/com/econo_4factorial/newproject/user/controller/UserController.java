@@ -36,7 +36,7 @@ public class UserController {
             @Parameter(name = "nickname", description = "닉네임", required = true)
             @RequestParam String nickname
     ) {
-        Boolean result = userService.isNicknameUnique(nickname);
+        boolean result = userService.isNicknameUnique(nickname);
         return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
     }
 
