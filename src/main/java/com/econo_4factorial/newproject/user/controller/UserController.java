@@ -3,12 +3,14 @@ package com.econo_4factorial.newproject.user.controller;
 import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
+import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +36,9 @@ public class UserController {
     @Operation(summary = "닉네임 중복 확인", description = "닉네임 중복을 체크합니다.")
     public ApiResult<ApiResult.SuccessBody<GetNicknameAvailabilityRes>> checkNicknameUnique (
             @Parameter(name = "nickname", description = "닉네임", required = true)
-            @RequestParam String nickname
-    ) {
-        boolean result = userService.isNicknameUnique(nickname);
+            @Valid CheckNicknameReq checkNicknameReq
+            ) {
+        boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
         return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
     }
 
