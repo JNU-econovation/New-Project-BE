@@ -3,6 +3,7 @@ package com.econo_4factorial.newproject.user.service;
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.User;
+import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
