@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidEmailPatternValidator.class)
 public @interface ValidEmailPattern {
-    String message() default ValidationMessage.EMAIL_INVALID_PATTERN;
+    String message() default ValidationMessage.EMAIL_PATTERN_INVALID;
     Class[] groups() default {};
     Class[] payload() default {};
 }
