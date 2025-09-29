@@ -1,9 +1,9 @@
 package com.econo_4factorial.newproject.user.dto.res;
 
 public record GetNicknameAvailabilityRes(
-        Boolean isAvailable
+        boolean isAvailable
 ) {
-    public static GetNicknameAvailabilityRes from(Boolean isAvailable) {
+    public static GetNicknameAvailabilityRes from(boolean isAvailable) {
         return new GetNicknameAvailabilityRes(isAvailable);
     }
 }
