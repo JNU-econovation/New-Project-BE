@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String appleSub;
 
+    @Column(unique = true)
     private String nickname;
 
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
