@@ -30,6 +30,11 @@ public class UserInfo {
         this.phoneNumber = null;
     }
 
+    public void updateBasicInformation(String email, String phoneNumber){
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
     private void validateEmail(String email) {
         requireNotNullAndNotBlank(email, EMAIL);
         requireValidFormat(VALID_EMAIL_PATTERN, email, EMAIL);
