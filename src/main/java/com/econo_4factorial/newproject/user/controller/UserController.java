@@ -5,6 +5,7 @@ import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
+import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,8 +16,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -40,6 +41,18 @@ public class UserController {
             ) {
         boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
         return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
+    }
+
+    @PostMapping("/profile/basic-information")
+    @Operation(summary = "기본정보 등록", description = "사용자의 기본정보(닉네임, 전화번호, 이메일)를 등록합니다.")
+    public ApiResult<ApiResult.SuccessBody<Void>> addBasicInformation (
+            @Parameter(name = "userId", description = "사용자 ID", required = true)
+            @UserId Long userId,
+            @Parameter(name = "basicInformation", description = "사용자 기본정보", required = true)
+            @RequestBody @Valid AddBasicInformationReq addBasicInformationReq
+    ) {
+        userService.registerBasicInformation(userId, addBasicInformationReq);
+        return ApiResponse.success(null, HttpStatus.OK);
     }
 
 }
