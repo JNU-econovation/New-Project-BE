@@ -3,6 +3,8 @@ package com.econo_4factorial.newproject.user.service;
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.User;
+import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
+import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
@@ -15,7 +17,9 @@ import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
 @Service
 @AllArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
+
     @Transactional(readOnly = true)
     public User findUserByIdOrThrow(Long userId) {
         return userRepository.findById(userId)
@@ -58,5 +62,14 @@ public class UserService {
         if(userRepository.existsByUserInfoPhoneNumber(phoneNumber)) {
             throw new PhoneNumberAlreadyExistsException();
         }
+    }
+
+    @Transactional
+    public void registerBasicInformation(Long userId, AddBasicInformationReq addBasicInformationReq) {
+        if(userRepository.existsByUserInfoEmail(addBasicInformationReq.email())){
+            throw new EmailAlreadyExistsException();
+        }
+        User user = findUserByIdOrThrow(userId);
+        user.registerBasicInformation(addBasicInformationReq.nickname(), addBasicInformationReq.phoneNumber(), addBasicInformationReq.email());
     }
 }
