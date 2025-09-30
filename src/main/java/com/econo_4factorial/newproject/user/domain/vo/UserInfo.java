@@ -31,6 +31,8 @@ public class UserInfo {
     }
 
     public void updateBasicInformation(String email, String phoneNumber){
+        validateEmail(email);
+        validatePhoneNumber(phoneNumber);
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
