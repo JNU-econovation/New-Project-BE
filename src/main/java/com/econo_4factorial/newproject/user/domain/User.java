@@ -45,6 +45,11 @@ public class User extends BaseEntity {
         this.appleSub = appleSub;
     }
 
+    public void registerBasicInformation(String nickname, String phoneNumber, String email) {
+        this.nickname = nickname;
+        this.userInfo.updateBasicInformation(email,phoneNumber);
+    }
+
     public Boolean isProfileFilled() {
         return hasNickname()
                 && hasEmail()
