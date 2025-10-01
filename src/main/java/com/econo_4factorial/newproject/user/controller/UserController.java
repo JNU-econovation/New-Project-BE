@@ -13,6 +13,7 @@ import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
+import com.econo_4factorial.newproject.user.dto.req.ProfileImageUrlReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileRes;
@@ -116,6 +117,16 @@ public class UserController {
             @RequestBody @Valid AlertSettingReq alertSettingReq
     ) {
         userService.updateAlertSetting(userId, alertSettingReq);
+        return ApiResponse.success(null, HttpStatus.OK);
+    }
+
+    @PatchMapping("/profile/image")
+    @Operation(summary = "프로필 사진 업데이트", description = "프로필 사진을 업데이트합니다.")
+    public ApiResult<ApiResult.SuccessBody<Void>> updateProfileImage (
+            @UserId Long userId,
+            @RequestBody @Valid ProfileImageUrlReq profileImageUrlReq
+    ) {
+        userService.updateUserProfileImage(userId, profileImageUrlReq.imageUrl());
         return ApiResponse.success(null, HttpStatus.OK);
     }
 

@@ -112,6 +112,11 @@ public class UserService {
         );
     }
 
+    @Transactional
+    public void updateUserProfileImage(Long userId, String profileImageUrl) {
+        User user = findUserByIdOrThrow(userId);
+    }
+
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(Long userId) {
         User user = findUserByIdOrThrow(userId);
