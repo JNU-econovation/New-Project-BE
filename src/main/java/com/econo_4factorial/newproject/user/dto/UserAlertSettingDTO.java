@@ -9,9 +9,9 @@ public record UserAlertSettingDTO(
 ) {
     public static UserAlertSettingDTO from(User user) {
         return new UserAlertSettingDTO(
-                user.isEventAlert(),
-                user.isTravelDeviationAlert(),
-                user.isAccidentProneAreaAlert()
+                user.getUserAlert().isEventAlert(),
+                user.getUserAlert().isTravelDeviationAlert(),
+                user.getUserAlert().isAccidentProneAreaAlert()
         );
     }
 }

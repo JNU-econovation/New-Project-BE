@@ -87,18 +87,17 @@ public class UserService {
     public UserAlertSettingDTO getUserAlertSetting(Long userId) {
         return userRepository.findById(userId)
                 .map(user -> new UserAlertSettingDTO(
-                        user.isEventAlert(),
-                        user.isTravelDeviationAlert(),
-                        user.isAccidentProneAreaAlert()
+                        user.getUserAlert().isEventAlert(),
+                        user.getUserAlert().isTravelDeviationAlert(),
+                        user.getUserAlert().isAccidentProneAreaAlert()
                 ))
                 .orElseThrow(UserNotFoundException::new);
-
     }
 
     @Transactional
     public void updateAlertSetting(Long userId, AlertSettingReq alertSettingReq) {
         User user = findUserByIdOrThrow(userId);
-        user.updateAlerts(
+        user.getUserAlert().updateAlerts(
                 alertSettingReq.eventAlert(),
                 alertSettingReq.travelDeviationAlert(),
                 alertSettingReq.accidentProneAreaAlert()
