@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
@@ -68,7 +69,15 @@ public class UserController {
         return ApiResponse.success(GetAlertSettingRes.from(userAlertSettingDTO),HttpStatus.OK);
     }
 
-//    @PutMapping("/alert")
-//    @Operation(summary = "알림 설정값 등록", description = "사용자 알림 설정값을 등록(설정)합니다.")
+    @PutMapping("/alert")
+    @Operation(summary = "알림 설정값 등록", description = "사용자 알림 설정값을 등록(설정)합니다.")
+    public ApiResult<ApiResult.SuccessBody<Void>> updateAlert(
+            @Parameter(name = "userId", description = "유저 아이디", required = true)
+            @UserId Long userId,
+            @RequestBody @Valid AlertSettingReq alertSettingReq
+    ) {
+        userService.updateAlertSetting(userId, alertSettingReq);
+        return ApiResponse.success(null, HttpStatus.OK);
+    }
 
 }
