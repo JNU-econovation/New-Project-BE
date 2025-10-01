@@ -16,7 +16,7 @@ public class ValidationMessage {
     public static final String PHONE_NUMBER_INVALID = "전화번호 형식이 올바르지 않습니다.";
     public static final String VERIFICATION_CODE_IS_REQUIRED = "인증번호는 필수입니다.";
     public static final String VERIFICATION_CODE_INVALID = "인증번호 형식이 올바르지 않습니다.";
-    public static final String EVENT_ALERT_IS_REQUIRED = "eventAlert 는 필수입니다.";
+    public static final String EVENT_ALERT_IS_REQUIRED = "eventAlert는 필수입니다.";
     public static final String TRAVEL_DEVIATION_ALERT_IS_REQUIRED = "travelDeviationAlert 는 필수입니다.";
     public static final String ACCIDENT_PRONE_AREA_ALERT_IS_REQUIRED = "accidentProneAreaAlert 는 필수입니다.";
 }
