@@ -54,10 +54,8 @@ public class User extends BaseEntity {
         this.userInfo.updateBasicInformation(email,phoneNumber);
     }
 
-    public void updateAlerts(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
-        this.eventAlert = eventAlert;
-        this.travelDeviationAlert = travelDeviationAlert;
-        this.accidentProneAreaAlert = accidentProneAreaAlert;
+    public void updateUserAlert(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
+        userAlert.updateAlerts(eventAlert, travelDeviationAlert, accidentProneAreaAlert);
     }
 
     public Boolean isProfileFilled() {

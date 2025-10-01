@@ -84,13 +84,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserAlertSettingDTO getUserAlertSetting(Long userId) {
         User user = findUserByIdOrThrow(userId);
-        return UserAlertSettingDTO.from(user);
+        return UserAlertSettingDTO.from(user.getUserAlert());
     }
 
     @Transactional
     public void updateAlertSetting(Long userId, AlertSettingReq alertSettingReq) {
         User user = findUserByIdOrThrow(userId);
-        user.getUserAlert().updateAlerts(
+        user.updateUserAlert(
                 Boolean.TRUE.equals(alertSettingReq.eventAlert()),
                 Boolean.TRUE.equals(alertSettingReq.travelDeviationAlert()),
                 Boolean.TRUE.equals(alertSettingReq.accidentProneAreaAlert())
