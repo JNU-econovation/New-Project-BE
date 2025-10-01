@@ -1,6 +1,7 @@
 package com.econo_4factorial.newproject.user.domain;
 
 import com.econo_4factorial.newproject.common.entity.BaseEntity;
+import com.econo_4factorial.newproject.user.domain.vo.UserAlert;
 import com.econo_4factorial.newproject.user.domain.vo.UserInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -33,14 +34,8 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String nickname;
 
-    @Column(nullable = false)
-    private boolean eventAlert = true;
-
-    @Column(nullable = false)
-    private boolean travelDeviationAlert = true;
-
-    @Column(nullable = false)
-    private boolean accidentProneAreaAlert = true;
+    @Embedded
+    private UserAlert userAlert;
 
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
