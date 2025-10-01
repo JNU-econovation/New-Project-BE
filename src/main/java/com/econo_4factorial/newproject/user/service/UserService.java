@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
@@ -92,5 +93,15 @@ public class UserService {
                 ))
                 .orElseThrow(UserNotFoundException::new);
 
+    }
+
+    @Transactional
+    public void updateAlertSetting(Long userId, AlertSettingReq alertSettingReq) {
+        User user = findUserByIdOrThrow(userId);
+        user.updateAlerts(
+                alertSettingReq.eventAlert(),
+                alertSettingReq.travelDeviationAlert(),
+                alertSettingReq.accidentProneAreaAlert()
+        );
     }
 }
