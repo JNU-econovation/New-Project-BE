@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     private String nickname;
 
     @Embedded
-    private UserAlert userAlert;
+    private UserAlert userAlert = new UserAlert();
 
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
