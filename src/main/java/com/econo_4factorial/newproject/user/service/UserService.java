@@ -64,11 +64,16 @@ public class UserService {
         }
     }
 
-    @Transactional
-    public void registerBasicInformation(Long userId, AddBasicInformationReq addBasicInformationReq) {
-        if(userRepository.existsByUserInfoEmail(addBasicInformationReq.email())){
+    @Transactional(readOnly = true)
+    public void validateExistEmail(String email) {
+        if(userRepository.existsByUserInfoEmail(email)) {
             throw new EmailAlreadyExistsException();
         }
+    }
+
+    @Transactional
+    public void registerBasicInformation(Long userId, AddBasicInformationReq addBasicInformationReq) {
+        validateExistEmail(addBasicInformationReq.email());
         User user = findUserByIdOrThrow(userId);
         user.registerBasicInformation(addBasicInformationReq.nickname(), addBasicInformationReq.phoneNumber(), addBasicInformationReq.email());
     }
