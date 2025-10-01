@@ -91,9 +91,9 @@ public class UserService {
     public void updateAlertSetting(Long userId, AlertSettingReq alertSettingReq) {
         User user = findUserByIdOrThrow(userId);
         user.getUserAlert().updateAlerts(
-                alertSettingReq.eventAlert(),
-                alertSettingReq.travelDeviationAlert(),
-                alertSettingReq.accidentProneAreaAlert()
+                Boolean.TRUE.equals(alertSettingReq.eventAlert()),
+                Boolean.TRUE.equals(alertSettingReq.travelDeviationAlert()),
+                Boolean.TRUE.equals(alertSettingReq.accidentProneAreaAlert())
         );
     }
 }
