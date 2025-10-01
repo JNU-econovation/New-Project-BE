@@ -31,4 +31,6 @@ public class ValidationMessage {
     public static final String BLOOD_TYPE_IS_REQUIRED = "혈액형은 필수입니다.";
     public static final String INVALID_BLOOD_TYPE = "혈액형은 A, B, O, AB 중 하나여야 합니다.";
     public static final String ETC_LENGTH_INVALID = "기타사항은 200자 이내로 작성해야 합니다.";
+    public static final String IMAGE_URL_REQUIRED = "ImageUrl이 누락되었습니다.";
+    public static final String IMAGE_URL_INVALID = "ImageUrl형식이 올바르지 않습니다.";
 }
