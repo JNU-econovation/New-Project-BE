@@ -15,8 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
 
 @Service
@@ -85,13 +83,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserAlertSettingDTO getUserAlertSetting(Long userId) {
-        return userRepository.findById(userId)
-                .map(user -> new UserAlertSettingDTO(
-                        user.getUserAlert().isEventAlert(),
-                        user.getUserAlert().isTravelDeviationAlert(),
-                        user.getUserAlert().isAccidentProneAreaAlert()
-                ))
-                .orElseThrow(UserNotFoundException::new);
+        User user = findUserByIdOrThrow(userId);
+        return UserAlertSettingDTO.from(user);
     }
 
     @Transactional
