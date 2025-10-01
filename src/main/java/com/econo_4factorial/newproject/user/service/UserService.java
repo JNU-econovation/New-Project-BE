@@ -3,6 +3,8 @@ package com.econo_4factorial.newproject.user.service;
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.User;
+import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
@@ -11,6 +13,8 @@ import com.econo_4factorial.newproject.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
 
@@ -76,5 +80,17 @@ public class UserService {
         validateExistEmail(addBasicInformationReq.email());
         User user = findUserByIdOrThrow(userId);
         user.registerBasicInformation(addBasicInformationReq.nickname(), addBasicInformationReq.phoneNumber(), addBasicInformationReq.email());
+    }
+
+    @Transactional(readOnly = true)
+    public UserAlertSettingDTO getUserAlertSetting(Long userId) {
+        return userRepository.findById(userId)
+                .map(user -> new UserAlertSettingDTO(
+                        user.isEventAlert(),
+                        user.isTravelDeviationAlert(),
+                        user.isAccidentProneAreaAlert()
+                ))
+                .orElseThrow(UserNotFoundException::new);
+
     }
 }

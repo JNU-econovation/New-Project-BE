@@ -3,7 +3,9 @@ package com.econo_4factorial.newproject.user.controller;
 import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
+import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
+import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -54,5 +57,18 @@ public class UserController {
         userService.registerBasicInformation(userId, addBasicInformationReq);
         return ApiResponse.success(null, HttpStatus.OK);
     }
+
+    @GetMapping("/alert")
+    @Operation(summary = "알림 설정값 조회", description = "사용자 알림 설정값을 조회합니다.")
+    public ApiResult<ApiResult.SuccessBody<GetAlertSettingRes>> getAlert(
+            @Parameter(name = "userId", description = "유저 아이디", required = true)
+            @UserId Long userId
+    ) {
+        UserAlertSettingDTO userAlertSettingDTO = userService.getUserAlertSetting(userId);
+        return ApiResponse.success(GetAlertSettingRes.from(userAlertSettingDTO),HttpStatus.OK);
+    }
+
+//    @PutMapping("/alert")
+//    @Operation(summary = "알림 설정값 등록", description = "사용자 알림 설정값을 등록(설정)합니다.")
 
 }
