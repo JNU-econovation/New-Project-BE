@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.user.domain.vo;
 
+import com.econo_4factorial.newproject.common.exception.ValidationMessage;
 import com.econo_4factorial.newproject.user.domain.BloodType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -28,5 +29,4 @@ public class PhysicalInfo {
         this.height = height;
         this.bloodType = bloodType;
     }
-    // heigh, weight, 혈액형 검증하는 것도 있어야 하지 않나..?
 }
