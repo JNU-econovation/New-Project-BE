@@ -17,7 +17,7 @@ public class Course {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mountain_id")
+    @JoinColumn(name = "mountain_id", nullable = false)
     private Mountain mountain;
 
     @ManyToOne(fetch = FetchType.LAZY)
