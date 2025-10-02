@@ -24,6 +24,12 @@ public class PhysicalInfo {
     @Column(name = "blood_type")
     private BloodType bloodType;
 
+    public PhysicalInfo(Long weight, Long height, BloodType bloodType) {
+        this.weight = weight;
+        this.height = height;
+        this.bloodType = bloodType;
+    }
+
     public void updatePersonalInformation(Long weight, Long height, BloodType bloodType) {
         this.weight = weight;
         this.height = height;
