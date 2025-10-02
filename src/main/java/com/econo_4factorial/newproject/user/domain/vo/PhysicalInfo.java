@@ -1,6 +1,5 @@
 package com.econo_4factorial.newproject.user.domain.vo;
 
-import com.econo_4factorial.newproject.common.exception.ValidationMessage;
 import com.econo_4factorial.newproject.user.domain.BloodType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
