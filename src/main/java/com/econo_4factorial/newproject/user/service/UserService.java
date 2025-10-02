@@ -2,12 +2,15 @@ package com.econo_4factorial.newproject.user.service;
 
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
+import com.econo_4factorial.newproject.common.exception.BadRequestException;
+import com.econo_4factorial.newproject.user.domain.BloodType;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
+import com.econo_4factorial.newproject.user.exeception.BadRequestException.InvalidBloodTypeException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
@@ -85,8 +88,9 @@ public class UserService {
     @Transactional
     public void registerPersonalInformation(Long userId, AddPersonalInformationReq addPersonalInformationReq) {
         User user = findUserByIdOrThrow(userId);
+        BloodType bloodType = BloodType.fromString(addPersonalInformationReq.bloodType());
         user.registerPersonalInformation(addPersonalInformationReq.name(), addPersonalInformationReq.weight(),
-                addPersonalInformationReq.height(), addPersonalInformationReq.bloodType());
+                addPersonalInformationReq.height(), bloodType);
     }
 
     @Transactional(readOnly = true)
