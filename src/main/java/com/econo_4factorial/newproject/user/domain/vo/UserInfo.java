@@ -38,6 +38,7 @@ public class UserInfo {
     }
 
     public void updateName(String name){
+        validateName(name);
         this.name = name;
     }
 
