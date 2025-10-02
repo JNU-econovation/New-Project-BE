@@ -1,6 +1,7 @@
 package com.econo_4factorial.newproject.user.domain;
 
 import com.econo_4factorial.newproject.common.entity.BaseEntity;
+import com.econo_4factorial.newproject.user.domain.vo.PhysicalInfo;
 import com.econo_4factorial.newproject.user.domain.vo.UserAlert;
 import com.econo_4factorial.newproject.user.domain.vo.UserInfo;
 import jakarta.persistence.*;
@@ -37,6 +38,9 @@ public class User extends BaseEntity {
     @Embedded
     private UserAlert userAlert = new UserAlert();
 
+    @Embedded
+    private PhysicalInfo physicalInfo;
+
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
         this.userInfo = new UserInfo(email, name);
@@ -51,7 +55,13 @@ public class User extends BaseEntity {
 
     public void registerBasicInformation(String nickname, String phoneNumber, String email) {
         this.nickname = nickname;
-        this.userInfo.updateBasicInformation(email,phoneNumber);
+        userInfo.updateBasicInformation(email,phoneNumber);
+    }
+
+    public void registerPersonalInformation(String name, Long weight, Long height, String bloodType) {
+        if (physicalInfo == null) physicalInfo = new PhysicalInfo();
+        userInfo.updateName(name);
+        physicalInfo.updatePersonalInformation(weight, height, bloodType);
     }
 
     public void updateUserAlert(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
