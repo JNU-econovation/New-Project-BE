@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
@@ -77,7 +78,15 @@ public class UserService {
     public void registerBasicInformation(Long userId, AddBasicInformationReq addBasicInformationReq) {
         validateExistEmail(addBasicInformationReq.email());
         User user = findUserByIdOrThrow(userId);
-        user.registerBasicInformation(addBasicInformationReq.nickname(), addBasicInformationReq.phoneNumber(), addBasicInformationReq.email());
+        user.registerBasicInformation(addBasicInformationReq.nickname(), addBasicInformationReq.phoneNumber(),
+                addBasicInformationReq.email());
+    }
+
+    @Transactional
+    public void registerPersonalInformation(Long userId, AddPersonalInformationReq addPersonalInformationReq) {
+        User user = findUserByIdOrThrow(userId);
+        user.registerPersonalInformation(addPersonalInformationReq.name(), addPersonalInformationReq.weight(),
+                addPersonalInformationReq.height(), addPersonalInformationReq.bloodType());
     }
 
     @Transactional(readOnly = true)

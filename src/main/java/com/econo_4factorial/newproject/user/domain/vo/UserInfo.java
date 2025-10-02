@@ -37,6 +37,10 @@ public class UserInfo {
         this.phoneNumber = phoneNumber;
     }
 
+    public void updateName(String name){
+        this.name = name;
+    }
+
     private void validateEmail(String email) {
         requireNotNullAndNotBlank(email, EMAIL);
         requireValidFormat(VALID_EMAIL_PATTERN, email, EMAIL);
