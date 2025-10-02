@@ -19,4 +19,15 @@ public class ValidationMessage {
     public static final String EVENT_ALERT_IS_REQUIRED = "eventAlert는 필수입니다.";
     public static final String TRAVEL_DEVIATION_ALERT_IS_REQUIRED = "travelDeviationAlert 는 필수입니다.";
     public static final String ACCIDENT_PRONE_AREA_ALERT_IS_REQUIRED = "accidentProneAreaAlert 는 필수입니다.";
+    public static final String NAME_IS_REQUIRED = "이름은 필수 입력 값입니다.";
+    public static final String NAME_LENGTH_INVALID = "이름은 2자 이상 10자 이하로 입력해야 합니다.";
+    public static final String NAME_ONLY_KOREAN = "이름은 한글만 입력 가능합니다.";
+    public static final String WEIGHT_IS_REQUIRED = "몸무게는 필수 입력 값입니다.";
+    public static final String WEIGHT_POSITIVE = "몸무게는 양수여야 합니다.";
+    public static final String WEIGHT_MAX_LENGTH = "몸무게는 3자리까지만 허용됩니다.";
+    public static final String HEIGHT_IS_REQUIRED = "키는 필수 입력 값입니다.";
+    public static final String HEIGHT_POSITIVE = "키는 양수여야 합니다.";
+    public static final String HEIGHT_MAX_LENGTH = "키는 3자리까지만 허용됩니다.";
+    public static final String BLOOD_TYPE_IS_REQUIRED = "혈액형은 필수입니다.";
+    public static final String INVALID_BLOOD_TYPE = "혈액형은 A, B, O, AB 중 하나여야 합니다.";
 }
