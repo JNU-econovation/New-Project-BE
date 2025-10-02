@@ -59,9 +59,8 @@ public class User extends BaseEntity {
     }
 
     public void registerPersonalInformation(String name, Long weight, Long height, BloodType bloodType) {
-        if (physicalInfo == null) physicalInfo = new PhysicalInfo();
         userInfo.updateName(name);
-        physicalInfo.updatePersonalInformation(weight, height, bloodType);
+        this.physicalInfo = new PhysicalInfo(weight, height, bloodType);
     }
 
     public void updateUserAlert(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
