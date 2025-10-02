@@ -23,10 +23,10 @@ public class PhysicalInfo {
     @Column(name = "blood_type")
     private BloodType bloodType;
 
-    public void updatePersonalInformation(Long weight, Long height, String bloodType) {
+    public void updatePersonalInformation(Long weight, Long height, BloodType bloodType) {
         this.weight = weight;
         this.height = height;
-        this.bloodType = BloodType.valueOf(bloodType);
+        this.bloodType = bloodType;
     }
     // heigh, weight, 혈액형 검증하는 것도 있어야 하지 않나..?
 }
