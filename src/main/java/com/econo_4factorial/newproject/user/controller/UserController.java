@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
@@ -55,6 +56,17 @@ public class UserController {
             @RequestBody @Valid AddBasicInformationReq addBasicInformationReq
     ) {
         userService.registerBasicInformation(userId, addBasicInformationReq);
+        return ApiResponse.success(null, HttpStatus.OK);
+    }
+
+    @PostMapping("/profile/personal-information")
+    @Operation(summary = "개인정보 등록", description = "사용자의 개인정보(이름, 키, 몸무게, 혈액형)를 등록합니다.")
+    public ApiResult<ApiResult.SuccessBody<Void>> addPersonalInformation (
+            @Parameter(name = "userId", description = "사용자 ID", required = true)
+            @UserId Long userId,
+            @RequestBody @Valid AddPersonalInformationReq addPersonalInformationReq
+    ) {
+        userService.registerPersonalInformation(userId, addPersonalInformationReq);
         return ApiResponse.success(null, HttpStatus.OK);
     }
 
