@@ -58,7 +58,7 @@ public class User extends BaseEntity {
         userInfo.updateBasicInformation(email,phoneNumber);
     }
 
-    public void registerPersonalInformation(String name, Long weight, Long height, String bloodType) {
+    public void registerPersonalInformation(String name, Long weight, Long height, BloodType bloodType) {
         if (physicalInfo == null) physicalInfo = new PhysicalInfo();
         userInfo.updateName(name);
         physicalInfo.updatePersonalInformation(weight, height, bloodType);
