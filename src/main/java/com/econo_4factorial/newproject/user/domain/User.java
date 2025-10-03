@@ -35,6 +35,8 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String nickname;
 
+    private String etc;
+
     @Embedded
     private UserAlert userAlert = new UserAlert();
 
