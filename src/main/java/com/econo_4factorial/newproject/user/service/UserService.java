@@ -10,6 +10,7 @@ import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
+import com.econo_4factorial.newproject.user.dto.req.ProfileSettingReq;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
@@ -115,5 +116,16 @@ public class UserService {
     public UserProfileDTO getUserProfile(Long userId) {
         User user = findUserByIdOrThrow(userId);
         return UserProfileDTO.from(user);
+    }
+
+    @Transactional
+    public void updateUserProfile(Long userId, ProfileSettingReq profileSettingReq) {
+        User user = findUserByIdOrThrow(userId);
+        BloodType bloodType = BloodType.fromString(profileSettingReq.bloodType());
+        user.updateUserProfile(
+                profileSettingReq.name(), profileSettingReq.email(), profileSettingReq.nickname(),
+                profileSettingReq.phoneNumber(), profileSettingReq.weight(), profileSettingReq.height(),
+                bloodType, profileSettingReq.etc()
+        );
     }
 }
