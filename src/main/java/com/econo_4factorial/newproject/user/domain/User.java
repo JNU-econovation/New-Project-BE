@@ -57,7 +57,8 @@ public class User extends BaseEntity {
 
     public void registerBasicInformation(String nickname, String phoneNumber, String email) {
         this.nickname = nickname;
-        userInfo.updateBasicInformation(email,phoneNumber);
+        userInfo.updatePhoneNumber(phoneNumber);
+        userInfo.updateEmail(email);
     }
 
     public void registerPersonalInformation(String name, Long weight, Long height, BloodType bloodType) {
@@ -67,6 +68,16 @@ public class User extends BaseEntity {
 
     public void updateUserAlert(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
         userAlert.updateAlerts(eventAlert, travelDeviationAlert, accidentProneAreaAlert);
+    }
+
+    public void updateUserProfile(String name, String email,  String nickname, String phoneNumber, Long weight,
+                                  Long height, BloodType bloodType ,String etc) {
+        userInfo.updateName(name);
+        userInfo.updateEmail(email);
+        this.nickname = nickname;
+        userInfo.updatePhoneNumber(phoneNumber);
+        physicalInfo.updatePersonalInformation(weight, height, bloodType);
+        this.etc = etc;
     }
 
     public boolean isBasicInfoSet() {
