@@ -31,7 +31,7 @@ public class UserInfo {
     }
 
     public void updateEmail(String email){
-        validateName(email);
+        validateEmail(email);
         this.email = email;
     }
 
@@ -41,7 +41,7 @@ public class UserInfo {
     }
 
     public void updatePhoneNumber(String phoneNumber){
-        validateName(phoneNumber);
+        validatePhoneNumber(phoneNumber);
         this.phoneNumber = phoneNumber;
     }
 
