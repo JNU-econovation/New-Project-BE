@@ -5,6 +5,7 @@ import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.BloodType;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
 import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
@@ -108,5 +109,11 @@ public class UserService {
                 Boolean.TRUE.equals(alertSettingReq.travelDeviationAlert()),
                 Boolean.TRUE.equals(alertSettingReq.accidentProneAreaAlert())
         );
+    }
+
+    @Transactional(readOnly = true)
+    public UserProfileDTO getUserProfile(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return UserProfileDTO.from(user);
     }
 }
