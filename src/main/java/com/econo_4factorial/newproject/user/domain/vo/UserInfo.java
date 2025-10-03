@@ -30,16 +30,19 @@ public class UserInfo {
         this.phoneNumber = null;
     }
 
-    public void updateBasicInformation(String email, String phoneNumber){
-        validateEmail(email);
-        validatePhoneNumber(phoneNumber);
+    public void updateEmail(String email){
+        validateName(email);
         this.email = email;
-        this.phoneNumber = phoneNumber;
     }
 
     public void updateName(String name){
         validateName(name);
         this.name = name;
+    }
+
+    public void updatePhoneNumber(String phoneNumber){
+        validateName(phoneNumber);
+        this.phoneNumber = phoneNumber;
     }
 
     private void validateEmail(String email) {
