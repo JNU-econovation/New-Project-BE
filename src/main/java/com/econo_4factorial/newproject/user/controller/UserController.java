@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
 import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
@@ -11,6 +12,7 @@ import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
+import com.econo_4factorial.newproject.user.dto.res.GetProfileRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +32,16 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "User", description = "유저 관련 API")
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/profile")
+    @Operation(summary = "프로필 조회", description = "사용자의 프로필을 조회합니다.")
+    public ApiResult<ApiResult.SuccessBody<GetProfileRes>> getProfile(
+            @Parameter(hidden = true)
+            @UserId Long userId
+    ) {
+        UserProfileDTO userProfileDTO = userService.getUserProfile(userId);
+        return ApiResponse.success(GetProfileRes.from(userProfileDTO),HttpStatus.OK);
+    }
 
     @GetMapping("/profile/status")
     @Operation(summary = "프로필 설정 여부 확인", description = "프로필 설정(기본정보/개인정보) 여부 값을 반환합니다.")
