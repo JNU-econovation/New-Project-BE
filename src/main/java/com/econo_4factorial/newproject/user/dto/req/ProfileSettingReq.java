@@ -10,6 +10,7 @@ public record ProfileSettingReq(
         @Pattern(regexp = "^[가-힣]+$", message = ValidationMessage.NAME_ONLY_KOREAN)
         String name,
 
+        @NotBlank(message = ValidationMessage.EMAIL_IS_REQUIRED)
         @ValidEmailPattern
         String email,
 
