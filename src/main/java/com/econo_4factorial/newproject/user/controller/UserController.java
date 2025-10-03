@@ -5,13 +5,13 @@ import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
 import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
+import com.econo_4factorial.newproject.user.dto.req.*;
 import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
-import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.service.UserService;
@@ -41,6 +41,18 @@ public class UserController {
     ) {
         UserProfileDTO userProfileDTO = userService.getUserProfile(userId);
         return ApiResponse.success(GetProfileRes.from(userProfileDTO),HttpStatus.OK);
+    }
+
+    @PostMapping("/profile")
+    @Operation(summary = "프로필 업데이트", description = "사용자의 프로필 정보를 업데이트합니다.")
+    public ApiResult<ApiResult.SuccessBody<Void>> updateProfile(
+            @Parameter(hidden = true)
+            @UserId Long userId,
+            @Parameter(name = "profileSetting", description = "사용자 프로필 정보", required = true)
+            @RequestBody @Valid ProfileSettingReq profileSettingReq
+    ) {
+        userService.updateUserProfile(userId, profileSettingReq);
+        return ApiResponse.success(null,HttpStatus.OK);
     }
 
     @GetMapping("/profile/status")
