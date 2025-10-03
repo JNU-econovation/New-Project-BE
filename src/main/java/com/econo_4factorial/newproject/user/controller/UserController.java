@@ -40,16 +40,6 @@ public class UserController {
         return ApiResponse.success(GetProfileStatusRes.from(profileStatusInfoDTO), HttpStatus.OK);
     }
 
-    @GetMapping("/nickname/check")
-    @Operation(summary = "닉네임 중복 확인", description = "닉네임 중복을 체크합니다.")
-    public ApiResult<ApiResult.SuccessBody<GetNicknameAvailabilityRes>> checkNicknameUnique (
-            @Parameter(name = "nickname", description = "닉네임", required = true)
-            @Valid CheckNicknameReq checkNicknameReq
-            ) {
-        boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
-        return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
-    }
-
     @PostMapping("/profile/basic-information")
     @Operation(summary = "기본정보 등록", description = "사용자의 기본정보(닉네임, 전화번호, 이메일)를 등록합니다.")
     public ApiResult<ApiResult.SuccessBody<Void>> addBasicInformation (
@@ -92,6 +82,16 @@ public class UserController {
     ) {
         userService.updateAlertSetting(userId, alertSettingReq);
         return ApiResponse.success(null, HttpStatus.OK);
+    }
+
+    @GetMapping("/nickname/check")
+    @Operation(summary = "닉네임 중복 확인", description = "닉네임 중복을 체크합니다.")
+    public ApiResult<ApiResult.SuccessBody<GetNicknameAvailabilityRes>> checkNicknameUnique (
+            @Parameter(name = "nickname", description = "닉네임", required = true)
+            @Valid CheckNicknameReq checkNicknameReq
+    ) {
+        boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
+        return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
     }
 
 }
