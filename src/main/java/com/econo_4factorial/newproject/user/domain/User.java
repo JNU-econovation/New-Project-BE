@@ -67,13 +67,13 @@ public class User extends BaseEntity {
         userAlert.updateAlerts(eventAlert, travelDeviationAlert, accidentProneAreaAlert);
     }
 
-    public Boolean isProfileFilled() {
+    public boolean isBasicInfoSet() {
         return hasNickname()
                 && hasEmail()
                 && hasPhoneNumber();
     }
 
-    private Boolean hasNickname() {
+    private boolean hasNickname() {
         return this.nickname != null;
     }
 
