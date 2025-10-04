@@ -73,6 +73,12 @@ public class User extends BaseEntity {
                 && hasPhoneNumber();
     }
 
+    public boolean isPersonalInfoSet() {
+        return hasWeight()
+                && hasHeight()
+                && hasBloodType();
+    }
+
     private boolean hasNickname() {
         return this.nickname != null;
     }
@@ -83,6 +89,18 @@ public class User extends BaseEntity {
 
     private boolean hasPhoneNumber() {
         return this.userInfo.getPhoneNumber() != null;
+    }
+
+    private boolean hasWeight() {
+        return physicalInfo.getWeight() != null;
+    }
+
+    private boolean hasHeight() {
+        return physicalInfo.getHeight() != null;
+    }
+
+    private boolean hasBloodType() {
+        return physicalInfo.getBloodType() != null;
     }
 
 }
