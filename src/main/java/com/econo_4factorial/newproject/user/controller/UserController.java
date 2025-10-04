@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.UserStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
@@ -33,8 +34,8 @@ public class UserController {
     @GetMapping("/profile/status")
     @Operation(summary = "프로필 설정 여부 확인", description = "프로필 설정(기본정보/개인정보) 여부 값을 반환합니다.")
     public ApiResult<ApiResult.SuccessBody<GetProfileStatusRes>> getProfileStatus (@UserId Long userId) {
-        Boolean result = userService.isProfileFilled(userId);
-        return ApiResponse.success(GetProfileStatusRes.from(result), HttpStatus.OK);
+        UserStatusInfoDTO userStatusInfoDTO = userService.isProfileSet(userId);
+        return ApiResponse.success(GetProfileStatusRes.from(userStatusInfoDTO), HttpStatus.OK);
     }
 
     @GetMapping("/nickname/check")
