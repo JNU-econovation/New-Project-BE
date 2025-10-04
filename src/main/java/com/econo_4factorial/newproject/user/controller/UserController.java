@@ -33,7 +33,9 @@ public class UserController {
 
     @GetMapping("/profile/status")
     @Operation(summary = "프로필 설정 여부 확인", description = "프로필 설정(기본정보/개인정보) 여부 값을 반환합니다.")
-    public ApiResult<ApiResult.SuccessBody<GetProfileStatusRes>> getProfileStatus (@UserId Long userId) {
+    public ApiResult<ApiResult.SuccessBody<GetProfileStatusRes>> getProfileStatus (
+            @Parameter(hidden = true)
+            @UserId Long userId) {
         UserStatusInfoDTO userStatusInfoDTO = userService.isProfileSet(userId);
         return ApiResponse.success(GetProfileStatusRes.from(userStatusInfoDTO), HttpStatus.OK);
     }
