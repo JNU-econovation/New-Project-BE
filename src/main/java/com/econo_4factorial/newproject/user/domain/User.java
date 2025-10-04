@@ -74,6 +74,9 @@ public class User extends BaseEntity {
     }
 
     public boolean isPersonalInfoSet() {
+        if (physicalInfo == null) {
+            return false;
+        }
         return hasWeight()
                 && hasHeight()
                 && hasBloodType();
