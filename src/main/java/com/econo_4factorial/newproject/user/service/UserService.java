@@ -2,15 +2,14 @@ package com.econo_4factorial.newproject.user.service;
 
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
-import com.econo_4factorial.newproject.common.exception.BadRequestException;
 import com.econo_4factorial.newproject.user.domain.BloodType;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.UserStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
-import com.econo_4factorial.newproject.user.exeception.BadRequestException.InvalidBloodTypeException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
@@ -53,9 +52,20 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean isProfileFilled(Long userId) {
+    public UserStatusInfoDTO isProfileSet(Long userId) {
+        boolean basicInfo = isBasicInfoSet(userId);
+        boolean personalInfo = isPersonalInfoSet(userId);
+        return new UserStatusInfoDTO(basicInfo, personalInfo);
+    }
+
+    private Boolean isBasicInfoSet(Long userId) {
         User user = findUserByIdOrThrow(userId);
-        return user.isProfileFilled();
+        return user.isBasicInfoSet();
+    }
+
+    private Boolean isPersonalInfoSet(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return user.isPersonalInfoSet();
     }
 
     @Transactional(readOnly = true)
