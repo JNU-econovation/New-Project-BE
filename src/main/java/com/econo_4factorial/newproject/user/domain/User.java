@@ -35,8 +35,6 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String nickname;
 
-    private String etc;
-
     @Embedded
     private UserAlert userAlert = new UserAlert();
 
@@ -63,7 +61,7 @@ public class User extends BaseEntity {
 
     public void registerPersonalInformation(String name, Long weight, Long height, BloodType bloodType) {
         userInfo.updateName(name);
-        this.physicalInfo = new PhysicalInfo(weight, height, bloodType);
+        this.physicalInfo = new PhysicalInfo(weight, height, bloodType, null);
     }
 
     public void updateUserAlert(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
@@ -77,11 +75,10 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         userInfo.updatePhoneNumber(phoneNumber);
         if(this.physicalInfo == null) {
-            this.physicalInfo = new PhysicalInfo(weight, height, bloodType);
+            this.physicalInfo = new PhysicalInfo(weight, height, bloodType, etc);
         } else {
-            physicalInfo.updatePersonalInformation(weight, height, bloodType);
+            physicalInfo.updatePersonalInformation(weight, height, bloodType, etc);
         }
-        this.etc = etc;
     }
 
     public boolean isBasicInfoSet() {

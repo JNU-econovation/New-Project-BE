@@ -25,7 +25,7 @@ public record UserProfileDTO(
                 physicalInfo != null ? physicalInfo.getWeight() : null,
                 physicalInfo != null ? physicalInfo.getHeight() : null,
                 physicalInfo != null ? physicalInfo.getBloodType() : null,
-                user.getEtc()
+                physicalInfo != null ? physicalInfo.getEtc() : null
         );
     }
 }
