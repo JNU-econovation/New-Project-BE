@@ -5,7 +5,7 @@ import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.BloodType;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
-import com.econo_4factorial.newproject.user.dto.UserStatusInfoDTO;
+import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
@@ -52,10 +52,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserStatusInfoDTO isProfileSet(Long userId) {
+    public ProfileStatusInfoDTO isProfileSet(Long userId) {
         boolean basicInfo = isBasicInfoSet(userId);
         boolean personalInfo = isPersonalInfoSet(userId);
-        return new UserStatusInfoDTO(basicInfo, personalInfo);
+        return new ProfileStatusInfoDTO(basicInfo, personalInfo);
     }
 
     private Boolean isBasicInfoSet(Long userId) {
