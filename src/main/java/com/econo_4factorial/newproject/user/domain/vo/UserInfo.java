@@ -68,4 +68,8 @@ public class UserInfo {
             throw new IllegalArgumentException(fieldName + "값은 올바르지 않은 형태입니다");
     }
 
+    public boolean isBasicInfoSet() {
+        return email != null && phoneNumber != null;
+    }
+
 }

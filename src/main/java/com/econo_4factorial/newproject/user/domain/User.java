@@ -68,25 +68,10 @@ public class User extends BaseEntity {
     }
 
     public boolean isBasicInfoSet() {
-        return hasNickname()
-                && hasEmail()
-                && hasPhoneNumber();
+        return nickname != null && userInfo.isBasicInfoSet();
     }
 
     public boolean isPersonalInfoSet() {
         return physicalInfo != null && physicalInfo.isPersonalInfoSet();
     }
-
-    private boolean hasNickname() {
-        return this.nickname != null;
-    }
-
-    private boolean hasEmail() {
-        return this.userInfo.getEmail() != null;
-    }
-
-    private boolean hasPhoneNumber() {
-        return this.userInfo.getPhoneNumber() != null;
-    }
-
 }
