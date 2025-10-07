@@ -76,7 +76,11 @@ public class User extends BaseEntity {
         userInfo.updateEmail(email);
         this.nickname = nickname;
         userInfo.updatePhoneNumber(phoneNumber);
-        physicalInfo.updatePersonalInformation(weight, height, bloodType);
+        if(this.physicalInfo == null) {
+            this.physicalInfo = new PhysicalInfo(weight, height, bloodType);
+        } else {
+            physicalInfo.updatePersonalInformation(weight, height, bloodType);
+        }
         this.etc = etc;
     }
 
