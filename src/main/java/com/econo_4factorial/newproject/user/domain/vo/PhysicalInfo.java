@@ -43,8 +43,8 @@ public class PhysicalInfo {
     }
 
     private static void validate(Long weight, Long height, String etc) {
-        validateRange(weight, 1L, 500L, "몸무게는 1~500kg 범위여야 합니다.");
-        validateRange(height, 30L, 300L, "키는 30~300cm 범위여야 합니다.");
+        validateRange(weight, 1L, 999L, "몸무게는 1~999kg 범위여야 합니다.");
+        validateRange(height, 1L, 999L, "키는 1~999cm 범위여야 합니다.");
         validateEtc(etc);
     }
 
