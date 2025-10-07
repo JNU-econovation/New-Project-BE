@@ -34,4 +34,8 @@ public class PhysicalInfo {
         this.height = height;
         this.bloodType = bloodType;
     }
+
+    public boolean isPersonalInfoSet() {
+        return weight != null && height != null && bloodType != null;
+    }
 }
