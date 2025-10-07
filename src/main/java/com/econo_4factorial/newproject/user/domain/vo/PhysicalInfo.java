@@ -23,16 +23,20 @@ public class PhysicalInfo {
     @Column(name = "blood_type")
     private BloodType bloodType;
 
-    public PhysicalInfo(Long weight, Long height, BloodType bloodType) {
+    private String etc;
+
+    public PhysicalInfo(Long weight, Long height, BloodType bloodType, String etc) {
         this.weight = weight;
         this.height = height;
         this.bloodType = bloodType;
+        this.etc = etc;
     }
 
-    public void updatePersonalInformation(Long weight, Long height, BloodType bloodType) {
+    public void updatePersonalInformation(Long weight, Long height, BloodType bloodType, String etc) {
         this.weight = weight;
         this.height = height;
         this.bloodType = bloodType;
+        this.etc = etc;
     }
 
     public boolean isPersonalInfoSet() {
