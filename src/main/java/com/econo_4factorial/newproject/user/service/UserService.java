@@ -53,19 +53,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public ProfileStatusInfoDTO isProfileSet(Long userId) {
-        boolean basicInfo = isBasicInfoSet(userId);
-        boolean personalInfo = isPersonalInfoSet(userId);
+        User user = findUserByIdOrThrow(userId);
+        boolean basicInfo = user.isBasicInfoSet();
+        boolean personalInfo = user.isPersonalInfoSet();
         return new ProfileStatusInfoDTO(basicInfo, personalInfo);
-    }
-
-    private Boolean isBasicInfoSet(Long userId) {
-        User user = findUserByIdOrThrow(userId);
-        return user.isBasicInfoSet();
-    }
-
-    private Boolean isPersonalInfoSet(Long userId) {
-        User user = findUserByIdOrThrow(userId);
-        return user.isPersonalInfoSet();
     }
 
     @Transactional(readOnly = true)
