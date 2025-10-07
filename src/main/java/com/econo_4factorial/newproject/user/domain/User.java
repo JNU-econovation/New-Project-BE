@@ -74,10 +74,7 @@ public class User extends BaseEntity {
     }
 
     public boolean isPersonalInfoSet() {
-        if (physicalInfo == null) {
-            return false;
-        }
-        return hasWeight() && hasHeight() && hasBloodType();
+        return physicalInfo != null && physicalInfo.isPersonalInfoSet();
     }
 
     private boolean hasNickname() {
@@ -90,18 +87,6 @@ public class User extends BaseEntity {
 
     private boolean hasPhoneNumber() {
         return this.userInfo.getPhoneNumber() != null;
-    }
-
-    private boolean hasWeight() {
-        return physicalInfo != null && physicalInfo.getWeight() != null;
-    }
-
-    private boolean hasHeight() {
-        return physicalInfo != null && physicalInfo.getHeight() != null;
-    }
-
-    private boolean hasBloodType() {
-        return physicalInfo != null && physicalInfo.getBloodType() != null;
     }
 
 }
