@@ -1,12 +1,11 @@
 package com.econo_4factorial.newproject.user.dto.res;
 
-import com.econo_4factorial.newproject.user.dto.UserInfoDTO;
-import com.econo_4factorial.newproject.user.dto.UserStatusInfoDTO;
+import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 
 public record GetProfileStatusRes(
-        UserStatusInfoDTO userStatusInfoDTO
+        ProfileStatusInfoDTO profileStatusInfoDTO
 ) {
-    public static GetProfileStatusRes from (UserStatusInfoDTO userStatusInfoDTO) {
-        return new GetProfileStatusRes(userStatusInfoDTO);
+    public static GetProfileStatusRes from (ProfileStatusInfoDTO profileStatusInfoDTO) {
+        return new GetProfileStatusRes(profileStatusInfoDTO);
     }
 }

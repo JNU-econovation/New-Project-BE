@@ -4,7 +4,7 @@ import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
-import com.econo_4factorial.newproject.user.dto.UserStatusInfoDTO;
+import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
@@ -36,8 +36,8 @@ public class UserController {
     public ApiResult<ApiResult.SuccessBody<GetProfileStatusRes>> getProfileStatus (
             @Parameter(hidden = true)
             @UserId Long userId) {
-        UserStatusInfoDTO userStatusInfoDTO = userService.isProfileSet(userId);
-        return ApiResponse.success(GetProfileStatusRes.from(userStatusInfoDTO), HttpStatus.OK);
+        ProfileStatusInfoDTO profileStatusInfoDTO = userService.isProfileSet(userId);
+        return ApiResponse.success(GetProfileStatusRes.from(profileStatusInfoDTO), HttpStatus.OK);
     }
 
     @GetMapping("/nickname/check")
