@@ -42,7 +42,7 @@ public class UserController {
     public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
         String nickname = randomNicknameService.getRandomNickname();
         return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
-
+    }
 
     @GetMapping("/profile")
     @Operation(summary = "프로필 조회", description = "사용자의 프로필을 조회합니다.")
