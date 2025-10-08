@@ -42,3 +42,16 @@ coolsms:
     sender-number: ${COOLSMS_SENDER_NUMBER}
     sms-prefix: '[산결]'
     ttl: 180
+
+cloud:
+  aws:
+    region:
+      static: ${REGION}
+    s3:
+      bucket: ${BUCKET}
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+    stack:
+      auto: false
+
