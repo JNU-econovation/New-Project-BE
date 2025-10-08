@@ -35,7 +35,7 @@ public class S3Service {
         GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName, uploadFormat);
         URL presignedUrl = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
-        return PresignedUrlDTO.of(presignedUrl.toString(), fileName);
+        return new PresignedUrlDTO(presignedUrl.toString(), fileName);
     }
 
     public ProfileImageUrlDTO getImageUrl(Long userId) {
