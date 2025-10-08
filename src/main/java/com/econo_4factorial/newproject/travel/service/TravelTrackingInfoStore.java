@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,9 +57,9 @@ public class TravelTrackingInfoStore {
         log.info("산행 재개. userId : {}", userId);
     }
 
-    public TravelTrackingInfo end(LocalDateTime endAt, Long userId, Point userPoint, RemainingTime remainingTime, Double totalTravelDistance) {
+    public TravelTrackingInfo end(LocalDateTime endAt, Long userId, Point userPoint, RemainingTime remainingTime, Double totalTravelDistance, Duration totalTravelTime) {
         TravelTrackingInfo info = infoStore.get(userId);
-        info.end(endAt, userPoint, totalTravelDistance, remainingTime);
+        info.end(endAt, userPoint, totalTravelDistance, remainingTime, totalTravelTime);
         log.info("산행 종료. userId : {}", userId);
         return info;
     }

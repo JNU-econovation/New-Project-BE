@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -133,13 +133,14 @@ public class TravelService {
     private TravelEventResponse end(Payload payload, Long userId) {
         EndEventReq dto = payloadMapper.extractDataToDTO(payload, EndEventReq.class);
         Long courseId = dto.courseId();
+        Duration totalTravelTime = Duration.ofMillis(dto.totalTravelTime());
         LocalDateTime endAt = TimeMapper.toLocalTime(dto.time());
         Point prevPoint = travelTrackingInfoStore.getLastPoint(userId);
         Point userPoint = GeoUtil.toPoint(dto.coordinate());
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
         TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
-        TravelTrackingInfo info = travelTrackingInfoStore.end(endAt, userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance());
+        TravelTrackingInfo info = travelTrackingInfoStore.end(endAt, userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance(), totalTravelTime);
 
         saveRecord(info);
         travelTrackingInfoStore.deleteInfo(userId);

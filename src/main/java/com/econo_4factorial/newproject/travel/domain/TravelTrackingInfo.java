@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import org.locationtech.jts.geom.Point;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -27,6 +27,9 @@ public class TravelTrackingInfo {
 
     @Builder.Default
     private Status status = Status.STARTED;
+
+    @Builder.Default
+    private Duration totalTravelTime = null;
 
     public Point getLastPoint() {
         return paths.getLast();
@@ -57,11 +60,12 @@ public class TravelTrackingInfo {
         this.status = Status.RESTARTED;
     }
 
-    public void end(LocalDateTime endAt, Point userPoint, Double totalTravelDistance, RemainingTime remainingTime) {
+    public void end(LocalDateTime endAt, Point userPoint, Double totalTravelDistance, RemainingTime remainingTime, Duration totalTravelTime) {
         paths.add(userPoint);
         this.totalTravelDistanceKm = totalTravelDistance;
         this.remainingTime = remainingTime;
         this.endAt = endAt;
         this.status = Status.END;
+        this.totalTravelTime = totalTravelTime;
     }
 }

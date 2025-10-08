@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.locationtech.jts.geom.LineString;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,13 +37,17 @@ public class TravelRecord {
     @Column(nullable = false)
     private double totalTravelDistanceKm;
 
+    @Column(nullable = false)
+    private Duration totalTravelTime;
+
     @Builder
-    public TravelRecord(User user, Course course, LineString paths, LocalDateTime startedAt, LocalDateTime endAt, double totalTravelDistanceKm) {
+    public TravelRecord(User user, Course course, LineString paths, LocalDateTime startedAt, LocalDateTime endAt, double totalTravelDistanceKm, Duration totalTravelTime) {
         this.user = user;
         this.course = course;
         this.paths = paths;
         this.startedAt = startedAt;
         this.endAt = endAt;
         this.totalTravelDistanceKm = totalTravelDistanceKm;
+        this.totalTravelTime = totalTravelTime;
     }
 }

@@ -35,6 +35,7 @@ public final class TravelMapper {
                 .startedAt(info.getStartedAt())
                 .endAt(info.getEndAt())
                 .totalTravelDistanceKm(info.getTotalTravelDistanceKm())
+                .totalTravelTime(info.getTotalTravelTime())
                 .build();
 
     }
