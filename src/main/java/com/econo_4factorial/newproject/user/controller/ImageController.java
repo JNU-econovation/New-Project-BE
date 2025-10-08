@@ -38,7 +38,7 @@ public class ImageController {
 
     @Operation(summary = "프로필 이미지 조회", description = "S3에 업로드된 프로필 이미지 URL을 반환합니다.")
     @GetMapping
-    public ApiResult<ApiResult.SuccessBody<GetProfileImageUrlRes>> getProfileImageUrl(
+    public ApiResult<ApiResult.SuccessBody<GetProfileImageUrlRes>> getProfileImage(
             @Parameter(hidden = true)
             @UserId Long userId
     ) {
@@ -48,11 +48,11 @@ public class ImageController {
 
     @Operation(summary = "프로필 이미지 삭제", description = "S3에 업로드된 프로필 이미지를 삭제합니다.")
     @DeleteMapping
-    public ApiResult<ApiResult.SuccessBody<Void>> deleteProfileImageUrl(
+    public ApiResult<ApiResult.SuccessBody<Void>> deleteProfileImage(
             @Parameter(hidden = true)
             @UserId Long userId
     ) {
-        s3Service.deleteFileUrl(userId);
+        s3Service.deleteImageUrl(userId);
         return ApiResponse.success(null, HttpStatus.OK);
     }
 

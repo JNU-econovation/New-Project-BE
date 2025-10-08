@@ -45,7 +45,7 @@ public class S3Service {
         return new ProfileImageUrlDTO(profileImageUrl);
     }
 
-    public void deleteFileUrl(Long userId) {
+    public void deleteImageUrl(Long userId) {
         String userProfileImageName = userService.getUserProfileImageName(userId);
         amazonS3Client.deleteObject(bucket, userProfileImageName);
         userService.deleteUserProfileImageName(userId);
