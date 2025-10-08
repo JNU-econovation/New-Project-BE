@@ -128,4 +128,6 @@ public class UserController {
         boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
         return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
     }
+
+
 }
