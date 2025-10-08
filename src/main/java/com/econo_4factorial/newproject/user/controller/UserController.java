@@ -126,7 +126,7 @@ public class UserController {
             @UserId Long userId,
             @RequestBody @Valid ProfileImageUrlReq profileImageUrlReq
     ) {
-        userService.updateUserProfileImage(userId, profileImageUrlReq.imageUrl());
+        userService.updateUserProfileImageName(userId, profileImageUrlReq.imageUrl());
         return ApiResponse.success(null, HttpStatus.OK);
     }
 

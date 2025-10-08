@@ -113,7 +113,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserProfileImage(Long userId, String profileImageName) {
+    public void updateUserProfileImageName(Long userId, String profileImageName) {
         User user = findUserByIdOrThrow(userId);
         user.updateProfileImage(profileImageName);
     }

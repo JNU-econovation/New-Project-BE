@@ -33,7 +33,7 @@ public class S3Service {
         String fileName = createFileName(userId, String.valueOf(fileFormat));
         log.info(fileName);
 
-        userService.updateUserProfileImage(userId, fileName);
+        userService.updateUserProfileImageName(userId, fileName);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 getGeneratePreSignedUrlRequest(bucket, fileName, valueFileExtension);
