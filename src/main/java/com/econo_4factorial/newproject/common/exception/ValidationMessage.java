@@ -33,4 +33,5 @@ public class ValidationMessage {
     public static final String ETC_LENGTH_INVALID = "기타사항은 200자 이내로 작성해야 합니다.";
     public static final String IMAGE_URL_REQUIRED = "ImageUrl이 누락되었습니다.";
     public static final String IMAGE_URL_INVALID = "ImageUrl형식이 올바르지 않습니다.";
+    public static final String FILE_FORMAT_IS_REQUIRED = "이미지 파일 형식은 필수입니다.";
 }

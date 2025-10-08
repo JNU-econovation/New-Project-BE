@@ -13,6 +13,7 @@ import com.econo_4factorial.newproject.user.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ImageController {
     public ApiResult<ApiResult.SuccessBody<GetPresignedUrlRes>> getPresignedUrl(
             @Parameter(hidden = true)
             @UserId Long userId,
-            @RequestBody IssuePresignedUrlReq issuePresignedUrlReq
+            @RequestBody @Valid IssuePresignedUrlReq issuePresignedUrlReq
     ) {
         PresignedUrlDTO presignedUrlDTO = s3Service.createPresignedUrl(userId,issuePresignedUrlReq.imageFileFormat());
         return ApiResponse.success(GetPresignedUrlRes.from(presignedUrlDTO), HttpStatus.OK);
