@@ -39,7 +39,7 @@ public class S3Service {
         return PresignedUrlDTO.of(presignedUrl.toString(), fileName);
     }
 
-    public ProfileImageUrlDTO getFileUrl(Long userId) {
+    public ProfileImageUrlDTO getImageUrl(Long userId) {
         String fileName = userService.getUserProfileImageName(userId);
         String profileImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
         return new ProfileImageUrlDTO(profileImageUrl);

@@ -42,7 +42,7 @@ public class ImageController {
             @Parameter(hidden = true)
             @UserId Long userId
     ) {
-        ProfileImageUrlDTO profileImageUrlDTO = s3Service.getFileUrl(userId);
+        ProfileImageUrlDTO profileImageUrlDTO = s3Service.getImageUrl(userId);
         return ApiResponse.success(GetProfileImageUrlRes.from(profileImageUrlDTO), HttpStatus.OK);
     }
 
