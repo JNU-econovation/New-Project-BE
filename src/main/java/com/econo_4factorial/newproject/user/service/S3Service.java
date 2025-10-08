@@ -28,16 +28,15 @@ public class S3Service {
     private final UserService userService;
 
     @Transactional
-    public PresignedUrlDTO execute(Long userId, ImageFileFormat fileFormat) {
-        String valueFileExtension = fileFormat.getUploadExtension();
+    public PresignedUrlDTO createPresignedUrl(Long userId, ImageFileFormat fileFormat) {
+        String uploadFormat = fileFormat.getUploadExtension();
         String fileName = createFileName(userId, String.valueOf(fileFormat));
         log.info(fileName);
 
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                getGeneratePreSignedUrlRequest(bucket, fileName, valueFileExtension);
-        URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName, uploadFormat);
+        URL presignedUrl = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
-        return PresignedUrlDTO.of(url.toString(), fileName);
+        return PresignedUrlDTO.of(presignedUrl.toString(), fileName);
     }
 
     public ProfileImageUrlDTO getFileUrl(Long userId) {

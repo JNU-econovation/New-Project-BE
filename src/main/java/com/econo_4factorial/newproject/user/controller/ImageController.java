@@ -32,7 +32,7 @@ public class ImageController {
             @UserId Long userId,
             @RequestBody IssuePresignedUrlReq issuePresignedUrlReq
     ) {
-        PresignedUrlDTO presignedUrlDTO = s3Service.execute(userId,issuePresignedUrlReq.imageFileFormat());
+        PresignedUrlDTO presignedUrlDTO = s3Service.createPresignedUrl(userId,issuePresignedUrlReq.imageFileFormat());
         return ApiResponse.success(GetPresignedUrlRes.from(presignedUrlDTO), HttpStatus.OK);
     }
 
