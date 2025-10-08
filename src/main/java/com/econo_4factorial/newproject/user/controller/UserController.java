@@ -16,7 +16,6 @@ import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileRes;
-import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
