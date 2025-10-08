@@ -38,12 +38,6 @@ public class UserController {
     private final UserService userService;
     private final RandomNicknameService randomNicknameService;
 
-    @GetMapping("/nickname/random")
-    public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
-        String nickname = randomNicknameService.getRandomNickname();
-        return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
-    }
-
     @GetMapping("/profile")
     @Operation(summary = "프로필 조회", description = "사용자의 프로필을 조회합니다.")
     public ApiResult<ApiResult.SuccessBody<GetProfileRes>> getProfile(
@@ -119,6 +113,12 @@ public class UserController {
         return ApiResponse.success(null, HttpStatus.OK);
     }
 
+    @GetMapping("/nickname/random")
+    public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
+        String nickname = randomNicknameService.getRandomNickname();
+        return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
+    }
+
     @GetMapping("/nickname/check")
     @Operation(summary = "닉네임 중복 확인", description = "닉네임 중복을 체크합니다.")
     public ApiResult<ApiResult.SuccessBody<GetNicknameAvailabilityRes>> checkNicknameUnique (
@@ -128,6 +128,4 @@ public class UserController {
         boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
         return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
     }
-
-
 }
