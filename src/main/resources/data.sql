@@ -3,19 +3,26 @@
 -- ex)mountain(O) Mountain(X)
 -- 칼럼명은 camelCase가 아닌 snake_case로 해주세요
 
-INSERT INTO mountain(name, location)
-values ('무등산', '광주'),
-       ('북한산', '서울'),
-       ('지리산', '전남'),
-       ('설악산', '강원도'),
-       ('한라산', '제주도'),
-       ('덕유산', '전북'),
-       ('태백산', '강원도'),
-       ('오대산', '강원도'),
-       ('소백산', '충북'),
-       ('가야산', '경남'),
-       ('월출산', '전남')
-ON DUPLICATE KEY update name = VALUES(name);
+-- 무등산을 제외한 나머지 위도, 경도 값들은 목 데이터.
+INSERT INTO mountain(name, initials, location, latitude, longitude)
+values ('무등산', 'ㅁㄷㅅ','광주', 35.13349412111848, 126.99068462647199),
+       ('북한산', 'ㅂㅎㅅ','서울', 38, 130),
+       ('지리산', 'ㅈㄹㅅ','전남', 38, 130),
+       ('설악산', 'ㅅㅇㅅ','강원도', 38, 130),
+       ('한라산', 'ㅎㄹㅅ','제주도', 38, 130),
+       ('덕유산', 'ㄷㅇㅅ','전북', 38, 130),
+       ('태백산', 'ㅌㅂㅅ','강원도', 38, 130),
+       ('오대산', 'ㅇㄷㅅ','강원도', 38, 130),
+       ('소백산', 'ㅅㅂㅅ','충북', 38, 130),
+       ('가야산', 'ㄱㅇㅅ','경남', 38, 130),
+       ('월출산', 'ㅇㅊㅅ','전남', 38, 130)
+AS new
+ON DUPLICATE KEY UPDATE
+    name = new.name,
+    latitude = new.latitude,
+    longitude = new.longitude,
+    initials = new.initials;
+
 
 -- 화장실 이름은 EXCEL 파일에 있는 지점명
 -- 응급키트 이름은 EXCEL 파일에 있는 설치장소, 모름 데이터 제외하고 진행

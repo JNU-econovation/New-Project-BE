@@ -30,6 +30,21 @@ public class UserInfo {
         this.phoneNumber = null;
     }
 
+    public void updateEmail(String email){
+        validateEmail(email);
+        this.email = email;
+    }
+
+    public void updateName(String name){
+        validateName(name);
+        this.name = name;
+    }
+
+    public void updatePhoneNumber(String phoneNumber){
+        validatePhoneNumber(phoneNumber);
+        this.phoneNumber = phoneNumber;
+    }
+
     private void validateEmail(String email) {
         requireNotNullAndNotBlank(email, EMAIL);
         requireValidFormat(VALID_EMAIL_PATTERN, email, EMAIL);
@@ -54,6 +69,10 @@ public class UserInfo {
         boolean isValidFormat = pattern.matcher(value).matches();
         if (!isValidFormat)
             throw new IllegalArgumentException(fieldName + "값은 올바르지 않은 형태입니다");
+    }
+
+    public boolean isBasicInfoSet() {
+        return email != null && phoneNumber != null;
     }
 
 }

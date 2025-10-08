@@ -1,6 +1,8 @@
 package com.econo_4factorial.newproject.user.domain;
 
 import com.econo_4factorial.newproject.common.entity.BaseEntity;
+import com.econo_4factorial.newproject.user.domain.vo.PhysicalInfo;
+import com.econo_4factorial.newproject.user.domain.vo.UserAlert;
 import com.econo_4factorial.newproject.user.domain.vo.UserInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -30,7 +32,14 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String appleSub;
 
+    @Column(unique = true)
     private String nickname;
+
+    @Embedded
+    private UserAlert userAlert = new UserAlert();
+
+    @Embedded
+    private PhysicalInfo physicalInfo;
 
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
@@ -44,22 +53,39 @@ public class User extends BaseEntity {
         this.appleSub = appleSub;
     }
 
-    public Boolean isProfileFilled() {
-        return hasNickname()
-                && hasEmail()
-                && hasPhoneNumber();
+    public void registerBasicInformation(String nickname, String phoneNumber, String email) {
+        this.nickname = nickname;
+        userInfo.updatePhoneNumber(phoneNumber);
+        userInfo.updateEmail(email);
     }
 
-    private Boolean hasNickname() {
-        return this.nickname != null;
+    public void registerPersonalInformation(String name, Long weight, Long height, BloodType bloodType) {
+        userInfo.updateName(name);
+        this.physicalInfo = new PhysicalInfo(weight, height, bloodType, null);
     }
 
-    private boolean hasEmail() {
-        return this.userInfo.getEmail() != null;
+    public void updateUserAlert(boolean eventAlert, boolean travelDeviationAlert, boolean accidentProneAreaAlert) {
+        userAlert.updateAlerts(eventAlert, travelDeviationAlert, accidentProneAreaAlert);
     }
 
-    private boolean hasPhoneNumber() {
-        return this.userInfo.getPhoneNumber() != null;
+    public void updateUserProfile(String name, String email, String nickname, String phoneNumber, Long weight,
+                                  Long height, BloodType bloodType ,String etc) {
+        userInfo.updateName(name);
+        userInfo.updateEmail(email);
+        this.nickname = nickname;
+        userInfo.updatePhoneNumber(phoneNumber);
+        if(this.physicalInfo == null) {
+            this.physicalInfo = new PhysicalInfo(weight, height, bloodType, etc);
+        } else {
+            physicalInfo.updatePersonalInformation(weight, height, bloodType, etc);
+        }
     }
 
+    public boolean isBasicInfoSet() {
+        return nickname != null && userInfo.isBasicInfoSet();
+    }
+
+    public boolean isPersonalInfoSet() {
+        return physicalInfo != null && physicalInfo.isPersonalInfoSet();
+    }
 }

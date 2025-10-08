@@ -58,6 +58,9 @@ dependencies {
 
     //Socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    //CoolSMS
+    implementation 'com.solapi:sdk:1.0.3'
 }
 
 tasks.named('test') {

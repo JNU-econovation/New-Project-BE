@@ -2,7 +2,17 @@ package com.econo_4factorial.newproject.user.service;
 
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
+import com.econo_4factorial.newproject.user.domain.BloodType;
 import com.econo_4factorial.newproject.user.domain.User;
+import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
+import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
+import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
+import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
+import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
+import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
+import com.econo_4factorial.newproject.user.dto.req.ProfileSettingReq;
+import com.econo_4factorial.newproject.user.exeception.BadRequestException.EmailAlreadyExistsException;
+import com.econo_4factorial.newproject.user.exeception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exeception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -14,7 +24,9 @@ import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
 @Service
 @AllArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
+
     @Transactional(readOnly = true)
     public User findUserByIdOrThrow(Long userId) {
         return userRepository.findById(userId)
@@ -42,8 +54,78 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean isProfileFilled(Long userId) {
+    public ProfileStatusInfoDTO isProfileSet(Long userId) {
         User user = findUserByIdOrThrow(userId);
-        return user.isProfileFilled();
+        boolean basicInfo = user.isBasicInfoSet();
+        boolean personalInfo = user.isPersonalInfoSet();
+        return new ProfileStatusInfoDTO(basicInfo, personalInfo);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isNicknameUnique(String nickname) {
+        return !userRepository.existsByNickname(nickname);
+    }
+
+    @Transactional(readOnly = true)
+    public void validateExistPhoneNumber(String phoneNumber) {
+        if(userRepository.existsByUserInfoPhoneNumber(phoneNumber)) {
+            throw new PhoneNumberAlreadyExistsException();
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void validateExistEmail(String email) {
+        if(userRepository.existsByUserInfoEmail(email)) {
+            throw new EmailAlreadyExistsException();
+        }
+    }
+
+    @Transactional
+    public void registerBasicInformation(Long userId, AddBasicInformationReq addBasicInformationReq) {
+        validateExistEmail(addBasicInformationReq.email());
+        User user = findUserByIdOrThrow(userId);
+        user.registerBasicInformation(addBasicInformationReq.nickname(), addBasicInformationReq.phoneNumber(),
+                addBasicInformationReq.email());
+    }
+
+    @Transactional
+    public void registerPersonalInformation(Long userId, AddPersonalInformationReq addPersonalInformationReq) {
+        User user = findUserByIdOrThrow(userId);
+        BloodType bloodType = BloodType.fromString(addPersonalInformationReq.bloodType());
+        user.registerPersonalInformation(addPersonalInformationReq.name(), addPersonalInformationReq.weight(),
+                addPersonalInformationReq.height(), bloodType);
+    }
+
+    @Transactional(readOnly = true)
+    public UserAlertSettingDTO getUserAlertSetting(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return UserAlertSettingDTO.from(user.getUserAlert());
+    }
+
+    @Transactional
+    public void updateAlertSetting(Long userId, AlertSettingReq alertSettingReq) {
+        User user = findUserByIdOrThrow(userId);
+        user.updateUserAlert(
+                Boolean.TRUE.equals(alertSettingReq.eventAlert()),
+                Boolean.TRUE.equals(alertSettingReq.travelDeviationAlert()),
+                Boolean.TRUE.equals(alertSettingReq.accidentProneAreaAlert())
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public UserProfileDTO getUserProfile(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return UserProfileDTO.from(user);
+    }
+
+    @Transactional
+    public void updateUserProfile(Long userId, ProfileSettingReq profileSettingReq) {
+        User user = findUserByIdOrThrow(userId);
+        BloodType bloodType = BloodType.fromString(profileSettingReq.bloodType());
+        user.updateUserProfile(
+                profileSettingReq.name(), profileSettingReq.email(), profileSettingReq.nickname(),
+                profileSettingReq.phoneNumber(), profileSettingReq.weight(), profileSettingReq.height(),
+                bloodType, profileSettingReq.etc()
+        );
     }
 }
