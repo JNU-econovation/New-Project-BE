@@ -140,4 +140,10 @@ public class UserService {
         User user = findUserByIdOrThrow(userId);
         return user.getProfileImageName();
     }
+
+    @Transactional
+    public void deleteUserProfileImageName(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        user.deleteProfileImage();
+    }
 }

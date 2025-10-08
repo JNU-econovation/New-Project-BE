@@ -87,6 +87,10 @@ public class User extends BaseEntity {
         this.profileImageName = profileImageName;
     }
 
+    public void deleteProfileImage() {
+        this.profileImageName = null;
+    }
+
     public boolean isBasicInfoSet() {
         return nickname != null && userInfo.isBasicInfoSet();
     }

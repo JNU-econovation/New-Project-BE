@@ -48,6 +48,12 @@ public class S3Service {
         return new ProfileImageUrlDTO(profileImageUrl);
     }
 
+    public void deleteFileUrl(Long userId) {
+        String userProfileImageName = userService.getUserProfileImageName(userId);
+        amazonS3Client.deleteObject(bucket, userProfileImageName);
+        userService.deleteUserProfileImageName(userId);
+    }
+
     private String createFileName(Long userId, String fileExtension) {
         return "profile/" + userId + "/" + UUID.randomUUID() + "." + fileExtension;
     }
