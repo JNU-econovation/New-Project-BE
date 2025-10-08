@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import java.math.BigDecimal;
 
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"latitude", "longitude"})
+                @UniqueConstraint(columnNames = {"geo_point"})
         }
 )
 public class Base {
@@ -32,11 +33,8 @@ public class Base {
 
     private Double temperature;
 
-    @Column(precision = 16, scale = 14, nullable = false)
-    private BigDecimal latitude;
-
-    @Column(precision = 17, scale = 14, nullable = false)
-    private BigDecimal longitude;
+    @Column(name = "geo_point", columnDefinition = "POINT SRID 4326", nullable = false)
+    private Point GeoPoint;
 
     @Column(nullable = false)
     private Long altitude;

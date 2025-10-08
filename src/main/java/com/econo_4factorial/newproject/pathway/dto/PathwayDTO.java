@@ -2,6 +2,7 @@ package com.econo_4factorial.newproject.pathway.dto;
 
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import lombok.Builder;
+import org.locationtech.jts.geom.LineString;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +13,6 @@ public record PathwayDTO (
         Long deptBaseId,
         Long destBaseId,
         Difficulty difficulty,
-        List<List<BigDecimal>> coordinates
+        LineString coordinates
 ){
 }

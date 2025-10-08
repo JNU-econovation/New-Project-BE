@@ -32,8 +32,8 @@ public class WeatherService {
         List<Base> bases = baseRepository.findAll();
         for (Base base : bases) {
             try {
-                BigDecimal lat = base.getLatitude();
-                BigDecimal lon = base.getLongitude();
+                BigDecimal lat = BigDecimal.valueOf(base.getGeoPoint().getCoordinate().getY());
+                BigDecimal lon = BigDecimal.valueOf(base.getGeoPoint().getCoordinate().getX());
                 Long altitude = base.getAltitude();
 
                 Optional<WeatherRes> weatherOpt = Optional.ofNullable(weatherFeignClient.getWeather(lat, lon, apiKey));
