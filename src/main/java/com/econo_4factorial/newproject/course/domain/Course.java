@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.LineString;
 
 @Entity
 @Getter
@@ -23,6 +24,10 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "peak_base_id", nullable = false)
     private Base peakBase;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_base_id", nullable = false)
+    private Base destinationBase;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -41,4 +46,7 @@ public class Course {
 
     @Column(nullable = false)
     private String displayName;
+
+    @Column(columnDefinition = "LINESTRING SRID 4326")
+    private LineString coordinates;
 }
