@@ -62,7 +62,7 @@ public class ImageController {
     public ApiResult<ApiResult.SuccessBody<Void>> saveImageFileName(
             @Parameter(hidden = true)
             @UserId Long userId,
-            @RequestBody AddFileNameReq addFileNameReq
+            @RequestBody @Valid AddFileNameReq addFileNameReq
     ) {
         s3Service.saveFileNameToEntity(userId, addFileNameReq.fileName());
         return ApiResponse.success(null, HttpStatus.OK);
