@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final RandomNicknameService randomNicknameService;
-  
+
     @GetMapping("/nickname/random")
     public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
         String nickname = randomNicknameService.getRandomNickname();
