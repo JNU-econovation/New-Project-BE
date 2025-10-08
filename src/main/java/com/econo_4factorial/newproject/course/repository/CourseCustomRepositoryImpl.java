@@ -45,14 +45,15 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
                         new CaseBuilder()
                                 .when(bookmark.id.isNotNull()).then(true)
                                 .otherwise(false),
-                        course.imageUrl
+                        course.imageUrl,
+                        course.mountain.id
                 ))
                 .from(course)
                 .leftJoin(bookmark).on(
                         course.id.eq(bookmark.course.id)
                                 .and(bookmark.user.id.eq(userId))
                 )
-                .where(mountainIdEq(searchCondition.mountainId()))
+                .where(mountainIdEq(mountainId))
                 .orderBy(orderSpecifiers)
                 .fetch();
     }
