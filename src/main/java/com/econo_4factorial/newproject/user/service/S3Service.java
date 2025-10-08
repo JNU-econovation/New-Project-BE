@@ -29,6 +29,7 @@ public class S3Service {
 
     public PresignedUrlDTO createPresignedUrl(Long userId, ImageFileFormat fileFormat) {
         String uploadFormat = fileFormat.getUploadExtension();
+        log.info("upload format: {}", uploadFormat);
         String fileName = createFileName(userId, String.valueOf(fileFormat));
         log.info(fileName);
 
