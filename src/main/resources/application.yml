@@ -31,6 +31,10 @@ weather:
     # 초 분 시 일 월 요일
     cron: 0 0 * * * *
 
+nickname:
+  scheduler:
+    cron: 0 0 * * * *
+
 coolsms:
   api:
     key: ${COOLSMS_API_KEY}

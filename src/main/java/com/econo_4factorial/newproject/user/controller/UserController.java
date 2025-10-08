@@ -3,6 +3,9 @@ package com.econo_4factorial.newproject.user.controller;
 import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
+import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
+import com.econo_4factorial.newproject.user.dto.res.GetRandomNicknameRes;
+import com.econo_4factorial.newproject.user.service.RandomNicknameService;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
 import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
 import com.econo_4factorial.newproject.user.dto.req.*;
@@ -19,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +36,13 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "User", description = "유저 관련 API")
 public class UserController {
     private final UserService userService;
+    private final RandomNicknameService randomNicknameService;
+  
+    @GetMapping("/nickname/random")
+    public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
+        String nickname = randomNicknameService.getRandomNickname();
+        return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
+
 
     @GetMapping("/profile")
     @Operation(summary = "프로필 조회", description = "사용자의 프로필을 조회합니다.")
