@@ -68,7 +68,7 @@ public class User extends BaseEntity {
         userAlert.updateAlerts(eventAlert, travelDeviationAlert, accidentProneAreaAlert);
     }
 
-    public void updateUserProfile(String name, String email,  String nickname, String phoneNumber, Long weight,
+    public void updateUserProfile(String name, String email, String nickname, String phoneNumber, Long weight,
                                   Long height, BloodType bloodType ,String etc) {
         userInfo.updateName(name);
         userInfo.updateEmail(email);
