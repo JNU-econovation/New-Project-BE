@@ -4,11 +4,13 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.econo_4factorial.newproject.user.domain.ImageFileFormat;
+import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.PresignedUrlDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 import java.util.Date;
@@ -23,17 +25,26 @@ public class S3Service {
     private String bucket;
 
     private final AmazonS3Client amazonS3Client;
+    private final UserService userService;
 
+    @Transactional
     public PresignedUrlDTO execute(Long userId, ImageFileFormat fileFormat) {
         String valueFileExtension = fileFormat.getUploadExtension();
         String fileName = createFileName(userId, String.valueOf(fileFormat));
         log.info(fileName);
+
+        userService.updateUserProfileImage(userId, fileName);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 getGeneratePreSignedUrlRequest(bucket, fileName, valueFileExtension);
         URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
         return PresignedUrlDTO.of(url.toString(), fileName);
+    }
+
+    public String getFileUrl(Long userId) {
+
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
     private String createFileName(Long userId, String fileExtension) {

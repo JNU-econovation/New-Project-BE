@@ -113,8 +113,9 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserProfileImage(Long userId, String profileImageUrl) {
+    public void updateUserProfileImage(Long userId, String profileImageName) {
         User user = findUserByIdOrThrow(userId);
+        user.updateProfileImage(profileImageName);
     }
 
     @Transactional(readOnly = true)

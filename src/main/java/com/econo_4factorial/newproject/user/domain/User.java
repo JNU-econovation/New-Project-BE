@@ -41,6 +41,8 @@ public class User extends BaseEntity {
     @Embedded
     private PhysicalInfo physicalInfo;
 
+    private String profileImageName;
+
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
         this.userInfo = new UserInfo(email, name);
@@ -79,6 +81,10 @@ public class User extends BaseEntity {
         } else {
             physicalInfo.updatePersonalInformation(weight, height, bloodType, etc);
         }
+    }
+
+    public void updateProfileImage(String profileImageName) {
+        this.profileImageName = profileImageName;
     }
 
     public boolean isBasicInfoSet() {
