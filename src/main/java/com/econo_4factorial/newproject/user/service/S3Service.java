@@ -33,8 +33,6 @@ public class S3Service {
         String fileName = createFileName(userId, String.valueOf(fileFormat));
         log.info(fileName);
 
-        userService.updateUserProfileImageName(userId, fileName);
-
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 getGeneratePreSignedUrlRequest(bucket, fileName, valueFileExtension);
         URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
@@ -52,6 +50,17 @@ public class S3Service {
         String userProfileImageName = userService.getUserProfileImageName(userId);
         amazonS3Client.deleteObject(bucket, userProfileImageName);
         userService.deleteUserProfileImageName(userId);
+    }
+
+    public void saveFileNameToEntity(Long userId, String fileName) {
+        isExistImageInBucket(fileName);
+        userService.updateUserProfileImageName(userId, fileName);
+    }
+
+    private void isExistImageInBucket(String imageName) {
+        if (!amazonS3Client.doesObjectExist(bucket, imageName)) {
+            throw new IllegalStateException("Image does not exist: " + imageName);
+        }
     }
 
     private String createFileName(Long userId, String fileExtension) {
