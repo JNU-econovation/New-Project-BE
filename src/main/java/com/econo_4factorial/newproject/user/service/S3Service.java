@@ -27,7 +27,6 @@ public class S3Service {
     private final AmazonS3Client amazonS3Client;
     private final UserService userService;
 
-    @Transactional
     public PresignedUrlDTO createPresignedUrl(Long userId, ImageFileFormat fileFormat) {
         String uploadFormat = fileFormat.getUploadExtension();
         String fileName = createFileName(userId, String.valueOf(fileFormat));
