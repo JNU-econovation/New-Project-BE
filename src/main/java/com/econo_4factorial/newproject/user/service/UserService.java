@@ -134,4 +134,10 @@ public class UserService {
                 bloodType, profileSettingReq.etc()
         );
     }
+
+    @Transactional(readOnly = true)
+    public String getUserProfileImageName(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return user.getProfileImageName();
+    }
 }

@@ -4,8 +4,8 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.econo_4factorial.newproject.user.domain.ImageFileFormat;
-import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.dto.PresignedUrlDTO;
+import com.econo_4factorial.newproject.user.dto.ProfileImageUrlDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,9 +42,10 @@ public class S3Service {
         return PresignedUrlDTO.of(url.toString(), fileName);
     }
 
-    public String getFileUrl(Long userId) {
-
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+    public ProfileImageUrlDTO getFileUrl(Long userId) {
+        String fileName = userService.getUserProfileImageName(userId);
+        String profileImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+        return new ProfileImageUrlDTO(profileImageUrl);
     }
 
     private String createFileName(Long userId, String fileExtension) {
