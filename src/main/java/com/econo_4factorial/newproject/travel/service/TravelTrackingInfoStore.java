@@ -80,4 +80,8 @@ public class TravelTrackingInfoStore {
         infoStore.remove(userId);
         log.info("산행 info 삭제. userId : {}", userId);
     }
+
+    public TravelTrackingInfo getInfo(Long userId) {
+        return infoStore.get(userId);
+    }
 }

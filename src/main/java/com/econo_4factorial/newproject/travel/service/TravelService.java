@@ -62,6 +62,10 @@ public class TravelService {
         return handler.apply(payload, userId);
     }
 
+    private boolean isPingPongRequest(Status status) {
+        return status == Status.PAUSED;
+    }
+
     private BiFunction<Payload, Long, TravelEventResponse> findHandler(TravelEvent travelEvent) {
         return handlers.get(travelEvent);
     }
@@ -93,12 +97,14 @@ public class TravelService {
     private TravelEventResponse currentPosition(Payload payload, Long userId) {
         CurrentPositionEventReq dto = payloadMapper.extractDataToDTO(payload, CurrentPositionEventReq.class);
         Long courseId = dto.courseId();
+        TravelTrackingInfo info = travelTrackingInfoStore.getInfo(userId);
         Point prevPoint = travelTrackingInfoStore.getLastPoint(userId);
         Point userPoint = GeoUtil.toPoint(dto.coordinate());
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
         TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
-        travelTrackingInfoStore.currentPosition(userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance());
+        if(!isPingPongRequest(info.getStatus()))
+            travelTrackingInfoStore.currentPosition(userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance());
 
         return TravelResponseMapper.toCurrentPositionEventRes(result);
     }
