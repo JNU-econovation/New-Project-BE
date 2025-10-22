@@ -49,6 +49,7 @@ public class OAuthController {
     @Operation(summary = "애플 로그인", description = "애플 ID 토큰을 기반으로 로그인 처리합니다.")
     public ApiResult<ApiResult.SuccessBody<AppleLoginRes>> loginWithApple (@RequestBody @Valid AppleLoginReq appleLoginReq) {
         AuthToken authToken = oAuthService.loginWithApple(appleLoginReq);
+        log.info("애플 로그인 토큰 발급 완료. 액세스 토큰 : {}. 리프레쉬 토큰 : {}.", authToken.accessToken(), authToken.refreshToken());
         return ApiResponse.success(AppleLoginRes.from(authToken), HttpStatus.CREATED);
     }
 }
