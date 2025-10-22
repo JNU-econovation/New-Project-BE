@@ -5,12 +5,14 @@ import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class WebSocketResponser {
@@ -20,6 +22,7 @@ public class WebSocketResponser {
         WebSocketSuccessRes successResponse = WebSocketSuccessRes.ok(event, data);
         String successResponseJson = mapper.writeValueAsString(successResponse);
         session.sendMessage(new TextMessage(successResponseJson));
+        log.info("웹소켓 메세지 전송 성공 : session = {}. successResponseJson = {}", session.getId(), successResponseJson);
     }
 
     public void fail(WebSocketSession session, ErrorType errorType) throws IOException {
@@ -29,5 +32,6 @@ public class WebSocketResponser {
         WebSocketFailRes failResponse = WebSocketFailRes.fail(errorCode, errorMessage);
         String failResponseJson = mapper.writeValueAsString(failResponse);
         session.sendMessage(new TextMessage(failResponseJson));
+        log.info("웹소켓 메세지 전송 성공 : session = {}. failResponse = {}", session.getId(), failResponseJson);
     }
 }
