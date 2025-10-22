@@ -1,7 +1,7 @@
 package com.econo_4factorial.newproject.common.util.webSocket;
 
 public record WebSocketFailRes(
-        String Status,
+        String status,
         String errorCode,
         String message
 ){
