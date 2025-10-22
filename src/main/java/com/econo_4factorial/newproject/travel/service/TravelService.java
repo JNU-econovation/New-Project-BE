@@ -72,7 +72,7 @@ public class TravelService {
 
     private void validateEventForStatus(TravelEvent travelEvent, Status status) {
         if (!eventPolicy.isAllowed(status, travelEvent)) {
-            log.error("현재 유저 상태에서 허락되지 않은 이벤트 입니다. 현재 상태 = {}", status);
+            log.error("현재 유저 상태에서 허락되지 않은 이벤트 입니다. 현재 상태 = {}. 요청 이벤트 = {}", status, travelEvent);
             throw new NotAllowedEventForStatusException();
         }
     }
