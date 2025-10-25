@@ -30,7 +30,7 @@ public class TravelRecordService {
         LocalDateTime startOfMonth = DateUtil.getStartOfYearAndMonth(year, month);
         LocalDateTime endOfMonth = DateUtil.getEndOfYearAndMonth(year, month);
 
-        return travelRecordRepository.findAllByIdAndStartedAtBetween(userId, startOfMonth, endOfMonth)
+        return travelRecordRepository.findAllByUserIdAndStartedAtBetween(userId, startOfMonth, endOfMonth)
                 .stream()
                 .map(TravelRecordDTO::from)
                 .toList();

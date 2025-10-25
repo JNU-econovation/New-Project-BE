@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TravelRecordRepository extends JpaRepository<TravelRecord, Long> {
 
-    List<TravelRecord> findAllByIdAndStartedAtBetween(Long userId, LocalDateTime startOfMonth, LocalDateTime endOfMonth);
+    List<TravelRecord> findAllByUserIdAndStartedAtBetween(Long userId, LocalDateTime startOfMonth, LocalDateTime endOfMonth);
 }
