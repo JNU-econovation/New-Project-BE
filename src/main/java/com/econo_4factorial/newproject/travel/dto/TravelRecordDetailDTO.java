@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public record TravelRecordDetailDTO (
         Long recordId,
         String displayName,
-        Long staredAt,
+        Long startedAt,
         Long endAt,
         Long duration,
         Double length,
@@ -19,14 +19,14 @@ public record TravelRecordDetailDTO (
         Long courseId
 ) {
     public static TravelRecordDetailDTO from(TravelRecord travelRecord) {
-        Long staredAt = Timestamp.valueOf(travelRecord.getStartedAt()).getTime();
+        Long startedAt = Timestamp.valueOf(travelRecord.getStartedAt()).getTime();
         Long endAt = Timestamp.valueOf(travelRecord.getStartedAt()).getTime();
         List<List<BigDecimal>> coordinates = convertCoordinatesFromLineString(travelRecord.getPaths());
 
         return new TravelRecordDetailDTO(
                 travelRecord.getId(),
                 travelRecord.getDisplayName(),
-                staredAt,
+                startedAt,
                 endAt,
                 travelRecord.getTotalTravelTime().toMillis(),
                 travelRecord.getTotalTravelDistanceKm(),
