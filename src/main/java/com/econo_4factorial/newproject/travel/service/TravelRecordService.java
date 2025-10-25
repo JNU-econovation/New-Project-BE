@@ -12,6 +12,7 @@ import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +24,7 @@ public class TravelRecordService {
     private final UserService userService;
     private final CourseService courseService;
 
+    @Transactional(readOnly = true)
     public List<TravelRecordDTO> findRecordByMonth(Long userId, Integer year, Integer month) {
         LocalDateTime startOfMonth = DateUtil.getStartOfYearAndMonth(year, month);
         LocalDateTime endOfMonth = DateUtil.getEndOfYearAndMonth(year, month);
