@@ -103,6 +103,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         clients.remove(session.getId());
+        Long userId = webSocketAuthService.getUserId(session.getId());
+        travelService.deleteIfExistTravelTrackingInfo(userId);
         webSocketAuthService.removeSession(session);
         log.info("Websocket 연결 종료. sessionId={}", session.getId());
     }

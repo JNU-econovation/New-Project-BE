@@ -155,4 +155,11 @@ public class TravelService {
 
         return TravelResponseMapper.toEndEventRes(result);
     }
+
+    public void deleteIfExistTravelTrackingInfo(Long userId) {
+        if(travelTrackingInfoStore.isExistTravelTrackingInfo(userId)) {
+            travelTrackingInfoStore.deleteInfo(userId);
+            log.info("웹소켓 세션이 끝났지만 남아있는 travelTrackingInfo 삭제 완료. userId : {}", userId);
+        }
+    }
 }

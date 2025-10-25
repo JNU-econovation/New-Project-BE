@@ -84,4 +84,8 @@ public class TravelTrackingInfoStore {
     public TravelTrackingInfo getInfo(Long userId) {
         return infoStore.get(userId);
     }
+
+    public boolean isExistTravelTrackingInfo(Long userId) {
+        return infoStore.containsKey(userId);
+    }
 }
