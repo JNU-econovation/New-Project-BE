@@ -36,14 +36,11 @@ import java.util.function.BiFunction;
 @Slf4j
 @RequiredArgsConstructor
 public class TravelService {
-    private final CourseService courseService;
-    private final UserService userService;
     private Map<TravelEvent, BiFunction<Payload, Long, TravelEventResponse>> handlers = new HashMap<>();
     private final PayloadMapper payloadMapper;
     private final EventPolicy eventPolicy;
     private final TravelTrackingInfoStore travelTrackingInfoStore;
     private final TravelDomainService travelDomainService;
-    private final TravelRecordRepository recordRepository;
     private final TravelRecordService travelRecordService;
 
     @PostConstruct
