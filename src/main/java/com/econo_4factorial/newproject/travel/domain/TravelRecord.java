@@ -40,8 +40,11 @@ public class TravelRecord {
     @Column(nullable = false)
     private Duration totalTravelTime;
 
+    @Column(nullable = false)
+    private String displayName;
+
     @Builder
-    public TravelRecord(User user, Course course, LineString paths, LocalDateTime startedAt, LocalDateTime endAt, double totalTravelDistanceKm, Duration totalTravelTime) {
+    public TravelRecord(User user, Course course, LineString paths, LocalDateTime startedAt, LocalDateTime endAt, double totalTravelDistanceKm, Duration totalTravelTime, String displayName) {
         this.user = user;
         this.course = course;
         this.paths = paths;
@@ -49,5 +52,6 @@ public class TravelRecord {
         this.endAt = endAt;
         this.totalTravelDistanceKm = totalTravelDistanceKm;
         this.totalTravelTime = totalTravelTime;
+        this.displayName = displayName;
     }
 }

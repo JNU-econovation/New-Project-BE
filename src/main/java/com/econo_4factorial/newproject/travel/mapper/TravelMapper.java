@@ -27,7 +27,7 @@ public final class TravelMapper {
                 .build();
     }
 
-    public static TravelRecord toRecord(User user, Course course, TravelTrackingInfo info) {
+    public static TravelRecord toRecord(User user, Course course, TravelTrackingInfo info, String displayName) {
         return TravelRecord.builder()
                 .user(user)
                 .course(course)
@@ -36,6 +36,7 @@ public final class TravelMapper {
                 .endAt(info.getEndAt())
                 .totalTravelDistanceKm(info.getTotalTravelDistanceKm())
                 .totalTravelTime(info.getTotalTravelTime())
+                .displayName(displayName)
                 .build();
 
     }
