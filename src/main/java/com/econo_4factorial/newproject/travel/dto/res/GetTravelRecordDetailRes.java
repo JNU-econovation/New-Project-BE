@@ -20,7 +20,7 @@ public record GetTravelRecordDetailRes (
         return new GetTravelRecordDetailRes(
                 recordDetail.recordId(),
                 recordDetail.displayName(),
-                recordDetail.staredAt(),
+                recordDetail.startedAt(),
                 recordDetail.endAt(),
                 recordDetail.duration(),
                 recordDetail.length(),
