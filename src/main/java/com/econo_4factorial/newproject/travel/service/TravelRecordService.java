@@ -49,4 +49,9 @@ public class TravelRecordService {
                 .map(TravelRecordDetailDTO::from)
                 .orElseThrow(TravelRecordNotFoundException::new);
     }
+
+    @Transactional
+    public void deleteRecordById(Long recordId) {
+        travelRecordRepository.deleteById(recordId);
+    }
 }
