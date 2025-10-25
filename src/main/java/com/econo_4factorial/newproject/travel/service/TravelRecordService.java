@@ -5,6 +5,8 @@ import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.service.CourseService;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDTO;
+import com.econo_4factorial.newproject.travel.dto.TravelRecordDetailDTO;
+import com.econo_4factorial.newproject.travel.exception.TravelRecordNotFoundException;
 import com.econo_4factorial.newproject.travel.mapper.TravelMapper;
 import com.econo_4factorial.newproject.travel.repository.TravelRecordRepository;
 import com.econo_4factorial.newproject.user.domain.User;
@@ -39,5 +41,12 @@ public class TravelRecordService {
         Course course = courseService.findByIdOrThrow(info.getCourseId());
         String displayNameOfRecord = course.getDisplayName();
         travelRecordRepository.save(TravelMapper.toRecord(user, course, info, displayNameOfRecord));
+    }
+
+    @Transactional(readOnly = true)
+    public TravelRecordDetailDTO findRecordById(Long recordId) {
+        return travelRecordRepository.findById(recordId)
+                .map(TravelRecordDetailDTO::from)
+                .orElseThrow(TravelRecordNotFoundException::new);
     }
 }
