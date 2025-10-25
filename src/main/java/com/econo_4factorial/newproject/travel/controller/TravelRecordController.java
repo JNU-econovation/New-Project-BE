@@ -12,11 +12,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/travel/records")
@@ -37,6 +39,7 @@ public class TravelRecordController {
             @RequestParam("month") Integer month
     ) {
         List<TravelRecordDTO> recordList = travelRecordService.findRecordByMonth(userId, year, month);
+        log.info("산행 기록 조회 요청. userId = {}. year= {}. month = {}. 조회된 산행 기록 = {}.", userId, year, month, recordList);
         return ApiResponse.success(GetTravelRecordByMonthRes.from(recordList), HttpStatus.OK);
     }
 
@@ -50,6 +53,7 @@ public class TravelRecordController {
             @PathVariable Long recordId
     ) {
         TravelRecordDetailDTO recordDetail = travelRecordService.findRecordById(recordId);
+        log.info("산행 기록 상세 조회 요청. userId = {}. recordId= {}. 조회된 산행 상세기록 = {}.", userId, recordId, recordDetail);
         return ApiResponse.success(GetTravelRecordDetailRes.from(recordDetail), HttpStatus.OK);
     }
 
@@ -63,6 +67,7 @@ public class TravelRecordController {
             @PathVariable Long recordId
     ) {
         travelRecordService.deleteRecordById(recordId);
+        log.info("산행 기록 삭제 요청. userId = {}. recordId= {}. ", userId, recordId);
         return ApiResponse.success(HttpStatus.OK);
     }
 }
