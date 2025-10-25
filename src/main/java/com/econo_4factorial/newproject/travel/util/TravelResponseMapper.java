@@ -20,6 +20,10 @@ public final class TravelResponseMapper {
         return new CurrentPositionEventRes(TravelEvent.PAUSE, data);
     }
 
+    public static TravelEventResponse toKeepAliveEventRes() {
+        return new CurrentPositionEventRes(TravelEvent.KEEP_ALIVE, null);
+    }
+
     public static TravelEventResponse toRestartEventRes(TravelAnalysisResult result) {
         TravelEventResponseData data = toTravelEventResponseData(result);
         return new CurrentPositionEventRes(TravelEvent.RESTART, data);
