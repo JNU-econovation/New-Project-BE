@@ -44,6 +44,7 @@ public class TravelService {
     private final TravelTrackingInfoStore travelTrackingInfoStore;
     private final TravelDomainService travelDomainService;
     private final TravelRecordRepository recordRepository;
+    private final TravelRecordService travelRecordService;
 
     @PostConstruct
     public void init() {
@@ -152,15 +153,9 @@ public class TravelService {
         TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
         TravelTrackingInfo info = travelTrackingInfoStore.end(endAt, userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance(), totalTravelTime);
 
-        saveRecord(info);
+        travelRecordService.saveRecord(info);
         travelTrackingInfoStore.deleteInfo(userId);
 
         return TravelResponseMapper.toEndEventRes(result);
-    }
-
-    private void saveRecord(TravelTrackingInfo info) {
-        User user = userService.findUserByIdOrThrow(info.getUserId());
-        Course course = courseService.findByIdOrThrow(info.getCourseId());
-        TravelRecord record = recordRepository.save(TravelMapper.toRecord(user, course, info));
     }
 }

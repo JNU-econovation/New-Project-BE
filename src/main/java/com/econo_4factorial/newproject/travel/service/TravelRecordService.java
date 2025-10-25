@@ -1,8 +1,15 @@
 package com.econo_4factorial.newproject.travel.service;
 
 import com.econo_4factorial.newproject.common.util.DateUtil;
+import com.econo_4factorial.newproject.course.domain.Course;
+import com.econo_4factorial.newproject.course.service.CourseService;
+import com.econo_4factorial.newproject.travel.domain.TravelRecord;
+import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDTO;
+import com.econo_4factorial.newproject.travel.mapper.TravelMapper;
 import com.econo_4factorial.newproject.travel.repository.TravelRecordRepository;
+import com.econo_4factorial.newproject.user.domain.User;
+import com.econo_4factorial.newproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TravelRecordService {
     private final TravelRecordRepository travelRecordRepository;
+    private final UserService userService;
+    private final CourseService courseService;
 
     public List<TravelRecordDTO> findRecordByMonth(Long userId, Integer year, Integer month) {
         LocalDateTime startOfMonth = DateUtil.getStartOfYearAndMonth(year, month);
@@ -22,5 +31,11 @@ public class TravelRecordService {
                 .stream()
                 .map(TravelRecordDTO::from)
                 .toList();
+    }
+
+    public void saveRecord(TravelTrackingInfo info) {
+        User user = userService.findUserByIdOrThrow(info.getUserId());
+        Course course = courseService.findByIdOrThrow(info.getCourseId());
+        TravelRecord record = travelRecordRepository.save(TravelMapper.toRecord(user, course, info));
     }
 }
