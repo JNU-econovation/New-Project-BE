@@ -50,6 +50,7 @@ public class TravelService {
         handlers.put(TravelEvent.START, this::start);
         handlers.put(TravelEvent.CURRENT_POSITION, this::currentPosition);
         handlers.put(TravelEvent.PAUSE, this::pause);
+        handlers.put(TravelEvent.KEEP_ALIVE, this::keepAlive);
         handlers.put(TravelEvent.RESTART, this::reStart);
         handlers.put(TravelEvent.END, this::end);
     }
@@ -122,6 +123,9 @@ public class TravelService {
         return TravelResponseMapper.toPauseEventRes(result);
     }
 
+    private TravelEventResponse keepAlive(Payload payload, Long userId) {
+        return TravelResponseMapper.toKeepAliveEventRes();
+    }
 
     private TravelEventResponse reStart(Payload payload, Long userId) {
         RestartEventReq dto = payloadMapper.extractDataToDTO(payload, RestartEventReq.class);
