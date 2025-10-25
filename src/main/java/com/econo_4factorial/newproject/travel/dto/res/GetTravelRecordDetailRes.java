@@ -8,7 +8,7 @@ import java.util.List;
 public record GetTravelRecordDetailRes (
         Long recordId,
         String displayName,
-        Long staredAt,
+        Long startedAt,
         Long endAt,
         Long duration,
         Double length,
