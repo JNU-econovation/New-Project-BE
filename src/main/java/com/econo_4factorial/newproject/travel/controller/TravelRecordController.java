@@ -52,4 +52,17 @@ public class TravelRecordController {
         TravelRecordDetailDTO recordDetail = travelRecordService.findRecordById(recordId);
         return ApiResponse.success(GetTravelRecordDetailRes.from(recordDetail), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{recordId}")
+    @Operation(summary = "산행 기록 삭제", description = "특정 산행 기록을 삭제합니다")
+    public ApiResult<ApiResult.SuccessBody<Void>> deleteRecordById(
+            @Parameter(name = "userId", description = "사용자 ID", required = true)
+            @UserId Long userId,
+
+            @Parameter(name = "recordId", description = "산행 기록 ID", required = true)
+            @PathVariable Long recordId
+    ) {
+        travelRecordService.deleteRecordById(recordId);
+        return ApiResponse.success(HttpStatus.OK);
+    }
 }
