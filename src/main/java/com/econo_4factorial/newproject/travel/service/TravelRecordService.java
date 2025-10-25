@@ -3,7 +3,6 @@ package com.econo_4factorial.newproject.travel.service;
 import com.econo_4factorial.newproject.common.util.DateUtil;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.service.CourseService;
-import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDTO;
 import com.econo_4factorial.newproject.travel.mapper.TravelMapper;
@@ -35,9 +34,10 @@ public class TravelRecordService {
                 .toList();
     }
 
-    public void saveRecord(TravelTrackingInfo info) {
+    public void saveTravelRecord(TravelTrackingInfo info) {
         User user = userService.findUserByIdOrThrow(info.getUserId());
         Course course = courseService.findByIdOrThrow(info.getCourseId());
-        TravelRecord record = travelRecordRepository.save(TravelMapper.toRecord(user, course, info));
+        String displayNameOfRecord = course.getDisplayName();
+        travelRecordRepository.save(TravelMapper.toRecord(user, course, info, displayNameOfRecord));
     }
 }

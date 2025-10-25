@@ -153,7 +153,7 @@ public class TravelService {
         TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
         TravelTrackingInfo info = travelTrackingInfoStore.end(endAt, userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance(), totalTravelTime);
 
-        travelRecordService.saveRecord(info);
+        travelRecordService.saveTravelRecord(info);
         travelTrackingInfoStore.deleteInfo(userId);
 
         return TravelResponseMapper.toEndEventRes(result);
