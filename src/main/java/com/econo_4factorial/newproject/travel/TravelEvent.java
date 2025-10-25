@@ -12,6 +12,7 @@ public enum TravelEvent {
     START("start"),
     CURRENT_POSITION("current-position"),
     PAUSE("pause"),
+    KEEP_ALIVE("keep-alive"),
     RESTART("restart"),
     END("end");
 
@@ -20,6 +21,7 @@ public enum TravelEvent {
             "start", TravelEvent.START,
             "current-position", TravelEvent.CURRENT_POSITION,
             "pause", TravelEvent.PAUSE,
+            "keep-alive", TravelEvent.KEEP_ALIVE,
             "restart", TravelEvent.RESTART,
             "end", TravelEvent.END
     );
