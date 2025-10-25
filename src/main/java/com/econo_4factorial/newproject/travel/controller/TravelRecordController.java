@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/travel/record")
+@RequestMapping("/api/v1/travel/records")
 @Tag(name = "Travel", description = "산행 기록 관련 API")
 public class TravelRecordController {
     private final TravelRecordService travelRecordService;
