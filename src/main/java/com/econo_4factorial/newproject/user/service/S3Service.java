@@ -47,8 +47,9 @@ public class S3Service {
     }
 
     public void deleteImageUrl(Long userId) {
-        String userProfileImageName = userService.getUserProfileImageName(userId);
-        amazonS3Client.deleteObject(bucket, userProfileImageName);
+        String fileName = userService.getUserProfileImageName(userId);
+        isExistImageInBucket(fileName);
+        amazonS3Client.deleteObject(bucket, fileName);
         userService.deleteUserProfileImageName(userId);
     }
 
@@ -84,5 +85,4 @@ public class S3Service {
         expiration.setTime(expTimeMillis);
         return expiration;
     }
-
 }
