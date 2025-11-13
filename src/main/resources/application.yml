@@ -49,6 +49,7 @@ cloud:
       static: ${REGION}
     s3:
       bucket: ${BUCKET}
+      default-profile-key: ${DEFAULT_PROFILE_KEY}
     credentials:
       access-key: ${ACCESS_KEY}
       secret-key: ${SECRET_KEY}

@@ -24,6 +24,9 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${cloud.aws.s3.default-profile-key}")
+    private String defaultProfileKey;
+
     private final AmazonS3Client amazonS3Client;
     private final UserService userService;
 
@@ -42,6 +45,15 @@ public class S3Service {
 
     public ProfileImageUrlDTO getImageUrl(Long userId) {
         String fileName = userService.getUserProfileImageName(userId);
+
+        if (fileName == null || fileName.isBlank()) {
+            fileName = defaultProfileKey;
+        }
+
+        if (!amazonS3Client.doesObjectExist(bucket, fileName)) {
+            fileName = defaultProfileKey;
+        }
+
         String profileImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
         return new ProfileImageUrlDTO(profileImageUrl);
     }
