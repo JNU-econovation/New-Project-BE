@@ -31,7 +31,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://soop.euichan.com", // 프론트 배포 주소
                         "https://econo.soop.euichan.com:17779",// 동방
                         "http://192.168.0.100:3000", // Econo 5G 라즈베리파이 프론트
-                        "https://soop.euichan.com/" // 프론트 배포 주소
+                        "https://soop.euichan.com/", // 프론트 배포 주소
+                        "http://10.30.131.71:3000/"
                         )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
