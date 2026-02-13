@@ -41,6 +41,7 @@ public class User extends BaseEntity {
     @Embedded
     private PhysicalInfo physicalInfo;
 
+    @Column
     private String profileImageName;
 
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
