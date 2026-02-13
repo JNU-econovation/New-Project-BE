@@ -113,6 +113,7 @@ public class UserController {
     }
 
     @GetMapping("/nickname/random")
+    @Operation(summary = "랜덤 닉네임 조회", description = "랜덤으로 생성된 닉네임을 조회합니다.")
     public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
         String nickname = randomNicknameService.getRandomNickname();
         return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
