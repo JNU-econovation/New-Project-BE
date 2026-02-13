@@ -113,9 +113,9 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserProfileImageName(Long userId, String profileImageName) {
+    public void updateUserProfileFileName(Long userId, String profileFileName) {
         User user = findUserByIdOrThrow(userId);
-        user.updateProfileImage(profileImageName);
+        user.updateProfileFile(profileFileName);
     }
 
     @Transactional(readOnly = true)
@@ -136,13 +136,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public String getUserProfileImageName(Long userId) {
+    public String getUserProfileFileName(Long userId) {
         User user = findUserByIdOrThrow(userId);
-        return user.getProfileImageName();
+        return user.getProfileFileName();
     }
 
     @Transactional
-    public void deleteUserProfileImageName(Long userId) {
+    public void deleteUserProfileFileName(Long userId) {
         User user = findUserByIdOrThrow(userId);
         user.deleteProfileImage();
     }

@@ -44,7 +44,7 @@ public class S3Service {
     }
 
     public ProfileImageUrlDTO getImageUrl(Long userId) {
-        String fileName = userService.getUserProfileImageName(userId);
+        String fileName = userService.getUserProfileFileName(userId);
 
         if (fileName == null || fileName.isBlank()) {
             fileName = defaultProfileKey;
@@ -59,20 +59,20 @@ public class S3Service {
     }
 
     public void deleteImageUrl(Long userId) {
-        String fileName = userService.getUserProfileImageName(userId);
+        String fileName = userService.getUserProfileFileName(userId);
         isExistImageInBucket(fileName);
         amazonS3Client.deleteObject(bucket, fileName);
-        userService.deleteUserProfileImageName(userId);
+        userService.deleteUserProfileFileName(userId);
     }
 
     public void saveFileNameToEntity(Long userId, String fileName) {
         isExistImageInBucket(fileName);
-        userService.updateUserProfileImageName(userId, fileName);
+        userService.updateUserProfileFileName(userId, fileName);
     }
 
-    private void isExistImageInBucket(String imageName) {
-        if (!amazonS3Client.doesObjectExist(bucket, imageName)) {
-            throw new IllegalStateException("Image does not exist: " + imageName);
+    private void isExistImageInBucket(String fileName) {
+        if (!amazonS3Client.doesObjectExist(bucket, fileName)) {
+            throw new IllegalStateException("Image does not exist: " + fileName);
         }
     }
 

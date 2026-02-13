@@ -42,7 +42,7 @@ public class User extends BaseEntity {
     private PhysicalInfo physicalInfo;
 
     @Column
-    private String profileImageName;
+    private String profileFileName;
 
     @Builder(builderMethodName = "kakaoUserBuilder", builderClassName = "kakaoUserBuilder")
     public User(String email, String name, Long kakaoId) {
@@ -84,12 +84,12 @@ public class User extends BaseEntity {
         }
     }
 
-    public void updateProfileImage(String profileImageName) {
-        this.profileImageName = profileImageName;
+    public void updateProfileFile(String profileFileName) {
+        this.profileFileName = profileFileName;
     }
 
     public void deleteProfileImage() {
-        this.profileImageName = null;
+        this.profileFileName = null;
     }
 
     public boolean isBasicInfoSet() {
