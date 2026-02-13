@@ -58,8 +58,12 @@ public class S3Service {
         return new ProfileImageUrlDTO(profileImageUrl);
     }
 
+    @Transactional
     public void deleteImageUrl(Long userId) {
         String fileName = userService.getUserProfileFileName(userId);
+        if (fileName == null || fileName.isBlank()) {
+            throw new IllegalStateException("삭제할 프로필 이미지가 없습니다");
+        }
         isExistImageInBucket(fileName);
         amazonS3Client.deleteObject(bucket, fileName);
         userService.deleteUserProfileFileName(userId);
