@@ -50,10 +50,6 @@ public class S3Service {
             fileName = defaultProfileKey;
         }
 
-        if (!amazonS3Client.doesObjectExist(bucket, fileName)) {
-            fileName = defaultProfileKey;
-        }
-
         String profileImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
         return new ProfileImageUrlDTO(profileImageUrl);
     }
