@@ -33,7 +33,7 @@ public class S3Service {
     public PresignedUrlDTO createPresignedUrl(Long userId, ImageFileFormat fileFormat) {
         String uploadFormat = fileFormat.getUploadExtension();
         log.info("upload format: {}", uploadFormat);
-        String fileName = createFileName(userId, uploadFormat);
+        String fileName = createFileName("profile", userId, uploadFormat);
         log.info("file name: {}", fileName);
         log.info("file format: {}", fileFormat);
 
@@ -83,8 +83,8 @@ public class S3Service {
         }
     }
 
-    private String createFileName(Long userId, String fileExtension) {
-        return "profile/" + userId + "/" + UUID.randomUUID() + "." + fileExtension;
+    private String createFileName(String domain, Long id, String fileExtension) {
+        return domain + "/" + id + "/" + UUID.randomUUID() + "." + fileExtension;
     }
 
     private GeneratePresignedUrlRequest getGeneratePreSignedUrlRequest(
