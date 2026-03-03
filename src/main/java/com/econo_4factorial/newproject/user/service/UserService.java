@@ -112,6 +112,12 @@ public class UserService {
         );
     }
 
+    @Transactional
+    public void updateUserProfileFileName(Long userId, String profileFileName) {
+        User user = findUserByIdOrThrow(userId);
+        user.updateProfileFile(profileFileName);
+    }
+
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(Long userId) {
         User user = findUserByIdOrThrow(userId);
@@ -127,5 +133,17 @@ public class UserService {
                 profileSettingReq.phoneNumber(), profileSettingReq.weight(), profileSettingReq.height(),
                 bloodType, profileSettingReq.etc()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public String getUserProfileFileName(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        return user.getProfileFileName();
+    }
+
+    @Transactional
+    public void deleteUserProfileFileName(Long userId) {
+        User user = findUserByIdOrThrow(userId);
+        user.deleteProfileImage();
     }
 }

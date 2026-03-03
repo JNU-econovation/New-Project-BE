@@ -8,15 +8,14 @@ import com.econo_4factorial.newproject.user.dto.res.GetRandomNicknameRes;
 import com.econo_4factorial.newproject.user.service.RandomNicknameService;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
 import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
+import com.econo_4factorial.newproject.user.dto.*;
 import com.econo_4factorial.newproject.user.dto.req.*;
-import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
 import com.econo_4factorial.newproject.user.dto.req.CheckNicknameReq;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileRes;
-import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,12 +36,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final RandomNicknameService randomNicknameService;
-  
-    @GetMapping("/nickname/random")
-    public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
-        String nickname = randomNicknameService.getRandomNickname();
-        return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
-    }
 
     @GetMapping("/profile")
     @Operation(summary = "프로필 조회", description = "사용자의 프로필을 조회합니다.")
@@ -119,6 +112,13 @@ public class UserController {
         return ApiResponse.success(null, HttpStatus.OK);
     }
 
+    @GetMapping("/nickname/random")
+    @Operation(summary = "랜덤 닉네임 조회", description = "랜덤으로 생성된 닉네임을 조회합니다.")
+    public ApiResult<ApiResult.SuccessBody<GetRandomNicknameRes>> getRandomNickname () {
+        String nickname = randomNicknameService.getRandomNickname();
+        return ApiResponse.success(GetRandomNicknameRes.from(nickname), HttpStatus.OK);
+    }
+
     @GetMapping("/nickname/check")
     @Operation(summary = "닉네임 중복 확인", description = "닉네임 중복을 체크합니다.")
     public ApiResult<ApiResult.SuccessBody<GetNicknameAvailabilityRes>> checkNicknameUnique (
@@ -128,5 +128,4 @@ public class UserController {
         boolean result = userService.isNicknameUnique(checkNicknameReq.nickname());
         return ApiResponse.success(GetNicknameAvailabilityRes.from(result), HttpStatus.OK);
     }
-
 }
