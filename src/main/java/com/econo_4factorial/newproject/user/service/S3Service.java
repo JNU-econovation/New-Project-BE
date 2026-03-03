@@ -69,8 +69,15 @@ public class S3Service {
         userService.deleteUserProfileFileName(userId);
     }
 
+    @Transactional
     public void saveFileNameToEntity(Long userId, String fileName) {
         isExistImageInBucket(fileName);
+        String oldFileName = userService.getUserProfileFileName(userId);
+
+        if (oldFileName != null && !oldFileName.isBlank() && !oldFileName.equals(defaultProfileKey) && !oldFileName.equals(fileName)) {
+            amazonS3Client.deleteObject(bucket, oldFileName);
+        }
+
         userService.updateUserProfileFileName(userId, fileName);
     }
 
