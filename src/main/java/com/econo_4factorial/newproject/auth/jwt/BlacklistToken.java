@@ -1,6 +1,6 @@
 package com.econo_4factorial.newproject.auth.jwt;
 
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
