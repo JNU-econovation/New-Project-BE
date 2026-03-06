@@ -59,8 +59,8 @@ public class OAuthController {
     @PostMapping("/logout")
     @Operation(summary = "로그아웃", description = "사용자 로그아웃 처리 및 토큰 블랙리스트 등록")
     public ApiResult<ApiResult.SuccessBody<Void>> logout(
-            @UserId Long userId,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+            @Parameter(hidden = true) @UserId Long userId,
+            @Parameter(hidden = true) @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         String accessToken = jwtTokenProvider.extractToken(authHeader);
         oAuthService.logout(userId, accessToken);
         return ApiResponse.success(null, HttpStatus.OK);
@@ -69,7 +69,7 @@ public class OAuthController {
     @PostMapping("/reissue")
     @Operation(summary = "토큰 재발급", description = "리프레쉬 토큰을 사용하여 액세스 및 리프레쉬 토큰을 재발급합니다.")
     public ApiResult<ApiResult.SuccessBody<AuthToken>> reissue(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+            @Parameter(hidden = true) @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         String refreshToken = jwtTokenProvider.extractToken(authHeader);
         AuthToken authToken = oAuthService.reissue(refreshToken);
         return ApiResponse.success(authToken, HttpStatus.OK);
