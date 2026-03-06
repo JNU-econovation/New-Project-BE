@@ -52,4 +52,12 @@
                 throw new AuthException();
             }
         }
+
+        public void logout(Long userId, String accessToken) {
+            authTokenService.logout(userId, accessToken);
+        }
+
+        public AuthToken reissue(String refreshToken) {
+            return authTokenService.reissue(refreshToken);
+        }
     }
