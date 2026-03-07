@@ -3,7 +3,6 @@ package com.econo_4factorial.newproject.auth.controller;
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.Req.ReissueTokenReq;
 import com.econo_4factorial.newproject.auth.dto.Res.AppleLoginRes;
-import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.Res.KakaoUriRes;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
 import com.econo_4factorial.newproject.auth.jwt.service.JwtTokenProvider;
