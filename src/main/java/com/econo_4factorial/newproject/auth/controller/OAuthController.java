@@ -1,8 +1,10 @@
 package com.econo_4factorial.newproject.auth.controller;
 
-import com.econo_4factorial.newproject.auth.dto.Res.AppleLoginRes;
-import com.econo_4factorial.newproject.auth.dto.Res.KakaoUriRes;
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
+import com.econo_4factorial.newproject.auth.dto.Req.ReissueTokenReq;
+import com.econo_4factorial.newproject.auth.dto.Res.AppleLoginRes;
+import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
+import com.econo_4factorial.newproject.auth.dto.Res.KakaoUriRes;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
 import com.econo_4factorial.newproject.auth.jwt.service.JwtTokenProvider;
 import com.econo_4factorial.newproject.auth.service.OAuthService;
@@ -69,9 +71,8 @@ public class OAuthController {
     @PostMapping("/reissue")
     @Operation(summary = "토큰 재발급", description = "리프레쉬 토큰을 사용하여 액세스 및 리프레쉬 토큰을 재발급합니다.")
     public ApiResult<ApiResult.SuccessBody<AuthToken>> reissue(
-            @Parameter(hidden = true) @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
-        String refreshToken = jwtTokenProvider.extractToken(authHeader);
-        AuthToken authToken = oAuthService.reissue(refreshToken);
+            @RequestBody @Valid ReissueTokenReq req) {
+        AuthToken authToken = oAuthService.reissue(req.refreshToken());
         return ApiResponse.success(authToken, HttpStatus.OK);
     }
 }
