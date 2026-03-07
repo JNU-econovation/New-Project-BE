@@ -1,7 +1,11 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.econo_4factorial.newproject.auth.jwt.TokenType;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,9 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class JwtTokenProviderTest {
@@ -102,5 +108,39 @@ class JwtTokenProviderTest {
 
         // then
         assertThat(isValid).isTrue();
+    }
+
+    @Test
+    @DisplayName("만료된 토큰을 파싱하면 ExpiredTokenException이 발생한다")
+    void getUserIdFromAccessToken_fail_expiredToken() {
+        // given: 만료 시간이 과거인 토큰 생성
+        SecretKey key = Keys.hmacShaKeyFor(accessSecretKey.getBytes());
+        String expiredToken = Jwts.builder()
+                .claim("id", userId)
+                .issuedAt(new Date(System.currentTimeMillis() - 10000))
+                .expiration(new Date(System.currentTimeMillis() - 5000))
+                .signWith(key)
+                .compact();
+
+        // when & then
+        assertThatThrownBy(() -> jwtTokenProvider.getUserIdFromAccessToken(expiredToken))
+                .isInstanceOf(ExpiredTokenException.class);
+    }
+
+    @Test
+    @DisplayName("다른 비밀키로 서명된 토큰을 파싱하면 SignatureException이 발생한다")
+    void getUserIdFromAccessToken_fail_invalidSignature() {
+        // given: 다른 비밀키로 서명된 토큰 생성
+        SecretKey wrongKey = Keys.hmacShaKeyFor("wrongSecretKeyThatIsAlsoLongEnoughValue".getBytes());
+        String invalidToken = Jwts.builder()
+                .claim("id", userId)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .signWith(wrongKey)
+                .compact();
+
+        // when & then
+        assertThatThrownBy(() -> jwtTokenProvider.getUserIdFromAccessToken(invalidToken))
+                .isInstanceOf(SignatureException.class);
     }
 }
