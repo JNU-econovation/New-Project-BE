@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns(
                         "https://localhost:3000", // local
                         "http://localhost:3000",
-                        "https://soop.euichan.com", // Frontend
+                        "https://econo.soop.euichan.com", // Frontend
                         "https://api.econo.soop.euichan.com" // Backend
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
