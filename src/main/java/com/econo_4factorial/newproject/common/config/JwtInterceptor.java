@@ -49,15 +49,16 @@ public class JwtInterceptor implements HandlerInterceptor {
     }
 
     private boolean isLoggedInRequest(HttpServletRequest request) {
-        Long userId = getUserIdFromAccessToken(request);
-        return authTokenService.isLoggedIn(userId);
+        String accessToken = extractToken(request);
+        Long userId = getUserIdFromAccessToken(accessToken);
+        return authTokenService.isLoggedIn(userId, accessToken);
     }
 
     private String extractToken(HttpServletRequest request) {
         return jwtTokenProvider.extractToken(request.getHeader(HttpHeaders.AUTHORIZATION));
     }
 
-    private Long getUserIdFromAccessToken(HttpServletRequest request) {
-        return jwtTokenProvider.getUserIdFromAccessToken(extractToken(request));
+    private Long getUserIdFromAccessToken(String accessToken) {
+        return jwtTokenProvider.getUserIdFromAccessToken(accessToken);
     }
 }

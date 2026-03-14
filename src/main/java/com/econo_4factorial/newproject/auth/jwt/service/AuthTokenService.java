@@ -3,7 +3,10 @@ package com.econo_4factorial.newproject.auth.jwt.service;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidRefreshTokenException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.LoggedOutTokenException;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
+import com.econo_4factorial.newproject.auth.jwt.BlacklistToken;
 import com.econo_4factorial.newproject.auth.jwt.RefreshToken;
+import com.econo_4factorial.newproject.auth.jwt.TokenType;
+import com.econo_4factorial.newproject.auth.jwt.repository.BlacklistTokenRepository;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,7 @@ import java.util.Date;
 public class AuthTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final BlacklistTokenRepository blacklistTokenRepository;
     @Value("${custom.jwt.access.expiredTime}")
     private long accessTokenExpiredTime;
     @Value("${custom.jwt.refresh.expiredTime}")
@@ -46,6 +50,8 @@ public class AuthTokenService {
             throw new InvalidRefreshTokenException();
         }
 
+        refreshTokenRepository.deleteById(userId);
+
         return issueAuthToken(userId);
     }
 
@@ -56,12 +62,25 @@ public class AuthTokenService {
     }
 
     @Transactional
-    public void logout(Long userId) {
+    public void logout(Long userId, String accessToken) {
         refreshTokenRepository.deleteById(userId);
+
+        Long expiration = jwtTokenProvider.getExpirationTime(accessToken, TokenType.ACCESS);
+        Long now = new Date().getTime();
+        BlacklistToken blacklistToken = BlacklistToken.builder()
+                .accessToken(accessToken)
+                .status("logout")
+                .expirationTime((expiration - now) / 1000)
+                .build();
+        blacklistTokenRepository.save(blacklistToken);
     }
 
     @Transactional(readOnly = true)
-    public boolean isLoggedIn(Long userId) {
+    public boolean isLoggedIn(Long userId, String accessToken) {
+        if (blacklistTokenRepository.existsById(accessToken)) {
+            throw new LoggedOutTokenException();
+        }
+
         if (!refreshTokenRepository.existsById(userId)) {
             log.error("Redis에서 refreshToken을 찾을 수 없습니다. userId = {}", userId);
             throw new LoggedOutTokenException();

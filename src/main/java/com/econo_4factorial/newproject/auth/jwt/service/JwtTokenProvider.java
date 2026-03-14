@@ -71,6 +71,11 @@ public class JwtTokenProvider {
         return claims.get("id", Long.class);
     }
 
+    public Long getExpirationTime(String token, TokenType tokenType) {
+        Claims claims = getClaimsFromToken(token, tokenType);
+        return claims.getExpiration().getTime();
+    }
+
     private Claims getClaimsFromToken(String token, TokenType tokenType) {
         SecretKey secretKey = tokenType.equals(TokenType.ACCESS) ? accessSecretKey : refreshSecretKey;
         try {

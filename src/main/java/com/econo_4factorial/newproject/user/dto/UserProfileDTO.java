@@ -8,7 +8,6 @@ public record UserProfileDTO(
         String name,
         String nickname,
         String phoneNumber,
-        //image_url
         String email,
         Long weight,
         Long height,
