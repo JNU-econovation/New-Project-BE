@@ -29,7 +29,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         if(isReissueRequest(request)) {
-            return validateRefreshToken(request);
+            return true;
         }
 
         return isLoggedInRequest(request);
@@ -41,11 +41,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     private boolean isReissueRequest(HttpServletRequest request) {
         return request.getRequestURI().startsWith(REISSUE_URI);
-    }
-
-    private boolean validateRefreshToken(HttpServletRequest request) {
-        String token = extractToken(request);
-        return jwtTokenProvider.validateRefreshToken(token);
     }
 
     private boolean isLoggedInRequest(HttpServletRequest request) {

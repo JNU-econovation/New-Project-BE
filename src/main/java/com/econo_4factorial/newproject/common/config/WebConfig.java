@@ -40,7 +40,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(
-                        "/api/v1/oauth/**",
+                        "/api/v1/oauth/kakao/login",
+                        "/api/v1/oauth/kakao/callback",
+                        "/api/v1/oauth/apple/login",
+                        "/api/v1/oauth/reissue",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**");
