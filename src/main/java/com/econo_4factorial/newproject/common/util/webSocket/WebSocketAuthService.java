@@ -32,7 +32,7 @@ public class WebSocketAuthService {
 
     private Long authenticateUser(Map<String, Object> data) throws IOException {
         Long userId = jwtTokenProvider.getUserIdFromAccessToken((String) data.get(AUTHORIZATION));
-        authTokenService.isLoggedIn(userId);
+        authTokenService.isLoggedIn(userId, (String) data.get(AUTHORIZATION));
         return userId;
     }
 
