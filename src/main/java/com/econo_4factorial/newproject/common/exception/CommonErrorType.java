@@ -8,6 +8,8 @@ public enum CommonErrorType implements ErrorType{
     ILLEGAL_ARGUMENT_EXCEPTION("COMMON400_002", HttpStatus.BAD_REQUEST, "Illegal argument exception 발생 "),
     MISSING_PATH_VARIABLE_EXCEPTION("COMMON400_003", HttpStatus.BAD_REQUEST, "경로 변수(PathVariable)가 누락됐습니다."),
     MISSING_REQUEST_PARAM_EXCEPTION("COMMON400_004", HttpStatus.BAD_REQUEST, "쿼리 스트링이 누락됐습니다."),
+
+    WEB_SOCKET_IO_EXCEPTION("WEB_SOCKET500", HttpStatus.BAD_REQUEST, "소켓 IOException 발생"),
   
     UN_EXPECTED_EXCEPTION("COMMON500_001", HttpStatus.INTERNAL_SERVER_ERROR, "예기치 못한 에러가 발생했습니다."),
     REDIS_NOT_READY_EXCEPTION("COMMON500_002", HttpStatus.INTERNAL_SERVER_ERROR, "Redis의 연결 상태가 Ready가 아닙니다");

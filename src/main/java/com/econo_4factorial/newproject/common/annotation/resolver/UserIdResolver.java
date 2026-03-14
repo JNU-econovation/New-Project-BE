@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.auth.exception.BadRequestException.NotExi
 import com.econo_4factorial.newproject.auth.jwt.service.JwtTokenProvider;
 import com.econo_4factorial.newproject.common.annotation.UserId;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserIdResolver implements HandlerMethodArgumentResolver {

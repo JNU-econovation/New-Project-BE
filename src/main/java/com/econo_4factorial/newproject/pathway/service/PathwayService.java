@@ -19,7 +19,7 @@ public class PathwayService {
 
     @Transactional(readOnly = true)
     public List<PathwayDTO> getPathwaysByCourseId(Long courseId) {
-        List<CoursePathwaySequence> sequences = coursePathwaySequenceService.findByCourseIdWithPathwayAndBase(courseId);
+        List<CoursePathwaySequence> sequences = coursePathwaySequenceService.findByCourseId(courseId);
         return makePathways(sequences);
     }
 

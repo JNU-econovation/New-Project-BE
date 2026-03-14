@@ -1,7 +1,7 @@
 name: Trigger Infra CICD
 on:
   push:
-    branches: [ dev ]
+    branches: [ test ]
   workflow_dispatch:
 
 jobs:

@@ -2,6 +2,7 @@ package com.econo_4factorial.newproject.base.dto;
 
 
 import com.econo_4factorial.newproject.base.domain.Base;
+import org.locationtech.jts.geom.Coordinate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,10 +14,14 @@ public record BaseDTO(
 
 ) {
     public static BaseDTO from(Base base) {
+        Coordinate coordinate = base.getGeoPoint().getCoordinate();
         return new BaseDTO(
                 base.getId(),
                 base.getName(),
-                List.of(base.getLongitude(), base.getLatitude())
+                List.of(
+                        BigDecimal.valueOf(coordinate.getX()),
+                        BigDecimal.valueOf(coordinate.getY())
+                )
         );
     }
 }
