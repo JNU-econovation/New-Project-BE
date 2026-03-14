@@ -35,7 +35,6 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         if (header == null) throw new NotExistTokenException();
 
         String token = jwtTokenProvider.extractToken(header);
-        log.info("토큰 추출 완료. 토큰 : {}", token);
         return jwtTokenProvider.getUserIdFromAccessToken(token);
     }
 }

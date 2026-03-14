@@ -82,7 +82,6 @@ public class AuthTokenService {
         }
 
         if (!refreshTokenRepository.existsById(userId)) {
-            log.error("Redis에서 refreshToken을 찾을 수 없습니다. userId = {}", userId);
             throw new LoggedOutTokenException();
         }
         return true;
