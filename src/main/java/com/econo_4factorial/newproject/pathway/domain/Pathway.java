@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.LineString;
 
 @Entity
 @Getter
@@ -23,8 +24,8 @@ public class Pathway {
     @JoinColumn(name = "destination_id", nullable = false)
     private Base destination;
 
-    @Column(columnDefinition = "TEXT",nullable = false)
-    private String Coordinates;
+    @Column(columnDefinition = "LINESTRING SRID 4326", nullable = false)
+    private LineString coordinates;
 
     @Column(nullable = false)
     private Double length;
