@@ -9,7 +9,6 @@ import com.econo_4factorial.newproject.auth.jwt.TokenType;
 import com.econo_4factorial.newproject.auth.jwt.repository.BlacklistTokenRepository;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,96 +45,73 @@ class AuthTokenServiceTest {
 
     @BeforeEach
     void setUp() {
-        // @Value 필드 수동 주입
         ReflectionTestUtils.setField(authTokenService, "accessTokenExpiredTime", 3600L);
         ReflectionTestUtils.setField(authTokenService, "refreshTokenExpiredTime", 1209600L);
     }
 
     @Test
-    @DisplayName("로그인 시 토큰 발급 및 리프레쉬 토큰을 저장한다")
-    void issueAuthToken_success() {
-        // given
+    void 로그인_시_토큰을_발급하고_리프레시_토큰을_저장한다() {
         given(jwtTokenProvider.issueAccessToken(userId)).willReturn(accessToken);
         given(jwtTokenProvider.issueRefreshToken(userId)).willReturn(refreshToken);
 
-        // when
         AuthToken result = authTokenService.issueAuthToken(userId);
 
-        // then
         assertThat(result.accessToken()).isEqualTo(accessToken);
         assertThat(result.refreshToken()).isEqualTo(refreshToken);
         verify(refreshTokenRepository).save(any(RefreshToken.class));
     }
 
     @Test
-    @DisplayName("재발급 시 RTR 방식에 따라 이전 토큰을 삭제하고 새 토큰을 발급한다")
-    void reissue_success() {
-        // given
+    void 재발급_시_이전_토큰을_삭제하고_새_토큰을_발급한다() {
         given(jwtTokenProvider.getUserIdFromRefreshToken(refreshToken)).willReturn(userId);
         given(refreshTokenRepository.existsByRefreshToken(refreshToken)).willReturn(true);
         given(jwtTokenProvider.issueAccessToken(userId)).willReturn("new_access_token");
         given(jwtTokenProvider.issueRefreshToken(userId)).willReturn("new_refresh_token");
 
-        // when
         AuthToken result = authTokenService.reissue(refreshToken);
 
-        // then
-        verify(refreshTokenRepository).deleteById(userId); // 이전 토큰 삭제(RTR) 확인
-        verify(refreshTokenRepository).save(any(RefreshToken.class)); // 새 토큰 저장 확인
+        verify(refreshTokenRepository).deleteById(userId);
+        verify(refreshTokenRepository).save(any(RefreshToken.class));
         assertThat(result.accessToken()).isEqualTo("new_access_token");
         assertThat(result.refreshToken()).isEqualTo("new_refresh_token");
     }
 
     @Test
-    @DisplayName("존재하지 않는 리프레쉬 토큰으로 재발급 시도 시 예외가 발생한다")
-    void reissue_fail_invalid_token() {
-        // given
+    void 존재하지_않는_리프레시_토큰으로_재발급을_시도하면_예외가_발생한다() {
         given(jwtTokenProvider.getUserIdFromRefreshToken(refreshToken)).willReturn(userId);
         given(refreshTokenRepository.existsByRefreshToken(refreshToken)).willReturn(false);
 
-        // when & then
         assertThatThrownBy(() -> authTokenService.reissue(refreshToken))
                 .isInstanceOf(InvalidRefreshTokenException.class);
     }
 
     @Test
-    @DisplayName("로그아웃 시 리프레쉬 토큰을 삭제하고 액세스 토큰을 블랙리스트에 저장한다")
-    void logout_success() {
-        // given
+    void 로그아웃_시_리프레시_토큰을_삭제하고_액세스_토큰을_블랙리스트에_저장한다() {
         long now = new Date().getTime();
-        long expirationTime = now + 3600000; // 1시간 뒤
+        long expirationTime = now + 3600000;
         given(jwtTokenProvider.getExpirationTime(accessToken, TokenType.ACCESS)).willReturn(expirationTime);
 
-        // when
         authTokenService.logout(userId, accessToken);
 
-        // then
         verify(refreshTokenRepository).deleteById(userId);
         verify(blacklistTokenRepository).save(any(BlacklistToken.class));
     }
 
     @Test
-    @DisplayName("블랙리스트에 등록된 토큰으로 접근 시 예외가 발생한다")
-    void isLoggedIn_fail_blacklisted() {
-        // given
+    void 블랙리스트에_등록된_토큰으로_접근하면_예외가_발생한다() {
         given(blacklistTokenRepository.existsById(accessToken)).willReturn(true);
 
-        // when & then
         assertThatThrownBy(() -> authTokenService.isLoggedIn(userId, accessToken))
                 .isInstanceOf(LoggedOutTokenException.class);
     }
 
     @Test
-    @DisplayName("정상 로그인 상태에서는 예외 없이 true를 반환한다")
-    void isLoggedIn_success() {
-        // given
+    void 정상_로그인_상태에서는_true를_반환한다() {
         given(blacklistTokenRepository.existsById(accessToken)).willReturn(false);
         given(refreshTokenRepository.existsById(userId)).willReturn(true);
 
-        // when
         boolean result = authTokenService.isLoggedIn(userId, accessToken);
 
-        // then
         assertThat(result).isTrue();
     }
 }

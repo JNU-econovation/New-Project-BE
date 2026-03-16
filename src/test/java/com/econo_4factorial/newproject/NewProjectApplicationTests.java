@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class NewProjectApplicationTests {
 
     @Test
-    void contextLoads() {
+    void 스프링_컨텍스트가_정상적으로_로드된다() {
     }
 
 }
