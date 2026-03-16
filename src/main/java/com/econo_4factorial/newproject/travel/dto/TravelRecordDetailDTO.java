@@ -20,7 +20,7 @@ public record TravelRecordDetailDTO (
 ) {
     public static TravelRecordDetailDTO from(TravelRecord travelRecord) {
         Long startedAt = Timestamp.valueOf(travelRecord.getStartedAt()).getTime();
-        Long endAt = Timestamp.valueOf(travelRecord.getStartedAt()).getTime();
+        Long endAt = Timestamp.valueOf(travelRecord.getEndAt()).getTime();
         List<List<BigDecimal>> coordinates = convertCoordinatesFromLineString(travelRecord.getPaths());
 
         return new TravelRecordDetailDTO(
