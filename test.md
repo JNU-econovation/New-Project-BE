@@ -327,62 +327,190 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ### 8-1. Phase 1 체크리스트
 
-- [ ] `JwtTokenProvider` 보강
-- [ ] `AuthToken`
-- [ ] `AppleJwtHandler`
-- [ ] `ApplePublicKeyGenerator`
-- [ ] `SmsUtilService`
-- [ ] `AppleLoginReq`
-- [ ] `AppleLoginRes`
-- [ ] `SendSmsRes`
-- [ ] `VerifySmsRes`
-- [ ] `KaKaoUserInfoRes`
-- [ ] `BloodType`
-- [ ] `User`
-- [ ] `UserInfo`
-- [ ] `PhysicalInfo`
-- [ ] `UserAlert`
-- [ ] `UserMapper`
-- [ ] `UserProfileDTO`
-- [ ] `UserAlertSettingDTO`
-- [ ] `ProfileStatusInfoDTO`
-- [ ] `GetProfileRes`
-- [ ] `GetProfileStatusRes`
-- [ ] `GetAlertSettingRes`
-- [ ] `GetRandomNicknameRes`
-- [ ] `GetNicknameAvailabilityRes`
-- [ ] `RedirectUriBuilder`
-- [ ] `HttpHeadersGenerator`
-- [ ] `ApiResponse`
-- [ ] `ValidEmailPatternValidator`
-- [ ] `JwtInterceptor`
-- [ ] `UserIdResolver`
-- [ ] `NicknamePoolInitializer`
-- [ ] `GeometryConfig`
-- [ ] `WebSocketSuccessRes`
-- [ ] `WebSocketFailRes`
+- [x] `JwtTokenProvider` 보강
+- [x] `AuthToken`
+- [x] `AppleJwtHandler`
+- [x] `ApplePublicKeyGenerator`
+- [x] `SmsUtilService`
+- [x] `AppleLoginReq`
+- [x] `AppleLoginRes`
+- [x] `SendSmsRes`
+- [x] `VerifySmsRes`
+- [x] `KaKaoUserInfoRes`
+- [x] `BloodType`
+- [x] `User`
+- [x] `UserInfo`
+- [x] `PhysicalInfo`
+- [x] `UserAlert`
+- [x] `UserMapper`
+- [x] `UserProfileDTO`
+- [x] `UserAlertSettingDTO`
+- [x] `ProfileStatusInfoDTO`
+- [x] `GetProfileRes`
+- [x] `GetProfileStatusRes`
+- [x] `GetAlertSettingRes`
+- [x] `GetRandomNicknameRes`
+- [x] `GetNicknameAvailabilityRes`
+- [x] `RedirectUriBuilder`
+- [x] `HttpHeadersGenerator`
+- [x] `ApiResponse`
+- [x] `ValidEmailPatternValidator`
+- [x] `JwtInterceptor`
+- [x] `UserIdResolver`
+- [x] `NicknamePoolInitializer`
+- [x] `GeometryConfig`
+- [x] `WebSocketSuccessRes`
+- [x] `WebSocketFailRes`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `AuthDtoTest`
+  - `AuthTokenTest`
+  - `BloodTypeTest`
+  - `UserInfoTest`
+  - `PhysicalInfoTest`
+  - `UserAlertTest`
+  - `UserTest`
+  - `UserMapperTest`
+  - `UserProfileDTOTest`
+  - `UserResponseDtoTest`
+  - `RedirectUriBuilderTest`
+  - `HttpHeadersGeneratorTest`
+  - `ApiResponseTest`
+  - `ValidEmailPatternValidatorTest`
+  - `GeometryConfigTest`
+  - `WebSocketResponseDtoTest`
+- 검증한 내용:
+  - Apple/Kakao 요청·응답 DTO 변환
+  - 토큰 record 생성
+  - 혈액형 파싱과 잘못된 값 예외
+  - `User`, `UserInfo`, `PhysicalInfo`, `UserAlert` 상태 변경
+  - `UserMapper`, `UserProfileDTO`, 프로필/알림 응답 DTO 변환
+  - redirect URI, Location 헤더, API 응답 body 생성
+  - 이메일 정규식 검증, GeometryFactory SRID, WebSocket 성공/실패 응답
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 1 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `AppleJwtHandlerTest`
+  - `ApplePublicKeyGeneratorTest`
+  - `SmsUtilServiceTest`
+  - `JwtInterceptorTest`
+  - `UserIdResolverTest`
+  - `NicknamePoolInitializerTest`
+- 같이 보강한 테스트 파일:
+  - `JwtTokenProviderTest`
+- 검증한 내용:
+  - Apple 토큰 헤더 파싱, claim 검증, 공개키 선택/생성
+  - SMS 메시지 생성, 발송 실패 예외, 인증번호/전화번호 정규화
+  - JWT interceptor의 preflight, reissue, 로그인 요청 분기
+  - `@UserId` argument resolver 동작과 토큰 누락 예외
+  - Redis 준비 확인, 닉네임 풀 시작 위치 초기화, recover 예외 변환
+  - `JwtTokenProvider` 헤더 파싱 예외와 refresh token 서명 검증 보강
+
+</details>
 
 ### 8-2. Phase 2 체크리스트
 
-- [ ] `AuthTokenService` 보강
-- [ ] `OAuthService`
-- [ ] `SmsService`
-- [ ] `KaKaoOAuthService`
-- [ ] `AppleOAuthService`
-- [ ] `UserService`
-- [ ] `S3Service` 보강
-- [ ] `RandomNicknameService`
-- [ ] `RandomNicknamePoolService`
-- [ ] `RandomNicknamePoolManager`
+- [x] `AuthTokenService` 보강
+- [x] `OAuthService`
+- [x] `SmsService`
+- [x] `KaKaoOAuthService`
+- [x] `AppleOAuthService`
+- [x] `UserService`
+- [x] `S3Service` 보강
+- [x] `RandomNicknameService`
+- [x] `RandomNicknamePoolService`
+- [x] `RandomNicknamePoolManager`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `SmsServiceTest`
+  - `KaKaoOAuthServiceTest`
+  - `AppleOAuthServiceTest`
+  - `OAuthServiceTest`
+- 보강한 테스트 파일:
+  - `AuthTokenServiceTest`
+- 같이 수정한 코드:
+  - `AppleOAuthService.isOurServiceAudience()`
+- 검증한 내용:
+  - refresh token 저장/재발급/로그아웃/로그인상태 검증
+  - SMS 인증번호 저장/검증/삭제 흐름
+  - Kakao 로그인 URI 생성과 access token -> user info 조회 흐름
+  - Apple 공개키/claim 기반 user info 조회와 issuer/audience 검증
+  - 상위 `OAuthService`의 Kakao/Apple 로그인, logout, reissue 위임
+  - `Claims.getAudience()`를 `Set<String>`로 해석해 `client_id` 포함 여부로 검증하도록 수정
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 2 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `UserServiceTest`
+  - `RandomNicknameServiceTest`
+  - `RandomNicknamePoolServiceTest`
+  - `RandomNicknamePoolManagerTest`
+- 보강한 테스트 파일:
+  - `S3ServiceTest`
+- 검증한 내용:
+  - 유저 조회/생성, 기본정보·개인정보 등록, 프로필/알림/파일명 수정
+  - 랜덤 닉네임 접두사 결합, Redis set pop/size/add 위임
+  - 닉네임 풀 부족 시 2000개 suffix 생성과 start 위치 갱신
+  - presigned URL, 기본/사용자 프로필 이미지 조회, 이미지 저장/삭제 예외 분기
+
+</details>
 
 ### 8-3. Phase 3 체크리스트
 
-- [ ] `OAuthController`
-- [ ] `SmsController`
-- [ ] `UserController`
-- [ ] `ImageController`
-- [ ] `GlobalExceptionHandler`
-- [ ] `WebConfig`
+- [x] `OAuthController`
+- [x] `SmsController`
+- [x] `UserController`
+- [x] `ImageController`
+- [x] `GlobalExceptionHandler`
+- [x] `WebConfig`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 3 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `OAuthControllerTest`
+  - `SmsControllerTest`
+  - `UserControllerTest`
+  - `ImageControllerTest`
+- 검증한 내용:
+  - Kakao/Apple 로그인, logout, reissue API 응답 계약
+  - SMS 발송/검증 요청과 validation 오류 응답
+  - 프로필/알림/닉네임/이미지 관련 API 응답 구조
+  - `Location` 헤더, `@UserId` custom resolver, query/body validation contract
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 3 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `GlobalExceptionHandlerTest`
+  - `WebConfigTest`
+- 검증한 내용:
+  - validation/auth/internal/unexpected/request-param 예외의 공통 응답 구조
+  - 인증 예외 시 redirect header 부여
+  - `UserIdResolver` 등록, JWT interceptor 등록/제외 경로, CORS 매핑 등록
+
+</details>
 
 ### 8-4. Phase 4 체크리스트
 
@@ -636,7 +764,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 - [ ] `TravelRecordService.findRecordById()` 사용자 소유권 검증 추가 필요
 - [ ] `TravelRecordService.deleteRecordById()` 사용자 소유권 검증 추가 필요
 - [ ] `TravelRecordRepository`에 소유권 검증용 query 필요
-- [ ] `AppleOAuthService.isOurServiceAudience()` 조건 검증 필요
+- [x] `AppleOAuthService.isOurServiceAudience()` 조건 검증 완료
 - [ ] `AppleJwtHandler` base64url 디코딩 방식 검증 필요
 - [ ] `ValidEmailPatternValidator` null 정책 명확화 필요
 - [ ] `RandomNicknameService` empty pool 정책 필요
@@ -708,7 +836,24 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [x] 작업 배치 1: `MountainController`, `FacilityController`, `BaseController`
 
-## 16. 결론
+## 16. Slice 2 작업 배치 기록
+
+### 16-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `AuthToken`, `AppleLoginReq`, `AppleLoginRes`, `SendSmsRes`, `VerifySmsRes`, `KaKaoUserInfoRes`, `BloodType`, `User`, `UserInfo`, `PhysicalInfo`, `UserAlert`, `UserMapper`, `UserProfileDTO`, `UserAlertSettingDTO`, `ProfileStatusInfoDTO`, `GetProfileRes`, `GetProfileStatusRes`, `GetAlertSettingRes`, `GetRandomNicknameRes`, `GetNicknameAvailabilityRes`, `RedirectUriBuilder`, `HttpHeadersGenerator`, `ApiResponse`, `ValidEmailPatternValidator`, `GeometryConfig`, `WebSocketSuccessRes`, `WebSocketFailRes`
+- [x] 작업 배치 2: `JwtTokenProvider` 보강, `AppleJwtHandler`, `ApplePublicKeyGenerator`, `SmsUtilService`, `JwtInterceptor`, `UserIdResolver`, `NicknamePoolInitializer`
+
+### 16-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `AuthTokenService` 보강, `SmsService`, `KaKaoOAuthService`, `AppleOAuthService`, `OAuthService`
+- [x] 작업 배치 2: `UserService`, `RandomNicknameService`, `RandomNicknamePoolService`, `RandomNicknamePoolManager`, `S3Service` 보강
+
+### 16-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `OAuthController`, `SmsController`, `UserController`, `ImageController`
+- [x] 작업 배치 2: `GlobalExceptionHandler`, `WebConfig`
+
+## 17. 결론
 
 - 분류 체계는 `Phase 1 -> Phase 6` 확장 순서로 본다.
 - 실제 작성은 도메인별 세로 슬라이스 방식으로 진행한다.
