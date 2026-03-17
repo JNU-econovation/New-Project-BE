@@ -107,6 +107,13 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 - [ ] Redis Testcontainers 공통 베이스 클래스 준비
 - [ ] WebSocket 테스트용 공통 helper 준비
 
+### 6-1. 외부 의존성 테스트 원칙
+
+- `Phase 1 ~ Phase 3`에서는 Redis, S3, SMS, OAuth, OpenWeather 같은 외부 의존성을 mock으로 끊고 로직/계약만 검증한다.
+- `Phase 5`에서는 Redis는 Testcontainers, 외부 HTTP 연동은 `WireMock` 또는 `MockWebServer` 기반 stub 서버로 검증한다.
+- 프로필 분리 전까지는 `@SpringBootTest` 기반 테스트 확장을 미루고, standalone `MockMvc`와 mock 기반 서비스 테스트를 우선 진행한다.
+- 실제 네트워크 호출을 테스트에서 직접 사용하지 않는다.
+
 ## 7. Slice 1: travel + websocket + spatial query
 
 ### 7-1. Phase 1 체크리스트
@@ -205,8 +212,8 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ### 7-2. Phase 2 체크리스트
 
-- [ ] `TravelTrackingInfoStore`
-- [ ] `RemainingTimeCalculator`
+- [x] `TravelTrackingInfoStore`
+- [x] `RemainingTimeCalculator`
 - [x] `TravelDomainService`
 - [x] `TravelRecordService`
 - [x] `WebSocketAuthService`
@@ -244,6 +251,23 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
   - 남아있는 tracking info 정리
 - 실행 결과:
   - `./gradlew test --tests '*TravelDomainServiceTest' --tests '*TravelRecordServiceTest' --tests '*TravelServiceTest'` 통과
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 2 > 작업 배치 3` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelTrackingInfoStoreTest`
+  - `RemainingTimeCalculatorTest`
+- 검증한 내용:
+  - 산행 정보 생성, 상태 조회, 현재위치/일시정지/재시작/종료 업데이트, 삭제
+  - 미존재 tracking info 조회 예외
+  - 남은거리 기반 경유지/도착지 남은시간 계산
+  - 남은거리 0초 처리와 코스 조회 실패 예외
+- 실행 결과:
+  - `./gradlew test --tests '*TravelTrackingInfoStoreTest' --tests '*RemainingTimeCalculatorTest'` 통과
 
 </details>
 
@@ -370,6 +394,9 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 - [ ] `RefreshTokenRepository` Redis 통합 테스트
 - [ ] `BlacklistTokenRepository` Redis 통합 테스트
 - [ ] `RandomNicknamePoolService` Redis 통합 테스트
+- [ ] Kakao OAuth stub 통합 테스트
+- [ ] Apple OAuth stub 통합 테스트
+- [ ] CoolSMS stub 통합 테스트
 
 ### 8-6. Phase 6 체크리스트
 
@@ -643,6 +670,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [x] 작업 배치 1: `WebSocketAuthService`
 - [x] 작업 배치 2: `TravelDomainService`, `TravelService`, `TravelRecordService`
+- [x] 작업 배치 3: `TravelTrackingInfoStore`, `RemainingTimeCalculator`
 
 ### 13-3. Phase 3 작업 배치
 
