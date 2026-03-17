@@ -149,9 +149,9 @@ class TravelRecordServiceTest {
                 .build();
         ReflectionTestUtils.setField(travelRecord, "id", 77L);
 
-        given(travelRecordRepository.findById(77L)).willReturn(Optional.of(travelRecord));
+        given(travelRecordRepository.findByIdAndUserId(77L, 1L)).willReturn(Optional.of(travelRecord));
 
-        TravelRecordDetailDTO result = travelRecordService.findRecordById(77L);
+        TravelRecordDetailDTO result = travelRecordService.findRecordById(1L, 77L);
 
         assertThat(result.recordId()).isEqualTo(77L);
         assertThat(result.displayName()).isEqualTo("상세 코스");
@@ -162,17 +162,34 @@ class TravelRecordServiceTest {
 
     @Test
     void 없는_기록을_조회하면_예외가_발생한다() {
-        given(travelRecordRepository.findById(99L)).willReturn(Optional.empty());
+        given(travelRecordRepository.findByIdAndUserId(99L, 1L)).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> travelRecordService.findRecordById(99L))
+        assertThatThrownBy(() -> travelRecordService.findRecordById(1L, 99L))
                 .isInstanceOf(TravelRecordNotFoundException.class);
     }
 
     @Test
-    void 기록을_삭제한다() {
-        travelRecordService.deleteRecordById(88L);
+    void 사용자_소유_기록을_삭제한다() {
+        TravelRecord travelRecord = TravelRecord.builder()
+                .user(org.mockito.Mockito.mock(User.class))
+                .course(org.mockito.Mockito.mock(Course.class))
+                .displayName("삭제 대상")
+                .build();
+        ReflectionTestUtils.setField(travelRecord, "id", 88L);
 
-        verify(travelRecordRepository).deleteById(88L);
+        given(travelRecordRepository.findByIdAndUserId(88L, 1L)).willReturn(Optional.of(travelRecord));
+
+        travelRecordService.deleteRecordById(1L, 88L);
+
+        verify(travelRecordRepository).delete(travelRecord);
+    }
+
+    @Test
+    void 사용자_소유가_아닌_기록을_삭제하면_예외가_발생한다() {
+        given(travelRecordRepository.findByIdAndUserId(88L, 1L)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> travelRecordService.deleteRecordById(1L, 88L))
+                .isInstanceOf(TravelRecordNotFoundException.class);
     }
 
     private Point 포인트를_생성한다(double x, double y) {

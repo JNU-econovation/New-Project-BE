@@ -24,6 +24,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -96,7 +97,7 @@ class TravelRecordControllerTest {
                 ),
                 3L
         );
-        given(travelRecordService.findRecordById(7L)).willReturn(recordDetail);
+        given(travelRecordService.findRecordById(1L, 7L)).willReturn(recordDetail);
 
         mockMvc.perform(get("/api/v1/travel/records/7/details")
                         .accept(MediaType.APPLICATION_JSON))
@@ -107,12 +108,12 @@ class TravelRecordControllerTest {
                 .andExpect(jsonPath("$.data.courseId").value(3))
                 .andExpect(jsonPath("$.data.mountainId").value(1));
 
-        verify(travelRecordService).findRecordById(7L);
+        verify(travelRecordService).findRecordById(1L, 7L);
     }
 
     @Test
     void 없는_산행기록을_상세조회하면_예외응답을_반환한다() throws Exception {
-        given(travelRecordService.findRecordById(99L)).willThrow(new TravelRecordNotFoundException());
+        given(travelRecordService.findRecordById(1L, 99L)).willThrow(new TravelRecordNotFoundException());
 
         mockMvc.perform(get("/api/v1/travel/records/99/details")
                         .accept(MediaType.APPLICATION_JSON))
@@ -130,7 +131,20 @@ class TravelRecordControllerTest {
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.data").isEmpty());
 
-        verify(travelRecordService).deleteRecordById(11L);
+        verify(travelRecordService).deleteRecordById(1L, 11L);
+    }
+
+    @Test
+    void 없는_산행기록을_삭제하면_예외응답을_반환한다() throws Exception {
+        willThrow(new TravelRecordNotFoundException())
+                .given(travelRecordService).deleteRecordById(1L, 11L);
+
+        mockMvc.perform(delete("/api/v1/travel/records/11")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value("error"))
+                .andExpect(jsonPath("$.errorCode").value("TRAVEL404_001"))
+                .andExpect(jsonPath("$.message").value("산행 기록을 찾을 수 없습니다"));
     }
 
     @Test

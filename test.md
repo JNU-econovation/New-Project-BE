@@ -761,9 +761,9 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [x] `TravelRecordDetailDTO.from()`의 `endAt` 매핑 수정 완료
 - [ ] `GetTravelRecordDetailRes.from()`의 `mountainId` 정책 확인 필요
-- [ ] `TravelRecordService.findRecordById()` 사용자 소유권 검증 추가 필요
-- [ ] `TravelRecordService.deleteRecordById()` 사용자 소유권 검증 추가 필요
-- [ ] `TravelRecordRepository`에 소유권 검증용 query 필요
+- [x] `TravelRecordService.findRecordById()` 사용자 소유권 검증 추가 완료
+- [x] `TravelRecordService.deleteRecordById()` 사용자 소유권 검증 추가 완료
+- [x] `TravelRecordRepository`에 소유권 검증용 query 추가 완료
 - [x] `AppleOAuthService.isOurServiceAudience()` 조건 검증 완료
 - [ ] `AppleJwtHandler` base64url 디코딩 방식 검증 필요
 - [ ] `ValidEmailPatternValidator` null 정책 명확화 필요
