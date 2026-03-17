@@ -148,21 +148,37 @@
 - Redis
 - `.env` 또는 환경 변수 설정
 
-애플리케이션은 [application.yml](src/main/resources/application.yml)에서 `optional:file:.env[.properties]`를 import 하며, 기본 활성 프로필은 `local`입니다.
+프로필은 `local`, `test`, `prod`로 분리되어 있습니다.
 
-`local` 프로필 그룹에는 아래 설정이 포함됩니다.
+기본 활성 프로필은 지정하지 않았습니다.
+즉, 애플리케이션을 실행할 때 현재 목적에 맞는 프로필을 명시적으로 선택해야 합니다.
 
-- `jpa`
-- `token`
-- `kakao`
-- `apple`
-- `metrics`
+각 프로필 파일은 아래 역할을 가집니다.
+
+- [application.yml](src/main/resources/application.yml): 공통 설정
+- [application-local.yml](src/main/resources/application-local.yml): 로컬 개발용 설정
+- [application-prod.yml](src/main/resources/application-prod.yml): 운영용 설정
+- [application-test.yml](src/test/resources/application-test.yml): 테스트용 설정
 
 ### 로컬 실행
 
+터미널에서 로컬 개발 서버를 실행할 때는 `local` 프로필을 명시합니다.
+
 ```bash
-./gradlew bootRun
+SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
 ```
+
+IntelliJ에서 실행할 때는 아래처럼 설정합니다.
+
+1. `Run | Edit Configurations...`로 이동
+2. 실행할 Spring Boot 설정 선택
+3. `Active profiles`에 `local` 입력
+4. 저장 후 실행
+
+`Active profiles` 입력란이 보이지 않으면 아래 둘 중 하나로 동일하게 설정할 수 있습니다.
+
+- `Environment variables`: `SPRING_PROFILES_ACTIVE=local`
+- `Program arguments`: `--spring.profiles.active=local`
 
 ### 테스트 실행
 
@@ -170,10 +186,24 @@
 ./gradlew test
 ```
 
+테스트는 Gradle 설정에서 기본적으로 `test` 프로필로 실행됩니다.
+따라서 별도로 `SPRING_PROFILES_ACTIVE=test`를 지정하지 않아도 됩니다.
+
+### 운영 실행
+
+```bash
+SPRING_PROFILES_ACTIVE=prod java -jar build/libs/NewProject-BE-0.0.1-SNAPSHOT.jar
+```
+
+운영 환경도 동일하게 기본값에 기대지 않고 `prod`를 명시적으로 지정하는 것을 전제로 합니다.
+
 ### 데이터 초기화
 
 - [data.sql](src/main/resources/data.sql)에 샘플 데이터가 포함되어 있습니다.
-- [application-jpa.yml](src/main/resources/application-jpa.yml)에서 SQL init 설정을 사용합니다.
+- 공통 JPA 옵션은 [application.yml](src/main/resources/application.yml)에 있습니다.
+- `local`에서는 [application-local.yml](src/main/resources/application-local.yml)에서 `sql.init.mode=always`, `ddl-auto=update`를 사용합니다.
+- `test`에서는 [application-test.yml](src/test/resources/application-test.yml)에서 `sql.init.mode=never`, `ddl-auto=none`을 사용합니다.
+- `prod`에서는 [application-prod.yml](src/main/resources/application-prod.yml)에서 `sql.init.mode=never`, `ddl-auto=validate`를 사용합니다.
 
 ## 🔧 환경 변수
 

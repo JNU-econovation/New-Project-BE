@@ -1,17 +1,18 @@
 spring:
   application:
     name: NewProject
-  config:
-    import: optional:file:.env[.properties]
-  profiles:
-    active: local
-    group:
-      local:
-        - jpa
-        - token
-        - kakao
-        - apple
-        - metrics
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        jdbc:
+          time_zone: Asia/Seoul
+    open-in-view: false
+    defer-datasource-initialization: true
   cloud:
     openfeign:
       client:
@@ -20,13 +21,7 @@ spring:
             connectTimeout: 2000   # 연결(소켓) 수립까지 최대 2초
             readTimeout: 5000      # 요청 전송 후 응답 바디 읽기까지 최대 5초
 
-auth:
-  login_success:
-    base_uri: ${LOGIN_SUCCESS_BASE_URI}
-
 weather:
-  api:
-    key: ${OPENWEATHER_API_KEY}
   scheduler:
     # 초 분 시 일 월 요일
     cron: 0 0 * * * *
@@ -34,25 +29,3 @@ weather:
 nickname:
   scheduler:
     cron: 0 0 * * * *
-
-coolsms:
-  api:
-    key: ${COOLSMS_API_KEY}
-    secret: ${COOLSMS_API_SECRET}
-    sender-number: ${COOLSMS_SENDER_NUMBER}
-    sms-prefix: '[산결]'
-    ttl: 180
-
-cloud:
-  aws:
-    region:
-      static: ${REGION}
-    s3:
-      bucket: ${BUCKET}
-      default-profile-key: ${DEFAULT_PROFILE_KEY}
-    credentials:
-      access-key: ${ACCESS_KEY}
-      secret-key: ${SECRET_KEY}
-    stack:
-      auto: false
-

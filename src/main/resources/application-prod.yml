@@ -1,0 +1,77 @@
+spring:
+  sql:
+    init:
+      mode: never
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:true}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+auth:
+  login_success:
+    base_uri: ${LOGIN_SUCCESS_BASE_URI}
+
+weather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
+
+coolsms:
+  api:
+    key: ${COOLSMS_API_KEY}
+    secret: ${COOLSMS_API_SECRET}
+    sender-number: ${COOLSMS_SENDER_NUMBER}
+    sms-prefix: '[산결]'
+    ttl: 180
+
+cloud:
+  aws:
+    region:
+      static: ${REGION}
+    s3:
+      bucket: ${BUCKET}
+      default-profile-key: ${DEFAULT_PROFILE_KEY}
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+    stack:
+      auto: false
+
+custom:
+  jwt:
+    access:
+      expiredTime: ${CUSTOM_JWT_ACCESS_TOKEN_EXPIRED_TIME}
+      secretkey: ${CUSTOM_JWT_ACCESS_TOKEN_SECRET_KEY}
+    refresh:
+      expiredTime: ${CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME}
+      secretKey: ${CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY}
+
+oauth:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    uri:
+      redirect-uri: ${KAKAO_REDIRECT_URI}
+  apple:
+    client-id: ${APPLE_CLIENT_ID}
+    iss: ${APPLE_ISS}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
+          - info
+  metrics:
+    export:
+      prometheus:
+        enabled: true
