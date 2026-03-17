@@ -11,6 +11,7 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class EventPolicy {
+    // END 상태는 종료 직후 tracking info가 삭제되어 다시 정책 검사 대상으로 들어오지 않는다는 전제를 둔다.
     private final Map<Status, Set<TravelEvent>> policyMap = Map.of(
             Status.UNSTARTED, Set.of(TravelEvent.START),
             Status.STARTED, Set.of(TravelEvent.CURRENT_POSITION, TravelEvent.END, TravelEvent.PAUSE),

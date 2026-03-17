@@ -82,6 +82,26 @@ class TravelTrackingInfoStoreTest {
     }
 
     @Test
+    void 종료된_산행정보를_삭제하면_END상태가_유지되지_않고_UNSTARTED가_된다() {
+        Point startPoint = 포인트를_생성한다(126.0, 37.0);
+        Point endPoint = 포인트를_생성한다(126.4, 37.4);
+        RemainingTime remainingTime = 남은시간을_생성한다(10, 20);
+        LocalDateTime startedAt = LocalDateTime.of(2024, 5, 1, 9, 0);
+        LocalDateTime endAt = LocalDateTime.of(2024, 5, 1, 12, 0);
+
+        travelTrackingInfoStore.makeInfo(1L, 10L, startedAt, startPoint);
+        travelTrackingInfoStore.start(1L, remainingTime);
+        travelTrackingInfoStore.end(endAt, 1L, endPoint, remainingTime, 4.5, Duration.ofHours(3));
+
+        assertThat(travelTrackingInfoStore.getStatus(1L)).isEqualTo(Status.END);
+
+        travelTrackingInfoStore.deleteInfo(1L);
+
+        assertThat(travelTrackingInfoStore.getStatus(1L)).isEqualTo(Status.UNSTARTED);
+        assertThat(travelTrackingInfoStore.isExistTravelTrackingInfo(1L)).isFalse();
+    }
+
+    @Test
     void 산행정보가_없으면_마지막위치와_누적거리를_조회할수없다() {
         assertThatThrownBy(() -> travelTrackingInfoStore.getLastPoint(1L))
                 .isInstanceOf(TravelTrackingInfoNotFoundException.class);
