@@ -15,8 +15,8 @@ public class EventPolicy {
             Status.UNSTARTED, Set.of(TravelEvent.START),
             Status.STARTED, Set.of(TravelEvent.CURRENT_POSITION, TravelEvent.END, TravelEvent.PAUSE),
             Status.TRAVEL, Set.of(TravelEvent.PAUSE, TravelEvent.END, TravelEvent.CURRENT_POSITION),
-            Status.PAUSED,  Set.of(TravelEvent.RESTART, TravelEvent.END, TravelEvent.KEEP_ALIVE),
-            Status.RESTARTED,   Set.of(TravelEvent.CURRENT_POSITION, TravelEvent.END)
+            Status.PAUSED, Set.of(TravelEvent.RESTART, TravelEvent.END, TravelEvent.KEEP_ALIVE),
+            Status.RESTARTED, Set.of(TravelEvent.CURRENT_POSITION, TravelEvent.END)
     );
 
     public boolean isAllowed(Status status, TravelEvent event) {
