@@ -390,24 +390,87 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ### 9-1. Phase 1 체크리스트
 
-- [ ] `CourseSearchCondition`
-- [ ] `CourseWithBookmarkDTO`
-- [ ] `BookmarkMapper`
-- [ ] `PathwayMapper`
-- [ ] `PathwayCoordinatesArrayDTO`
+- [x] `CourseSearchCondition`
+- [x] `CourseWithBookmarkDTO`
+- [x] `BookmarkMapper`
+- [x] `PathwayMapper`
+- [x] `PathwayCoordinatesArrayDTO`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 3 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `CourseSearchConditionTest`
+  - `CourseWithBookmarkDTOTest`
+  - `BookmarkMapperTest`
+  - `PathwayMapperTest`
+  - `PathwayCoordinatesArrayDTOTest`
+- 검증한 내용:
+  - 코스 검색조건 생성과 null 입력 유지
+  - 코스 + 북마크 여부 기반 DTO 매핑
+  - 사용자 / 코스 기반 북마크 엔티티 생성
+  - 등산로 엔티티 -> DTO 변환
+  - `LineString` -> 좌표 배열 응답 변환
+- 실행 결과:
+  - `./gradlew test --tests '*CourseSearchConditionTest' --tests '*CourseWithBookmarkDTOTest' --tests '*BookmarkMapperTest' --tests '*PathwayMapperTest' --tests '*PathwayCoordinatesArrayDTOTest'` 통과
+
+</details>
 
 ### 9-2. Phase 2 체크리스트
 
-- [ ] `CourseService`
-- [ ] `BookmarkService`
-- [ ] `CoursePathwaySequenceService`
-- [ ] `PathwayService`
+- [x] `CourseService`
+- [x] `BookmarkService`
+- [x] `CoursePathwaySequenceService`
+- [x] `PathwayService`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 3 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `CourseServiceTest`
+  - `BookmarkServiceTest`
+  - `CoursePathwaySequenceServiceTest`
+  - `PathwayServiceTest`
+- 검증한 내용:
+  - 코스 조회 성공 / 실패
+  - 코스 목록 조회 시 검색조건 생성과 repository 위임
+  - 코스 상세 조회와 예외
+  - 경로 flatten 후 가장 가까운 좌표 계산 위임
+  - 도착여부 `1/0` -> `true/false` 변환
+  - 북마크 추가 / 삭제 / 미존재 예외 / 목록 조회
+  - 코스별 sequence 조회 위임
+  - sequence -> 등산로 DTO 목록 변환과 빈 목록 처리
+- 실행 결과:
+  - `./gradlew test --tests '*CourseServiceTest' --tests '*BookmarkServiceTest' --tests '*CoursePathwaySequenceServiceTest' --tests '*PathwayServiceTest'` 통과
+
+</details>
 
 ### 9-3. Phase 3 체크리스트
 
-- [ ] `CourseController`
-- [ ] `BookmarkController`
-- [ ] `PathwayController`
+- [x] `CourseController`
+- [x] `BookmarkController`
+- [x] `PathwayController`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 3 > Phase 3 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `CourseControllerTest`
+  - `BookmarkControllerTest`
+  - `PathwayControllerTest`
+- 검증한 내용:
+  - 코스 목록 조회 응답 구조와 정렬 파라미터 전달
+  - 코스 상세 조회 성공 / 미존재 예외 응답
+  - 북마크 추가 / 삭제 / 목록 조회 응답 구조
+  - 북마크 추가 요청 검증 실패와 북마크 미존재 예외 응답
+  - 경로 조회 응답 구조와 필수 쿼리스트링 누락 예외 응답
+- 실행 결과:
+  - `./gradlew test --tests '*CourseControllerTest' --tests '*BookmarkControllerTest' --tests '*PathwayControllerTest'` 통과
+
+</details>
 
 ### 9-4. Phase 4 체크리스트
 
@@ -432,28 +495,92 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ### 10-1. Phase 1 체크리스트
 
-- [ ] `MountainDTO`
-- [ ] `SuggestedMountainDTO`
-- [ ] `FacilityDTO`
-- [ ] `BaseDTO`
-- [ ] `BaseDetailDTO`
-- [ ] `CourseDetailDTO`
-- [ ] `WeatherRes`
+- [x] `MountainDTO`
+- [x] `SuggestedMountainDTO`
+- [x] `FacilityDTO`
+- [x] `BaseDTO`
+- [x] `BaseDetailDTO`
+- [x] `CourseDetailDTO`
+- [x] `WeatherRes`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 4 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `MountainDTOTest`
+  - `SuggestedMountainDTOTest`
+  - `FacilityDTOTest`
+  - `BaseDTOTest`
+  - `BaseDetailDTOTest`
+  - `CourseDetailDTOTest`
+  - `WeatherResTest`
+- 검증한 내용:
+  - 산/시설 좌표 응답의 경도-위도 순서
+  - 베이스 `Point` -> 좌표 배열 변환
+  - 베이스 상세 응답의 이미지 목록과 `recommendedOutfit` 기본값
+  - 코스 상세 DTO 변환
+  - OpenWeather 응답의 첫 번째 날씨와 온도 추출
+- 실행 결과:
+  - `./gradlew test --tests '*MountainDTOTest' --tests '*SuggestedMountainDTOTest' --tests '*FacilityDTOTest' --tests '*BaseDTOTest' --tests '*BaseDetailDTOTest' --tests '*CourseDetailDTOTest' --tests '*WeatherResTest'` 통과
+
+</details>
 
 ### 10-2. Phase 2 체크리스트
 
-- [ ] `SuggestMountainService`
-- [ ] `MountainService`
-- [ ] `FacilityService`
-- [ ] `BaseService`
-- [ ] `WeatherService`
-- [ ] `WeatherScheduler`
+- [x] `SuggestMountainService`
+- [x] `MountainService`
+- [x] `FacilityService`
+- [x] `BaseService`
+- [x] `WeatherService`
+- [x] `WeatherScheduler`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 4 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `SuggestMountainServiceTest`
+  - `MountainServiceTest`
+  - `FacilityServiceTest`
+  - `BaseServiceTest`
+  - `WeatherServiceTest`
+  - `WeatherSchedulerTest`
+- 검증한 내용:
+  - 초성/일반 키워드 분기와 정규화 위임
+  - 산 목록 조회, 존재 검증, 자동완성 조회
+  - 시설/베이스 조회 시 산 존재 검증 선행
+  - 베이스 상세 조회 시 이미지 repository 결합
+  - 날씨 응답 보정 온도 계산과 예외 격리
+  - 시작 시 날씨 갱신과 스케줄 실행 위임
+- 실행 결과:
+  - `./gradlew test --tests '*SuggestMountainServiceTest' --tests '*MountainServiceTest' --tests '*FacilityServiceTest' --tests '*BaseServiceTest' --tests '*WeatherServiceTest' --tests '*WeatherSchedulerTest'` 통과
+
+</details>
 
 ### 10-3. Phase 3 체크리스트
 
-- [ ] `MountainController`
-- [ ] `FacilityController`
-- [ ] `BaseController`
+- [x] `MountainController`
+- [x] `FacilityController`
+- [x] `BaseController`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 4 > Phase 3 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `MountainControllerTest`
+  - `FacilityControllerTest`
+  - `BaseControllerTest`
+- 검증한 내용:
+  - 산 목록 / 자동완성 응답 구조
+  - 시설 목록 / 베이스 목록 / 베이스 상세 응답 구조
+  - 자동완성 키워드 누락 시 공통 400 응답
+  - 없는 산 조회 시 `MOUNTAIN404_001` 예외 응답
+- 실행 결과:
+  - `./gradlew test --tests '*MountainControllerTest' --tests '*FacilityControllerTest' --tests '*BaseControllerTest'` 통과
+
+</details>
 
 ### 10-4. Phase 4 체크리스트
 
@@ -525,7 +652,35 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [ ] 작업 배치 1: `TravelRecordRepository`, `CourseRepository` spatial 테스트
 
-## 14. 결론
+## 14. Slice 3 작업 배치 기록
+
+### 14-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `CourseSearchCondition`, `CourseWithBookmarkDTO`, `BookmarkMapper`, `PathwayMapper`, `PathwayCoordinatesArrayDTO`
+
+### 14-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `CourseService`, `BookmarkService`, `CoursePathwaySequenceService`, `PathwayService`
+
+### 14-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `CourseController`, `BookmarkController`, `PathwayController`
+
+## 15. Slice 4 작업 배치 기록
+
+### 15-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `MountainDTO`, `SuggestedMountainDTO`, `FacilityDTO`, `BaseDTO`, `BaseDetailDTO`, `CourseDetailDTO`, `WeatherRes`
+
+### 15-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `SuggestMountainService`, `MountainService`, `FacilityService`, `BaseService`, `WeatherService`, `WeatherScheduler`
+
+### 15-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `MountainController`, `FacilityController`, `BaseController`
+
+## 16. 결론
 
 - 분류 체계는 `Phase 1 -> Phase 6` 확장 순서로 본다.
 - 실제 작성은 도메인별 세로 슬라이스 방식으로 진행한다.
