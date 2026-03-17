@@ -1,0 +1,71 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${TEST_DB_URL:${DB_URL}}
+    username: ${TEST_DB_USERNAME:${DB_USERNAME}}
+    password: ${TEST_DB_PASSWORD:${DB_PASSWORD}}
+  data:
+    redis:
+      host: ${TEST_REDIS_HOST:${REDIS_HOST:localhost}}
+      port: ${TEST_REDIS_PORT:${REDIS_PORT:6379}}
+      ssl:
+        enabled: ${TEST_REDIS_SSL_ENABLED:false}
+  task:
+    scheduling:
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: never
+
+app:
+  startup-jobs:
+    enabled: false
+
+auth:
+  login_success:
+    base_uri: http://localhost:3000/test/login
+
+weather:
+  api:
+    key: test-weather-key
+
+coolsms:
+  api:
+    key: test-coolsms-key
+    secret: test-coolsms-secret
+    sender-number: 01012345678
+    sms-prefix: '[산결]'
+    ttl: 180
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: test-bucket
+      default-profile-key: profile/default.png
+    credentials:
+      access-key: test-access-key
+      secret-key: test-secret-key
+
+custom:
+  jwt:
+    access:
+      expiredTime: 3600
+      secretkey: test-access-secret-key-test-access-secret-key
+    refresh:
+      expiredTime: 1209600
+      secretKey: test-refresh-secret-key-test-refresh-secret-key
+
+oauth:
+  kakao:
+    client-id: test-kakao-client-id
+    uri:
+      redirect-uri: http://localhost:3000/test/kakao/callback
+  apple:
+    client-id: test-apple-client-id
+    iss: https://appleid.apple.com

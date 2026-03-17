@@ -2,7 +2,9 @@ package com.econo_4factorial.newproject;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class NewProjectApplicationTests {
 
