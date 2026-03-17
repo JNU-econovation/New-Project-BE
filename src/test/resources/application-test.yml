@@ -1,16 +1,4 @@
 spring:
-  config:
-    import: optional:file:.env[.properties]
-  datasource:
-    url: ${TEST_DB_URL:${DB_URL}}
-    username: ${TEST_DB_USERNAME:${DB_USERNAME}}
-    password: ${TEST_DB_PASSWORD:${DB_PASSWORD}}
-  data:
-    redis:
-      host: ${TEST_REDIS_HOST:${REDIS_HOST:localhost}}
-      port: ${TEST_REDIS_PORT:${REDIS_PORT:6379}}
-      ssl:
-        enabled: ${TEST_REDIS_SSL_ENABLED:false}
   task:
     scheduling:
       enabled: false

@@ -188,6 +188,7 @@ IntelliJ에서 실행할 때는 아래처럼 설정합니다.
 
 테스트는 Gradle 설정에서 기본적으로 `test` 프로필로 실행됩니다.
 따라서 별도로 `SPRING_PROFILES_ACTIVE=test`를 지정하지 않아도 됩니다.
+또한 `@SpringBootTest`와 인프라 테스트는 Testcontainers 기반이므로 Docker Desktop 또는 호환 Docker runtime이 실행 중이어야 합니다.
 
 ### 운영 실행
 

@@ -36,9 +36,16 @@
 - [ ] Redis 전용 테스트 없음
 - [ ] 외부 API 연동 테스트 없음
 - [x] WebMvc 테스트 작성됨
-- [ ] Repository/Querydsl 테스트 없음
+- [x] Repository/Querydsl 테스트 존재 (travel 저장소)
 - [x] WebSocket 테스트 작성됨
 - [x] `travel` 패키지 테스트 작성됨
+
+## 3-1. 리뷰 결과 요약
+
+- Testcontainers 환경에서 `@DataJpaTest` 컨텍스트 캐시 재사용 시 DB 연결이 끊기는 문제가 있어 `@DirtiesContext(AFTER_CLASS)`로 안정화함.
+- `Base.geo_point`의 unique 제약으로 MySQL DDL 경고가 발생하므로, 추후 저장소 테스트 확장 시 스키마 생성 로그를 확인할 것.
+- Repository/Querydsl 테스트는 `travel`만 완료되어 있어 다른 도메인은 아직 공백.
+- Redis 전용 테스트, 외부 API stub 기반 테스트, Phase 6 기능 통합 테스트는 미진행.
 
 ## 4. 분류 체계
 
@@ -97,21 +104,21 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ## 6. 공통 인프라 준비 체크리스트
 
-- [ ] `build.gradle`에 `h2` 추가
-- [ ] `build.gradle`에 `testcontainers-junit-jupiter` 추가
-- [ ] `build.gradle`에 `testcontainers-mysql` 추가
-- [ ] `build.gradle`에 `testcontainers-redis` 추가
-- [ ] `build.gradle`에 `WireMock` 또는 `MockWebServer` 추가
-- [ ] `src/test/resources/application-test.yml` 작성
-- [ ] MySQL Testcontainers 공통 베이스 클래스 준비
-- [ ] Redis Testcontainers 공통 베이스 클래스 준비
+- [x] `build.gradle`에 `testcontainers-junit-jupiter` 추가
+- [x] `build.gradle`에 `testcontainers-mysql` 추가
+- [x] Redis Testcontainers 전략 확정
+- [x] `build.gradle`에 `WireMock` 또는 `MockWebServer` 추가
+- [x] `src/test/resources/application-test.yml` 작성
+- [x] MySQL Testcontainers 공통 베이스 클래스 준비
+- [x] Redis Testcontainers 공통 베이스 클래스 준비
 - [ ] WebSocket 테스트용 공통 helper 준비
 
 ### 6-1. 외부 의존성 테스트 원칙
 
 - `Phase 1 ~ Phase 3`에서는 Redis, S3, SMS, OAuth, OpenWeather 같은 외부 의존성을 mock으로 끊고 로직/계약만 검증한다.
 - `Phase 5`에서는 Redis는 Testcontainers, 외부 HTTP 연동은 `WireMock` 또는 `MockWebServer` 기반 stub 서버로 검증한다.
-- 프로필 분리 전까지는 `@SpringBootTest` 기반 테스트 확장을 미루고, standalone `MockMvc`와 mock 기반 서비스 테스트를 우선 진행한다.
+- 프로필 분리와 `application-test.yml` 정리는 완료됐고, `@SpringBootTest`는 Testcontainers 기반 DB/Redis 주입으로 동작한다.
+- Testcontainers 기반 테스트 실행 전에는 Docker Desktop 또는 호환 Docker runtime이 반드시 실행 중이어야 한다.
 - 실제 네트워크 호출을 테스트에서 직접 사용하지 않는다.
 
 ## 7. Slice 1: travel + websocket + spatial query
@@ -299,14 +306,30 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ### 7-4. Phase 4 체크리스트
 
-- [ ] `TravelRecordRepository`
-- [ ] `CourseRepository.isUserArrivedDestination()`
+- [x] `TravelRecordRepository`
+- [x] `CourseRepository.isUserArrivedDestination()`
 
 ### 7-5. Phase 5 체크리스트
 
-- [ ] MySQL Testcontainers로 `TravelRecord` geometry 저장/조회 검증
-- [ ] MySQL Testcontainers로 `ST_Distance_Sphere` 검증
+- [x] MySQL Testcontainers로 `TravelRecord` geometry 저장/조회 검증
+- [x] MySQL Testcontainers로 `ST_Distance_Sphere` 검증
 - [ ] WebSocket 인증 시나리오 테스트 환경 구성
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 4/5 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelRecordRepositoryTest`
+  - `CourseRepositoryTest`
+- 검증한 내용:
+  - `TravelRecordRepository`의 기간/사용자 조회와 소유권 조회
+  - `CourseRepository.isUserArrivedDestination()`의 `ST_Distance_Sphere` 결과
+- 실행 결과:
+  - `./gradlew test --tests '*TravelRecordRepositoryTest' --tests '*CourseRepositoryTest'`
+  - Docker 미실행으로 MySQL 연결 실패
+
+</details>
 
 ### 7-6. Phase 6 체크리스트
 
@@ -770,7 +793,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 - [ ] `RandomNicknameService` empty pool 정책 필요
 - [ ] `UserService.registerBasicInformation()` 전화번호 중복 검증 확인 필요
 - [ ] `UserService.updateUserProfile()` email/phone unique 정책 확인 필요
-- [ ] `CourseRepository`의 `@Param` import 동작 검증 필요
+- [x] `CourseRepository`의 `@Param` import 동작 검증 완료
 - [ ] `WebSocketHandler.afterConnectionClosed()`의 미인증 세션 경로 검증 필요
 
 ## 12. 구조 개선 체크리스트
@@ -806,7 +829,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 ### 13-4. Phase 4 작업 배치
 
-- [ ] 작업 배치 1: `TravelRecordRepository`, `CourseRepository` spatial 테스트
+- [x] 작업 배치 1: `TravelRecordRepository`, `CourseRepository` spatial 테스트
 
 ## 14. Slice 3 작업 배치 기록
 
