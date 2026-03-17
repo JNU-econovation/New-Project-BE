@@ -47,7 +47,7 @@ public class AppleOAuthService {
     }
 
     private void isOurServiceAudience(Claims tokenClaims) {
-        if (client_id.equals(tokenClaims.getAudience()))
+        if (tokenClaims.getAudience() == null || !tokenClaims.getAudience().contains(client_id))
             throw new InvalidAudienceException();
     }
 

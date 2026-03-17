@@ -15,11 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.security.PublicKey;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -89,7 +88,7 @@ class AppleOAuthServiceTest {
     }
 
     @Test
-    void 현재_Claims_audience_형태에서는_audience_검증으로_예외가_발생하지_않는다() {
+    void audience에_우리_client_id가_없으면_예외가_발생한다() {
         AppleLoginReq request = new AppleLoginReq("identity-token", "test@example.com", new FullName("홍", "길동"));
         ApplePublicKeysResponse publicKeysResponse = new ApplePublicKeysResponse(java.util.List.of());
         given(appleJwtHandler.parseHeaders("identity-token")).willReturn(Map.of("kid", "kid-1", "alg", "RS256"));
@@ -97,12 +96,24 @@ class AppleOAuthServiceTest {
         given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse, Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
         given(appleJwtHandler.getTokenClaims("identity-token", publicKey)).willReturn(claims);
         given(claims.getIssuer()).willReturn("https://appleid.apple.com");
-        // Current production code keeps the historical String.equals(audience) comparison.
-        // With the current jjwt Claims API, audience is exposed as Set<String>, so this path does not reject.
-        given(claims.getAudience()).willReturn(Set.of("com.sangyeol.app"));
-        given(claims.getSubject()).willReturn("apple-sub");
+        given(claims.getAudience()).willReturn(Set.of("another-client"));
 
-        assertThatCode(() -> appleOAuthService.getUserInfo(request))
-                .doesNotThrowAnyException();
+        assertThatThrownBy(() -> appleOAuthService.getUserInfo(request))
+                .isInstanceOf(InvalidAudienceException.class);
+    }
+
+    @Test
+    void audience가_없으면_예외가_발생한다() {
+        AppleLoginReq request = new AppleLoginReq("identity-token", "test@example.com", new FullName("홍", "길동"));
+        ApplePublicKeysResponse publicKeysResponse = new ApplePublicKeysResponse(java.util.List.of());
+        given(appleJwtHandler.parseHeaders("identity-token")).willReturn(Map.of("kid", "kid-1", "alg", "RS256"));
+        given(appleOAuthFeignClient.getApplePublicKeys()).willReturn(publicKeysResponse);
+        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse, Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
+        given(appleJwtHandler.getTokenClaims("identity-token", publicKey)).willReturn(claims);
+        given(claims.getIssuer()).willReturn("https://appleid.apple.com");
+        given(claims.getAudience()).willReturn(null);
+
+        assertThatThrownBy(() -> appleOAuthService.getUserInfo(request))
+                .isInstanceOf(InvalidAudienceException.class);
     }
 }
