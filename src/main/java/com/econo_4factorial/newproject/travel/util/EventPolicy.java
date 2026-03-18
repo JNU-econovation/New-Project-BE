@@ -2,6 +2,7 @@ package com.econo_4factorial.newproject.travel.util;
 
 import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.econo_4factorial.newproject.travel.Status;
+import com.econo_4factorial.newproject.travel.exception.NotExistStatusException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,10 @@ public class EventPolicy {
     );
 
     public boolean isAllowed(Status status, TravelEvent event) {
-        return policyMap.get(status).contains(event);
+        Set<TravelEvent> allowedEvents = policyMap.get(status);
+        if (allowedEvents == null) {
+            throw new NotExistStatusException();
+        }
+        return allowedEvents.contains(event);
     }
 }

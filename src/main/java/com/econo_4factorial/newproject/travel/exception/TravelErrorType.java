@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum TravelErrorType implements ErrorType {
     NOT_ALLOWED_EVENT_FOR_STATUS_EXCEPTION("TRAVEL400_001", HttpStatus.BAD_REQUEST, "현재 유저 상태에서는 허락되지 않은 이벤트입니다"),
     UNAUTHENTICATED_EXCEPTION("TRAVEL400_002", HttpStatus.BAD_REQUEST, "사용자 인증이 되지 않은 상태에서는 이벤트 처리가 불가능합니다"),
+    NOT_EXIST_STATUS_EXCEPTION("TRAVEL_400_003", HttpStatus.NOT_FOUND, "요청한 상태값이 정의된 상태가 아닙니다"),
     TRAVEL_RECORD_NOT_FOUND_EXCEPTION("TRAVEL404_001", HttpStatus.NOT_FOUND, "산행 기록을 찾을 수 없습니다"),
 
     NOT_EXIST_EVENT_EXCEPTION("TRAVEL404_001", HttpStatus.NOT_FOUND, "존재하지 않는 이벤트입니다"),
