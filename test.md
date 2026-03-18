@@ -29,22 +29,21 @@
 
 ## 3. 현재 상태
 
-- [x] `JwtTokenProviderTest` 기본 테스트 존재
-- [x] `AuthTokenServiceTest` 기본 테스트 존재
-- [x] `S3ServiceTest` 기본 테스트 존재
+- [x] `travel`, `auth`, `user`, `common`, `course`, `pathway`, `mountain`, `base`, `facility` 테스트 작성됨
+- [x] WebMvc 테스트 작성됨
+- [x] WebSocket 테스트 작성됨
+- [x] Repository/Querydsl 테스트 존재 (`travel`, `course`)
+- [x] Testcontainers 기반 MySQL 저장소 테스트 존재
 - [x] `NewProjectApplicationTests` 존재
 - [ ] Redis 전용 테스트 없음
 - [ ] 외부 API 연동 테스트 없음
-- [x] WebMvc 테스트 작성됨
-- [x] Repository/Querydsl 테스트 존재 (travel 저장소)
-- [x] WebSocket 테스트 작성됨
-- [x] `travel` 패키지 테스트 작성됨
+- [ ] 기능 단위 통합 테스트(Phase 6) 없음
 
 ## 3-1. 리뷰 결과 요약
 
 - Testcontainers 환경에서 `@DataJpaTest` 컨텍스트 캐시 재사용 시 DB 연결이 끊기는 문제가 있어 `@DirtiesContext(AFTER_CLASS)`로 안정화함.
 - `Base.geo_point`의 unique 제약으로 MySQL DDL 경고가 발생하므로, 추후 저장소 테스트 확장 시 스키마 생성 로그를 확인할 것.
-- Repository/Querydsl 테스트는 `travel`만 완료되어 있어 다른 도메인은 아직 공백.
+- Repository/Querydsl 테스트는 현재 `travel`, `course`만 작성되어 있어 다른 도메인은 아직 공백.
 - Redis 전용 테스트, 외부 API stub 기반 테스트, Phase 6 기능 통합 테스트는 미진행.
 
 ## 4. 분류 체계
@@ -87,7 +86,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 이 순서인 이유:
 
-- `travel`은 신규 코드가 많고 테스트가 0개다.
+- 작성 시작 당시 `travel`은 신규 코드가 많고 테스트가 거의 없는 상태였다.
 - 상태 전이, WebSocket, in-memory store, geometry 계산, MySQL spatial query가 한 흐름에 묶여 있다.
 - 수동 검증 비용이 높다.
 - 이미 코드상 리스크가 보인다.
@@ -307,7 +306,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 ### 7-4. Phase 4 체크리스트
 
 - [x] `TravelRecordRepository`
-- [x] `CourseRepository.isUserArrivedDestination()`
+- [x] `CourseRepository.isUserArrivedDestination()` (`travel` 흐름에서 사용하는 spatial query 선검증)
 
 ### 7-5. Phase 5 체크리스트
 
@@ -327,7 +326,8 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
   - `CourseRepository.isUserArrivedDestination()`의 `ST_Distance_Sphere` 결과
 - 실행 결과:
   - `./gradlew test --tests '*TravelRecordRepositoryTest' --tests '*CourseRepositoryTest'`
-  - Docker 미실행으로 MySQL 연결 실패
+  - 현재는 `@DirtiesContext(AFTER_CLASS)` 적용 후 정상 통과
+  - 초기 시도에서는 Docker 미실행 및 컨텍스트 재사용 이슈로 MySQL 연결 실패가 있었음
 
 </details>
 
@@ -809,7 +809,10 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 - [ ] `AppleOAuthService` 검증 전용 컴포넌트 분리 검토
 - [ ] `WeatherService` fetch/convert/update 분리 검토
 
-## 13. Slice 1 작업 배치 기록
+## 13. 이력 부록: Slice 1 작업 배치 기록
+
+이 섹션부터는 현재 상태가 아니라 작업 당시의 실행 단위를 보관한 이력이다.
+현재 진행 여부 판단은 앞쪽 Slice/Phase 체크리스트를 기준으로 본다.
 
 ### 13-1. Phase 1 작업 배치
 
@@ -831,7 +834,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [x] 작업 배치 1: `TravelRecordRepository`, `CourseRepository` spatial 테스트
 
-## 14. Slice 3 작업 배치 기록
+## 14. 이력 부록: Slice 3 작업 배치 기록
 
 ### 14-1. Phase 1 작업 배치
 
@@ -845,7 +848,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [x] 작업 배치 1: `CourseController`, `BookmarkController`, `PathwayController`
 
-## 15. Slice 4 작업 배치 기록
+## 15. 이력 부록: Slice 4 작업 배치 기록
 
 ### 15-1. Phase 1 작업 배치
 
@@ -859,7 +862,7 @@ HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증�
 
 - [x] 작업 배치 1: `MountainController`, `FacilityController`, `BaseController`
 
-## 16. Slice 2 작업 배치 기록
+## 16. 이력 부록: Slice 2 작업 배치 기록
 
 ### 16-1. Phase 1 작업 배치
 

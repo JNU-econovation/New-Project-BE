@@ -24,9 +24,9 @@ public class AuthTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final BlacklistTokenRepository blacklistTokenRepository;
-    @Value("${custom.jwt.access.expiredTime}")
+    @Value("${custom.jwt.access.expired-time}")
     private long accessTokenExpiredTime;
-    @Value("${custom.jwt.refresh.expiredTime}")
+    @Value("${custom.jwt.refresh.expired-time}")
     private long refreshTokenExpiredTime;
 
     private final JwtTokenProvider jwtTokenProvider;

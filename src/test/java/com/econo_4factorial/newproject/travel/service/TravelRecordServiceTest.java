@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -155,6 +156,9 @@ class TravelRecordServiceTest {
 
         assertThat(result.recordId()).isEqualTo(77L);
         assertThat(result.displayName()).isEqualTo("상세 코스");
+        assertThat(result.startedAt()).isEqualTo(Timestamp.valueOf(LocalDateTime.of(2024, 2, 1, 8, 0)).getTime());
+        assertThat(result.endAt()).isEqualTo(Timestamp.valueOf(LocalDateTime.of(2024, 2, 1, 10, 0)).getTime());
+        assertThat(result.duration()).isEqualTo(Duration.ofHours(2).toMillis());
         assertThat(result.courseId()).isEqualTo(301L);
         assertThat(result.coordinates()).hasSize(2);
         assertThat(result.length()).isEqualTo(5.2);

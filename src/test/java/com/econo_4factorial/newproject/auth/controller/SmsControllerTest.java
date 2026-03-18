@@ -76,7 +76,7 @@ class SmsControllerTest {
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("success"))
-                .andExpect(jsonPath("$.data.verificationCode").value("010-1234-5678"));
+                .andExpect(jsonPath("$.data.phoneNumber").value("010-1234-5678"));
 
         verify(smsService).verifySms("010-1234-5678", "123456");
     }

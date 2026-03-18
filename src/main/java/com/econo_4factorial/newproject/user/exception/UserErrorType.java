@@ -1,4 +1,4 @@
-package com.econo_4factorial.newproject.user.exeception;
+package com.econo_4factorial.newproject.user.exception;
 
 import com.econo_4factorial.newproject.common.exception.ErrorType;
 import org.springframework.http.HttpStatus;

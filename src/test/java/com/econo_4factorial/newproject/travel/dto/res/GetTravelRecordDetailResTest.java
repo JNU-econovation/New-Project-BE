@@ -33,6 +33,6 @@ class GetTravelRecordDetailResTest {
         assertThat(result.length()).isEqualTo(6.7);
         assertThat(result.coordinates()).containsExactlyElementsOf(recordDetail.coordinates());
         assertThat(result.courseId()).isEqualTo(8L);
-        assertThat(result.mountainId()).isEqualTo(1);
+        assertThat(result.mountainId()).isEqualTo(GetTravelRecordDetailRes.DEFAULT_MOUNTAIN_ID);
     }
 }

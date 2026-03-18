@@ -25,7 +25,7 @@ coolsms:
   api:
     key: test-coolsms-key
     secret: test-coolsms-secret
-    sender-number: 01012345678
+    sender-number: "01012345678"
     sms-prefix: '[산결]'
     ttl: 180
 
@@ -43,11 +43,11 @@ cloud:
 custom:
   jwt:
     access:
-      expiredTime: 3600
-      secretkey: test-access-secret-key-test-access-secret-key
+      expired-time: 3600
+      secret-key: test-access-secret-key-test-access-secret-key
     refresh:
-      expiredTime: 1209600
-      secretKey: test-refresh-secret-key-test-refresh-secret-key
+      expired-time: 1209600
+      secret-key: test-refresh-secret-key-test-refresh-secret-key
 
 oauth:
   kakao:

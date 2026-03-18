@@ -1,6 +1,6 @@
 package com.econo_4factorial.newproject.user.domain;
 
-import com.econo_4factorial.newproject.user.exeception.BadRequestException.InvalidBloodTypeException;
+import com.econo_4factorial.newproject.user.exception.BadRequestException.InvalidBloodTypeException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

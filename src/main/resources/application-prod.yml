@@ -48,11 +48,11 @@ cloud:
 custom:
   jwt:
     access:
-      expiredTime: ${CUSTOM_JWT_ACCESS_TOKEN_EXPIRED_TIME}
-      secretkey: ${CUSTOM_JWT_ACCESS_TOKEN_SECRET_KEY}
+      expired-time: ${CUSTOM_JWT_ACCESS_TOKEN_EXPIRED_TIME}
+      secret-key: ${CUSTOM_JWT_ACCESS_TOKEN_SECRET_KEY}
     refresh:
-      expiredTime: ${CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME}
-      secretKey: ${CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY}
+      expired-time: ${CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME}
+      secret-key: ${CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY}
 
 oauth:
   kakao:
