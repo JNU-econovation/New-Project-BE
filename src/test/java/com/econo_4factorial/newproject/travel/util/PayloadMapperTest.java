@@ -28,10 +28,14 @@ class PayloadMapperTest {
                 """);
 
         Payload payload = payloadMapper.fromMessage(message);
+        StartEventReq dto = payloadMapper.extractDataToDTO(payload, StartEventReq.class);
 
         assertThat(payload.event()).isEqualTo("start");
-        assertThat(payload.data()).containsEntry("courseId", 1);
-        assertThat(payload.data()).containsEntry("time", 1000);
+        assertThat(((Number) payload.data().get("courseId")).longValue()).isEqualTo(1L);
+        assertThat(((Number) payload.data().get("time")).longValue()).isEqualTo(1000L);
+        assertThat(dto.courseId()).isEqualTo(1L);
+        assertThat(dto.time()).isEqualTo(1000L);
+        assertThat(dto.coordinate()).containsExactly(126.0, 37.0);
     }
 
     @Test
