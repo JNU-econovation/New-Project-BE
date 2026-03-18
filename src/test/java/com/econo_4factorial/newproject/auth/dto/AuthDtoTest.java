@@ -55,9 +55,9 @@ class AuthDtoTest {
 
     @Test
     void 문자_검증_응답을_생성한다() {
-        VerifySmsRes response = VerifySmsRes.from("123456");
+        VerifySmsRes response = VerifySmsRes.from("01012345678");
 
-        assertThat(response.phoneNumber()).isEqualTo("123456");
+        assertThat(response.phoneNumber()).isEqualTo("01012345678");
     }
 
     @Test
