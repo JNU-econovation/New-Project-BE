@@ -9,6 +9,7 @@ import com.econo_4factorial.newproject.common.annotation.UserId;
 import com.econo_4factorial.newproject.common.util.api.ApiResponse;
 import com.econo_4factorial.newproject.common.util.api.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class SmsController {
     @PostMapping
     @Operation(summary = "인증번호 전송", description = "인증번호를 전송합니다.")
     public ApiResult<ApiResult.SuccessBody<SendSmsRes>> sendSms(
+            @Parameter(hidden = true)
             @UserId Long userId,
             @RequestBody @Valid SendSmsReq sendSmsReq
     ) {
@@ -40,6 +42,7 @@ public class SmsController {
     @PostMapping("/verify")
     @Operation(summary = "인증번호 확인", description = "인증번호를 확인합니다.")
     public ApiResult<ApiResult.SuccessBody<VerifySmsRes>> verifySms(
+            @Parameter(hidden = true)
             @UserId Long userId,
             @RequestBody @Valid VerifySmsReq verifySmsReq
     ) {
