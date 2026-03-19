@@ -31,7 +31,8 @@ class AppleJwtHandlerTest {
     @Test
     void 토큰_헤더를_파싱한다() {
         String headerJson = "{\"kid\":\"kid-1\",\"alg\":\"RS256\"}";
-        String encodedHeader = Base64.getEncoder().encodeToString(headerJson.getBytes(StandardCharsets.UTF_8));
+        String encodedHeader = Base64.getUrlEncoder().withoutPadding()
+                .encodeToString(headerJson.getBytes(StandardCharsets.UTF_8));
 
         Map<String, String> headers = appleJwtHandler.parseHeaders(encodedHeader + ".payload.signature");
 
@@ -41,9 +42,16 @@ class AppleJwtHandlerTest {
 
     @Test
     void 잘못된_헤더_JSON이면_예외가_발생한다() {
-        String encodedHeader = Base64.getEncoder().encodeToString("invalid-json".getBytes(StandardCharsets.UTF_8));
+        String encodedHeader = Base64.getUrlEncoder().withoutPadding()
+                .encodeToString("invalid-json".getBytes(StandardCharsets.UTF_8));
 
         assertThatThrownBy(() -> appleJwtHandler.parseHeaders(encodedHeader + ".payload.signature"))
+                .isInstanceOf(AppleTokenHeaderParsingException.class);
+    }
+
+    @Test
+    void 잘못된_Base64URL_헤더면_예외가_발생한다() {
+        assertThatThrownBy(() -> appleJwtHandler.parseHeaders("not_base64url!.payload.signature"))
                 .isInstanceOf(AppleTokenHeaderParsingException.class);
     }
 
