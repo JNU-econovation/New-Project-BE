@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.stream.LongStream;
 
 @Slf4j
@@ -49,6 +48,10 @@ public class RandomNicknamePoolManager {
     }
 
     private Long getStartPosition() {
-        return Long.valueOf(Objects.requireNonNull(redisTemplate.opsForValue().get(NICKNAME_POOL_START_KEY), START_VALUE_NOT_FOUND_MESSAGE));
+        String startValue = redisTemplate.opsForValue().get(NICKNAME_POOL_START_KEY);
+        if (startValue == null) {
+            throw new IllegalStateException(START_VALUE_NOT_FOUND_MESSAGE);
+        }
+        return Long.valueOf(startValue);
     }
 }

@@ -41,10 +41,10 @@ class UserTest {
                 .name("홍길동")
                 .build();
 
-        user.registerBasicInformation("등산러", "01012345678", "after@example.com");
+        user.registerBasicInformation("등산러", "010-1234-5678", "after@example.com");
 
         assertThat(user.getNickname()).isEqualTo("등산러");
-        assertThat(user.getUserInfo().getPhoneNumber()).isEqualTo("01012345678");
+        assertThat(user.getUserInfo().getPhoneNumber()).isEqualTo("010-1234-5678");
         assertThat(user.getUserInfo().getEmail()).isEqualTo("after@example.com");
         assertThat(user.isBasicInfoSet()).isTrue();
     }
@@ -90,12 +90,12 @@ class UserTest {
                 .name("홍길동")
                 .build();
 
-        user.updateUserProfile("임꺽정", "new@example.com", "등산러", "01099998888", 80L, 180L, BloodType.O, "메모");
+        user.updateUserProfile("임꺽정", "new@example.com", "등산러", "010-9999-8888", 80L, 180L, BloodType.O, "메모");
 
         assertThat(user.getUserInfo().getName()).isEqualTo("임꺽정");
         assertThat(user.getUserInfo().getEmail()).isEqualTo("new@example.com");
         assertThat(user.getNickname()).isEqualTo("등산러");
-        assertThat(user.getUserInfo().getPhoneNumber()).isEqualTo("01099998888");
+        assertThat(user.getUserInfo().getPhoneNumber()).isEqualTo("010-9999-8888");
         assertThat(user.getPhysicalInfo().getWeight()).isEqualTo(80L);
         assertThat(user.getPhysicalInfo().getEtc()).isEqualTo("메모");
     }
@@ -109,7 +109,7 @@ class UserTest {
                 .build();
         user.registerPersonalInformation("홍길동", 70L, 175L, BloodType.A);
 
-        user.updateUserProfile("임꺽정", "new@example.com", "등산러", "01099998888", 80L, 180L, BloodType.O, "메모");
+        user.updateUserProfile("임꺽정", "new@example.com", "등산러", "010-9999-8888", 80L, 180L, BloodType.O, "메모");
 
         assertThat(user.getPhysicalInfo().getWeight()).isEqualTo(80L);
         assertThat(user.getPhysicalInfo().getHeight()).isEqualTo(180L);
@@ -126,6 +126,8 @@ class UserTest {
                 .build();
 
         user.updateProfileFile("profile.png");
+        assertThat(user.getProfileFileName()).isEqualTo("profile.png");
+
         user.deleteProfileImage();
 
         assertThat(user.getProfileFileName()).isNull();

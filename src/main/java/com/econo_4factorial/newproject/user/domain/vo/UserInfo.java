@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class UserInfo {
     private static final Pattern VALID_EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,3}$");
     private static final Pattern VALID_NAME_PATTERN = Pattern.compile(   "^[a-zA-Z가-힣]+$");
-    private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile(   "^010-?(\\d{4})-?(\\d{4})$");
+    private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^010-(\\d{4})-(\\d{4})$");
 
     private static final String EMAIL = "이메일";
     private static final String NAME = "이름";

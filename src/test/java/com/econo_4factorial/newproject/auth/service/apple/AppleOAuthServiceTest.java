@@ -4,7 +4,7 @@ import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.Req.FullName;
 import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse;
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
-import com.econo_4factorial.newproject.auth.exception.InternalServerException.InvalidAudienceException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidAudienceException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.NotAppleIssuerException;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeEach;

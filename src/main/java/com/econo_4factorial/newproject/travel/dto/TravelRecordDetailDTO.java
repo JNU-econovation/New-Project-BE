@@ -1,10 +1,10 @@
 package com.econo_4factorial.newproject.travel.dto;
 
+import com.econo_4factorial.newproject.common.util.TimeMapper;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import org.locationtech.jts.geom.LineString;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,8 +19,8 @@ public record TravelRecordDetailDTO (
         Long courseId
 ) {
     public static TravelRecordDetailDTO from(TravelRecord travelRecord) {
-        Long startedAt = Timestamp.valueOf(travelRecord.getStartedAt()).getTime();
-        Long endAt = Timestamp.valueOf(travelRecord.getEndAt()).getTime();
+        Long startedAt = TimeMapper.toEpochMilli(travelRecord.getStartedAt());
+        Long endAt = TimeMapper.toEpochMilli(travelRecord.getEndAt());
         List<List<BigDecimal>> coordinates = convertCoordinatesFromLineString(travelRecord.getPaths());
 
         return new TravelRecordDetailDTO(

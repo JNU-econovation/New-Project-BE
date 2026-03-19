@@ -67,7 +67,7 @@ class RandomNicknamePoolManagerTest {
         given(valueOperations.get("users:randomNickname:pool:start")).willReturn(null);
 
         assertThatThrownBy(() -> randomNicknamePoolManager.manageRandomNicknameSuffixPool())
-                .isInstanceOf(NullPointerException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessage("랜덤 닉네임 숫자 생성 과정에서 start 위치의 데이터가 존재하지 않습니다");
     }
 }

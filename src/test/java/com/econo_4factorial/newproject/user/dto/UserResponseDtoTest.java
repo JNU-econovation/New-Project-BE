@@ -34,7 +34,7 @@ class UserResponseDtoTest {
 
     @Test
     void 프로필_응답을_생성한다() {
-        UserProfileDTO userProfileDTO = new UserProfileDTO("홍길동", "등산러", "01012345678", "test@example.com", 70L, 180L, null, null);
+        UserProfileDTO userProfileDTO = new UserProfileDTO("홍길동", "등산러", "010-1234-5678", "test@example.com", 70L, 180L, null, null);
 
         GetProfileRes response = GetProfileRes.from(userProfileDTO);
 

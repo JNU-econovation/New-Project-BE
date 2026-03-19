@@ -15,13 +15,13 @@ class UserProfileDTOTest {
                 .email("test@example.com")
                 .name("홍길동")
                 .build();
-        user.updateUserProfile("임꺽정", "new@example.com", "등산러", "01012345678", 70L, 175L, BloodType.AB, "메모");
+        user.updateUserProfile("임꺽정", "new@example.com", "등산러", "010-1234-5678", 70L, 175L, BloodType.AB, "메모");
 
         UserProfileDTO userProfileDTO = UserProfileDTO.from(user);
 
         assertThat(userProfileDTO.name()).isEqualTo("임꺽정");
         assertThat(userProfileDTO.nickname()).isEqualTo("등산러");
-        assertThat(userProfileDTO.phoneNumber()).isEqualTo("01012345678");
+        assertThat(userProfileDTO.phoneNumber()).isEqualTo("010-1234-5678");
         assertThat(userProfileDTO.email()).isEqualTo("new@example.com");
         assertThat(userProfileDTO.weight()).isEqualTo(70L);
         assertThat(userProfileDTO.height()).isEqualTo(175L);
@@ -36,7 +36,7 @@ class UserProfileDTOTest {
                 .email("test@example.com")
                 .name("홍길동")
                 .build();
-        user.registerBasicInformation("등산러", "01012345678", "test@example.com");
+        user.registerBasicInformation("등산러", "010-1234-5678", "test@example.com");
 
         UserProfileDTO userProfileDTO = UserProfileDTO.from(user);
 

@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.travel.dto;
 
+import com.econo_4factorial.newproject.common.util.TimeMapper;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,6 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -52,8 +52,8 @@ class TravelRecordDetailDTOTest {
 
         assertThat(result.recordId()).isEqualTo(21L);
         assertThat(result.displayName()).isEqualTo("장불재 코스");
-        assertThat(result.startedAt()).isEqualTo(Timestamp.valueOf(startedAt).getTime());
-        assertThat(result.endAt()).isEqualTo(Timestamp.valueOf(endAt).getTime());
+        assertThat(result.startedAt()).isEqualTo(TimeMapper.toEpochMilli(startedAt));
+        assertThat(result.endAt()).isEqualTo(TimeMapper.toEpochMilli(endAt));
         assertThat(result.duration()).isEqualTo(Duration.ofMinutes(210).toMillis());
         assertThat(result.length()).isEqualTo(7.8);
         assertThat(result.courseId()).isEqualTo(31L);

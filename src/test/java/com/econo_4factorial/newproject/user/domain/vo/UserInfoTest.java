@@ -11,7 +11,7 @@ class UserInfoTest {
     void 기본정보가_모두_채워지면_기본정보_등록완료로_판단한다() {
         UserInfo userInfo = new UserInfo("test@example.com", "홍길동");
 
-        userInfo.updatePhoneNumber("01012345678");
+        userInfo.updatePhoneNumber("010-1234-5678");
 
         assertThat(userInfo.isBasicInfoSet()).isTrue();
     }
@@ -35,12 +35,21 @@ class UserInfoTest {
     }
 
     @Test
-    void 전화번호를_정상적으로_수정한다() {
+    void 하이픈이_포함된_전화번호를_정상적으로_수정한다() {
         UserInfo userInfo = new UserInfo("test@example.com", "홍길동");
 
         userInfo.updatePhoneNumber("010-1234-5678");
 
         assertThat(userInfo.getPhoneNumber()).isEqualTo("010-1234-5678");
+    }
+
+    @Test
+    void 하이픈이_없는_전화번호면_예외가_발생한다() {
+        UserInfo userInfo = new UserInfo("test@example.com", "홍길동");
+
+        assertThatThrownBy(() -> userInfo.updatePhoneNumber("01012345678"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("전화번호값은 올바르지 않은 형태입니다");
     }
 
     @Test
@@ -62,10 +71,10 @@ class UserInfoTest {
     }
 
     @Test
-    void 잘못된_전화번호_형식이면_예외가_발생한다() {
+    void 잘못된_전화번호_접두사면_예외가_발생한다() {
         UserInfo userInfo = new UserInfo("test@example.com", "홍길동");
 
-        assertThatThrownBy(() -> userInfo.updatePhoneNumber("01112345678"))
+        assertThatThrownBy(() -> userInfo.updatePhoneNumber("011-1234-5678"))
                 .isInstanceOf(java.lang.IllegalArgumentException.class)
                 .hasMessage("전화번호값은 올바르지 않은 형태입니다");
     }

@@ -1,12 +1,12 @@
 package com.econo_4factorial.newproject.travel.dto;
 
 import com.econo_4factorial.newproject.common.constant.Difficulty;
+import com.econo_4factorial.newproject.common.util.TimeMapper;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +32,7 @@ class TravelRecordDTOTest {
         TravelRecordDTO result = TravelRecordDTO.from(travelRecord);
 
         assertThat(result.id()).isEqualTo(11L);
-        assertThat(result.date()).isEqualTo(Timestamp.valueOf(startedAt).getTime());
+        assertThat(result.date()).isEqualTo(TimeMapper.toEpochMilli(startedAt));
         assertThat(result.displayName()).isEqualTo("무등산 원효사 코스");
         assertThat(result.image()).isEqualTo("/course.png");
         assertThat(result.length()).isEqualTo(6.4);

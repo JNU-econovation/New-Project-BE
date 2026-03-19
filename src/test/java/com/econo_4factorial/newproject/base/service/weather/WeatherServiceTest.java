@@ -101,6 +101,26 @@ class WeatherServiceTest {
     }
 
     @Test
+    void 온도_정보가_없으면_업데이트하지_않는다() {
+        Base base = mock(Base.class);
+        Point point = geometryFactory.createPoint(new Coordinate(128.5, 37.5));
+        WeatherRes weatherRes = new WeatherRes(
+                new WeatherRes.WeatherArray[]{new WeatherRes.WeatherArray("Clear")},
+                new WeatherRes.Main(null)
+        );
+        given(baseRepository.findAll()).willReturn(List.of(base));
+        given(base.getId()).willReturn(33L);
+        given(base.getGeoPoint()).willReturn(point);
+        given(base.getAltitude()).willReturn(250L);
+        given(weatherFeignClient.getWeather(BigDecimal.valueOf(37.5), BigDecimal.valueOf(128.5), "test-key"))
+                .willReturn(weatherRes);
+
+        weatherService.updateAllBaseWeather();
+
+        verify(base, never()).updateWeather(anyString(), anyDouble());
+    }
+
+    @Test
     void 한_베이스에서_예외가_나도_다음_베이스는_계속_처리한다() {
         Base firstBase = mock(Base.class);
         Base secondBase = mock(Base.class);
