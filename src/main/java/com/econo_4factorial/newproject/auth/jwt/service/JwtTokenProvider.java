@@ -28,10 +28,10 @@ public class JwtTokenProvider {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public JwtTokenProvider(
-            @Value("${custom.jwt.access.secretkey}") String accessSecretKey,
-            @Value("${custom.jwt.refresh.secretKey}") String refreshSecretKey,
-            @Value("${custom.jwt.access.expiredTime}") Long accessTokenExpiredTime,
-            @Value("${custom.jwt.refresh.expiredTime}") Long refreshTokenExpiredTime,
+            @Value("${custom.jwt.access.secret-key}") String accessSecretKey,
+            @Value("${custom.jwt.refresh.secret-key}") String refreshSecretKey,
+            @Value("${custom.jwt.access.expired-time}") Long accessTokenExpiredTime,
+            @Value("${custom.jwt.refresh.expired-time}") Long refreshTokenExpiredTime,
             RefreshTokenRepository refreshTokenRepository
     ) {
         this.accessSecretKey = Keys.hmacShaKeyFor(accessSecretKey.getBytes());

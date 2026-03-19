@@ -1,602 +1,887 @@
 # 테스트 작성 계획
 
-## 1. 현재 상태 요약
-- 현재 테스트 클래스는 4개뿐이다.
-- 존재하는 테스트: `JwtTokenProviderTest`, `AuthTokenServiceTest`, `S3ServiceTest`, `NewProjectApplicationTests`
-- 현재 커버된 범위는 JWT 일부, 인증 토큰 일부, S3 서비스 일부, 스프링 컨텍스트 로드뿐이다.
-- Redis 연동 테스트는 없다.
-- 외부 API 연동 테스트는 없다.
-- Controller slice 테스트(`@WebMvcTest`)가 없다.
-- Repository/JPA/Querydsl 테스트가 없다.
-- 기능 단위 통합 테스트(`@SpringBootTest`)가 없다.
+## 1. 이 문서 읽는 법
 
-정리하면, 지금은 “핵심 인증 유틸 일부만 단위 테스트가 있는 상태”이고, 실제 사용자 기능 흐름이나 인프라 연동은 거의 검증되지 않은 상태다.
+이 문서는 두 축으로 읽는다.
 
-## 2. 기본 원칙
-- 1차는 순수 단위 테스트부터 작성한다.
-- 2차는 목 기반 서비스 단위 테스트를 확장한다.
-- 3차는 `@WebMvcTest`로 컨트롤러 계약을 고정한다.
-- 4차는 `@DataJpaTest`로 Repository/Querydsl 쿼리를 검증한다.
-- 5차는 `@SpringBootTest`로 “기능 단위 통합 테스트”를 작성한다.
-- 외부 I/O는 실제 호출하지 않고, Redis는 Testcontainers, HTTP 연동은 WireMock 또는 MockWebServer, S3는 우선 mock 기반으로 간다.
+- 분류 체계
+  - 테스트를 어떤 종류로 나눌지 정리한 기준
+  - 예: 순수 단위 테스트, 서비스 단위 테스트, WebMvc 테스트
+- 실행 전략
+  - 실제로 어떤 도메인을 먼저 끝까지 밀고 갈지 정리한 작업 순서
+  - 이 프로젝트는 도메인별 세로 슬라이스 방식으로 진행한다
+- 작업 배치
+  - 특정 `Slice`와 `Phase` 안에서 이번 턴에 실제로 처리한 실행 단위
+  - 문서 구조가 아니라 진행 기록을 위한 보조 단위다
 
-## 3. 권장 테스트 인프라
-- 단위 테스트: JUnit 5, Mockito, AssertJ
-- 컨트롤러 테스트: `@WebMvcTest`, `MockMvc`
-- JPA 테스트: `@DataJpaTest`
-- 기능 단위 통합 테스트: `@SpringBootTest`
-- Redis 통합 테스트: Redis Testcontainers
-- MySQL 쿼리 검증: MySQL Testcontainers
-- 외부 HTTP 연동 검증: WireMock 또는 MockWebServer
+즉, 이 문서의 의미는 아래와 같다.
 
-현재 `build.gradle`에는 아래 테스트 의존성이 없다. 계획 진행 전에 추가를 권장한다.
-- `com.h2database:h2`
-- `org.testcontainers:junit-jupiter`
-- `org.testcontainers:mysql`
-- `org.testcontainers:redis`
-- `com.github.tomakehurst:wiremock-jre8` 또는 `com.squareup.okhttp3:mockwebserver`
+- 테스트는 `Phase 1 -> Phase 2 -> ... -> Phase 6` 순서로 확장한다.
+- 하지만 실제 작성은 도메인 하나를 잡고 그 도메인 안에서 단위 -> 서비스 -> 계약 -> 저장소 -> 통합으로 내려간다.
+- 실제 진행 기록은 `Slice > Phase > 작업 배치` 순서로 남긴다.
 
-## 4. 작성 우선순위
+## 2. 체크박스 규칙
+
+- `[ ]` 아직 시작 안 함
+- `[x]` 완료
+
+이 문서는 작업용 체크리스트로 쓴다.
+
+## 3. 현재 상태
+
+- [x] `travel`, `auth`, `user`, `common`, `course`, `pathway`, `mountain`, `base`, `facility` 테스트 작성됨
+- [x] WebMvc 테스트 작성됨
+- [x] WebSocket 테스트 작성됨
+- [x] Repository/Querydsl 테스트 존재 (`travel`, `course`)
+- [x] Testcontainers 기반 MySQL 저장소 테스트 존재
+- [x] `NewProjectApplicationTests` 존재
+- [ ] Redis 전용 테스트 없음
+- [ ] 외부 API 연동 테스트 없음
+- [ ] 기능 단위 통합 테스트(Phase 6) 없음
+
+## 3-1. 리뷰 결과 요약
+
+- Testcontainers 환경에서 `@DataJpaTest` 컨텍스트 캐시 재사용 시 DB 연결이 끊기는 문제가 있어 `@DirtiesContext(AFTER_CLASS)`로 안정화함.
+- `Base.geo_point`의 unique 제약으로 MySQL DDL 경고가 발생하므로, 추후 저장소 테스트 확장 시 스키마 생성 로그를 확인할 것.
+- Repository/Querydsl 테스트는 현재 `travel`, `course`만 작성되어 있어 다른 도메인은 아직 공백.
+- Redis 전용 테스트, 외부 API stub 기반 테스트, Phase 6 기능 통합 테스트는 미진행.
+
+## 4. 분류 체계
 
 ### Phase 1. 순수 단위 테스트
-Spring context 없이 바로 돌릴 수 있는 테스트부터 작성한다.
 
-#### auth
-- `JwtTokenProvider`
-  - 기존 테스트 보강
-  - 잘못된 `Authorization` 헤더
-  - null 헤더
-  - refresh token 파싱 실패 케이스
-  - `getExpirationTime` 토큰 타입별 분기
-- `AppleJwtHandler`
-  - 헤더 파싱 성공
-  - 잘못된 토큰 형식
-  - 만료 토큰
-  - 서명 오류 토큰
-- `ApplePublicKeyGenerator`
-  - kid/alg 매칭 성공
-  - 매칭 실패 시 예외
-  - 잘못된 key spec 시 예외
-- `SmsUtilService`
-  - 인증번호 6자리 생성
-  - 숫자만 생성되는지 검증
-  - 전화번호 normalize
-- `AuthToken`
-  - `of()` 팩토리 결과 검증
-
-#### user
-- `BloodType`
-  - 대소문자 입력 허용
-  - 잘못된 혈액형 예외
-  - null 입력 예외
-- `User`
-  - 기본정보 등록
-  - 개인정보 등록
-  - 프로필 수정
-  - 프로필 이미지 파일명 저장/삭제
-  - 기본정보 설정 여부
-  - 개인정보 설정 여부
-- `UserInfo`
-  - 이메일/이름/전화번호 포맷 검증
-  - null/blank 입력 예외
-  - `isBasicInfoSet()`
-- `PhysicalInfo`
-  - 키/몸무게 범위 검증
-  - etc 길이 검증
-  - `isPersonalInfoSet()`
-- `UserAlert`
-  - 알림 값 변경
-- `UserMapper`
-  - Kakao DTO -> User
-  - Apple DTO -> User
-
-#### common
-- `RedirectUriBuilder`
-  - 성공 URI 파라미터 포함 여부
-  - 실패 URI 생성
-- `HttpHeadersGenerator`
-  - Location 헤더 설정
-- `ApiResponse`
-  - success/fail 응답 body/status
-- `ValidEmailPatternValidator`
-  - 정상 이메일
-  - 비정상 이메일
-  - null 입력 정책 명시
-
-#### base
-- `WeatherRes`
-  - `toDTO()` 매핑
-- `BaseDTO`
-  - 엔티티 -> DTO
-- `BaseDetailDTO`
-  - 엔티티 + 이미지 리스트 -> DTO
-- `CourseDetailDTO`
-  - 엔티티 -> DTO
-
-#### course
-- `CourseSearchCondition`
-  - `of()` 생성 검증
-- `BookmarkMapper`
-  - User/Course -> Bookmark
-- `CourseWithBookmarkDTO`
-  - `from()` 매핑
-
-#### facility
-- `FacilityDTO`
-  - 엔티티 -> DTO
-
-#### mountain
-- `MountainDTO`
-  - 엔티티 -> DTO
-- `SuggestedMountainDTO`
-  - 엔티티 -> DTO
-- `SuggestMountainService`
-  - null/blank 입력
-  - 초성 검색 분기
-  - 단어 검색 분기
-  - trim/normalize 동작
-
-#### pathway
-- `PathwayMapper`
-  - coordinates JSON 파싱 성공
-  - 잘못된 JSON 예외
+Spring context 없이 검증 가능한 엔티티, VO, DTO 변환, 유틸, 정책 객체를 테스트한다.
 
 ### Phase 2. 목 기반 서비스 단위 테스트
-Repository, Feign client, Redis template, 외부 어댑터를 mock 처리한다.
 
-#### auth.service
-- `OAuthService`
-  - 카카오 로그인 성공
-  - 애플 로그인 성공
-  - 로그인 실패 시 `AuthException` 전환
-  - logout 위임
-  - reissue 위임
-- `SmsService`
-  - 번호 중복 검증 후 저장/전송
-  - normalize 후 Redis 저장
-  - 인증 성공 시 Redis 삭제
-  - 저장 코드 없음 예외
-  - 인증 코드 불일치 예외
-- `KaKaoOAuthService`
-  - 로그인 URI 생성
-  - 인가 코드 -> access token -> user info 조회 체인
-- `AppleOAuthService`
-  - identity token 헤더 파싱
-  - 공개키 조회
-  - 공개키 생성
-  - claims 검증
-  - `AppleUserInfoDTO` 반환
+Repository, Redis, Feign, S3, WebSocket 세션 등을 mock 처리하고 서비스 로직을 테스트한다.
 
-#### auth.jwt
-- `AuthTokenService`
-  - 현재 테스트 보강
-  - `saveRefreshToken()`
-  - `isLoggedIn()`의 refresh token 미존재 케이스
+### Phase 3. WebMvc / WebSocket 계약 테스트
 
-#### user.service
-- `UserService`
-  - 사용자 조회 실패
-  - 카카오/애플 사용자 생성 분기
-  - 기존 사용자 재사용 분기
-  - 닉네임 중복 확인
-  - 이메일/전화번호 중복 검증
-  - 기본정보 등록
-  - 개인정보 등록
-  - 알림 조회/수정
-  - 프로필 조회/수정
-  - 프로필 이미지 파일명 조회/수정/삭제
-- `S3Service`
-  - 기존 테스트 보강
-  - 기본 이미지 삭제 방지
-  - 삭제 대상 파일이 S3에 없을 때 동작
-  - Presigned URL key prefix/확장자 검증
-- `RandomNicknameService`
-  - pool suffix 조합
-  - pool 비어 있을 때 정책 확인
-- `RandomNicknamePoolService`
-  - pop
-  - size
-  - suffix add
-- `RandomNicknamePoolManager`
-  - threshold 이하일 때 보충
-  - threshold 초과일 때 skip
-  - start position 조회/갱신
-  - suffix 범위 생성 포맷
+HTTP API 계약과 WebSocket 메시지 계약, 예외 응답 구조를 고정한다.
 
-#### base.service
-- `BaseService`
-  - mountain 존재 검증
-  - base 목록 조회
-  - 상세 조회 시 이미지 조합
-- `WeatherService`
-  - 정상 응답이면 base 날씨 갱신
-  - 응답 null이면 skip
-  - temperature/weather null이면 skip
-  - 외부 API 예외를 base 단위로 삼키고 다음 base 진행
+### Phase 4. JPA / Querydsl 테스트
 
-#### course/facility/mountain/pathway.service
-- `CourseService`
-  - course 조회 성공/실패
-  - 코스 목록 정렬 조건 전달
-  - 상세 조회
-- `BookmarkService`
-  - 즐겨찾기 추가
-  - 즐겨찾기 삭제 성공/실패
-  - 즐겨찾기 목록 조회
-- `FacilityService`
-  - mountain 존재 검증
-  - 시설 목록 조회
-- `MountainService`
-  - 전체 산 목록
-  - 산 존재 검증
-  - 초성 검색
-  - 이름 포함 검색
-- `CoursePathwaySequenceService`
-  - courseId 기반 조회 위임
-- `PathwayService`
-  - sequence -> pathway DTO 매핑
+JPA 매핑, Querydsl 정렬, 조회 쿼리, 저장소 동작을 검증한다.
 
-#### common
-- `JwtInterceptor`
-  - preflight 허용
-  - reissue URI 허용
-  - 일반 요청은 토큰 추출 + 로그인 검사
-- `UserIdResolver`
-  - `@UserId` 파라미터 지원 여부
-  - 헤더 없음 예외
-  - 토큰에서 userId 추출
-- `NicknamePoolInitializer`
-  - Redis ready 성공
-  - Redis ready 실패 후 recover
-  - start key 없으면 초기화
-  - 초기화 후 pool manager 호출
-- `WeatherScheduler`
-  - startup/run 시 weatherService 호출
+### Phase 5. Redis / MySQL / Testcontainers 테스트
 
-### Phase 3. 컨트롤러 슬라이스 테스트
-`@WebMvcTest`로 request/response 계약, validation, 예외 응답을 고정한다.
-
-#### auth.controller
-- `OAuthController`
-  - 카카오 로그인 URI 조회
-  - 카카오 콜백 시 redirect Location 헤더
-  - 애플 로그인 성공
-  - 로그아웃
-  - reissue
-  - 잘못된 body/파라미터 validation
-- `SmsController`
-  - 인증번호 전송
-  - 인증번호 검증
-  - validation 실패
-
-#### user.controller
-- `UserController`
-  - 프로필 조회/수정
-  - 프로필 상태 조회
-  - 기본정보 등록
-  - 개인정보 등록
-  - 알림 조회/수정
-  - 랜덤 닉네임 조회
-  - 닉네임 중복 확인
-- `ImageController`
-  - presigned URL 요청
-  - 이미지 조회
-  - 이미지 삭제
-  - 파일명 저장
-
-#### read-only controller
-- `MountainController`
-- `BaseController`
-- `FacilityController`
-- `CourseController`
-- `BookmarkController`
-- `PathwayController`
-
-각 컨트롤러는 아래를 공통 검증한다.
-- 정상 응답의 status/body 구조
-- `@UserId` resolver 적용
-- validation 실패 응답
-- 서비스 예외 -> `GlobalExceptionHandler` 변환 결과
-
-### Phase 4. Repository / Querydsl 통합 테스트
-`@DataJpaTest` 중심으로 작성한다.
-
-#### JPA repository
-- `UserRepository`
-  - kakaoId/appleSub 조회
-  - nickname/email/phone exists
-- `BookmarkRepository`
-  - userId + courseId 조회
-  - userId 기준 목록 조회
-- `BaseRepository`
-  - mountainId 기준 목록
-- `BaseImageRepository`
-  - baseId 기준 이미지 조회
-- `FacilityRepository`
-  - mountainId 기준 목록
-- `MountainRepository`
-  - initials 시작 검색
-  - 이름 포함 검색
-
-#### Querydsl custom repository
-- `CourseCustomRepositoryImpl`
-  - mountainId 필터
-  - bookmark 여부 계산
-  - difficulty 정렬
-  - length 정렬
-  - default 정렬
-- `CoursePathwaySequenceCustomRepositoryImpl`
-  - courseId 기준 sequence 정렬
-  - pathway/departure/destination fetch join 결과
-
-주의:
-- Querydsl 정렬/조인 로직은 H2로 1차 검증하되, 실제 운영 DB가 MySQL이므로 최종적으로는 MySQL Testcontainers smoke 테스트를 추가하는 것이 안전하다.
-
-### Phase 5. Redis 통합 테스트
-Redis는 단위 테스트만으로는 충분하지 않다. 최소한 아래는 실제 Redis와 붙여야 한다.
-
-#### Redis adapter
-- `SmsRepository`
-  - `sms:{phone}` key 저장
-  - TTL 적용 여부
-  - 조회/삭제
-- `RefreshTokenRepository`
-  - 저장/조회/삭제
-  - `existsByRefreshToken`
-- `BlacklistTokenRepository`
-  - 저장/존재 확인
-- `RandomNicknamePoolService`
-  - set pop/add/size
-- `NicknamePoolInitializer`
-  - key 초기화 + pool append
-
-권장 방식:
-- `@SpringBootTest` 또는 `@DataRedisTest` + Redis Testcontainers
-- 테스트 전용 profile에서 SSL 비활성화
+Redis와 MySQL spatial 의존 구간을 실제 인프라와 유사하게 검증한다.
 
 ### Phase 6. 기능 단위 통합 테스트
-여기서 말하는 기능 단위 통합 테스트는 “한 API 또는 한 유즈케이스가 여러 레이어를 통과하는 흐름”을 검증하는 테스트다.
 
-#### 인증/인가 플로우
-- 카카오 로그인 성공
-  - controller -> service -> user 생성/조회 -> auth token 발급 -> redirect
-  - 외부 카카오 API는 stub
-- 애플 로그인 성공
-  - controller -> apple 검증 -> user 생성/조회 -> auth token 발급
-  - 외부 apple keys/JWT는 stub 또는 fake key 사용
-- 토큰 재발급
-  - refresh token 저장 상태에서 재발급
-- 로그아웃
-  - refresh token 삭제 + blacklist 저장
+HTTP API 흐름과 WebSocket 이벤트 흐름을 레이어 관통으로 검증한다.
 
-#### SMS 인증 플로우
-- 인증번호 발송
-  - normalize -> Redis 저장 -> SMS sender 호출
-- 인증번호 검증 성공
-  - Redis 조회 -> 검증 -> 삭제
-- 인증번호 검증 실패
-  - 미존재/불일치
+## 5. 실행 전략
 
-#### 사용자 프로필 플로우
-- 기본정보 등록
-- 개인정보 등록
-- 프로필 상태 조회
-- 프로필 수정
-- 알림 설정 조회/수정
-- 닉네임 중복 확인
+이 프로젝트는 “모든 도메인의 단위 테스트를 먼저 다 끝낸 뒤, 그 다음 서비스 테스트를 전부 한다” 방식보다,
+도메인 하나를 먼저 잡고 그 도메인 안에서 테스트 단위를 확장하는 방식이 더 적합하다.
 
-#### 이미지 플로우
-- presigned URL 발급
-- 파일명 저장
-- 이미지 조회
-- 이미지 삭제
+권장 작업 순서는 아래다.
 
-#### 읽기 전용 조회 플로우
-- 산 목록 조회
-- 산 자동완성 조회
-- 베이스 목록/상세 조회
-- 시설 조회
-- 코스 목록 조회
-- 코스 상세 조회
-- 경로 조회
-- 즐겨찾기 등록/삭제/목록 조회
+1. `travel + websocket + spatial query`
+2. `auth + user + common`
+3. `course + pathway`
+4. `mountain + base + facility`
 
-#### 스케줄러/백그라운드 플로우
-- `WeatherScheduler` 실행 시 각 base 날씨 갱신
-- `RandomNicknamePoolScheduler` 실행 시 pool 보충
+이 순서인 이유:
 
-## 5. 패키지별 전체 테스트 대상 목록
+- 작성 시작 당시 `travel`은 신규 코드가 많고 테스트가 거의 없는 상태였다.
+- 상태 전이, WebSocket, in-memory store, geometry 계산, MySQL spatial query가 한 흐름에 묶여 있다.
+- 수동 검증 비용이 높다.
+- 이미 코드상 리스크가 보인다.
 
-### auth 패키지
-- 단위 테스트
-  - `JwtTokenProvider`
-  - `AuthTokenService`
-  - `OAuthService`
-  - `SmsService`
-  - `SmsUtilService`
-  - `AppleJwtHandler`
-  - `ApplePublicKeyGenerator`
-  - `AppleOAuthService`
-  - `KaKaoOAuthService`
-  - DTO/record 변환 메서드
-- 통합 테스트
-  - `OAuthController`
-  - `SmsController`
-  - `RefreshTokenRepository`
-  - `BlacklistTokenRepository`
+따라서 실제 작업 방식은 이렇게 가져간다.
 
-### user 패키지
-- 단위 테스트
-  - `User`
-  - `UserInfo`
-  - `PhysicalInfo`
-  - `UserAlert`
-  - `BloodType`
-  - `UserMapper`
-  - `UserService`
-  - `S3Service`
-  - `RandomNicknameService`
-  - `RandomNicknamePoolService`
-  - `RandomNicknamePoolManager`
-- 통합 테스트
-  - `UserController`
-  - `ImageController`
-  - `UserRepository`
+- `travel`을 먼저 잡는다.
+- `travel`의 순수 단위 테스트를 쓴다.
+- 바로 이어서 `travel` 서비스 단위 테스트를 쓴다.
+- 그 다음 `travel`의 controller/WebSocket 계약 테스트를 쓴다.
+- 그 다음 `travel` 저장소/MySQL spatial 테스트를 쓴다.
+- 마지막으로 `travel` 기능 통합 테스트를 붙인다.
+- 그 다음 도메인으로 `auth + user`로 넘어간다.
 
-### common 패키지
-- 단위 테스트
-  - `JwtInterceptor`
-  - `UserIdResolver`
-  - `RedirectUriBuilder`
-  - `HttpHeadersGenerator`
-  - `ApiResponse`
-  - `ValidEmailPatternValidator`
-  - `NicknamePoolInitializer`
-  - `WeatherScheduler`
-- 통합 테스트
-  - `GlobalExceptionHandler`
-  - `WebConfig`가 resolver/interceptor를 실제로 등록하는지 확인하는 MVC 통합 테스트
+## 6. 공통 인프라 준비 체크리스트
 
-### base 패키지
-- 단위 테스트
-  - `BaseService`
-  - `WeatherService`
-  - `WeatherRes`
-  - `BaseDTO`
-  - `BaseDetailDTO`
-  - `CourseDetailDTO`
-- 통합 테스트
-  - `BaseController`
-  - `BaseRepository`
-  - `BaseImageRepository`
+- [x] `build.gradle`에 `testcontainers-junit-jupiter` 추가
+- [x] `build.gradle`에 `testcontainers-mysql` 추가
+- [x] Redis Testcontainers 전략 확정
+- [x] `build.gradle`에 `WireMock` 또는 `MockWebServer` 추가
+- [x] `src/test/resources/application-test.yml` 작성
+- [x] MySQL Testcontainers 공통 베이스 클래스 준비
+- [x] Redis Testcontainers 공통 베이스 클래스 준비
+- [ ] WebSocket 테스트용 공통 helper 준비
 
-### mountain 패키지
-- 단위 테스트
-  - `MountainService`
-  - `SuggestMountainService`
-  - `MountainDTO`
-  - `SuggestedMountainDTO`
-- 통합 테스트
-  - `MountainController`
-  - `MountainRepository`
+### 6-1. 외부 의존성 테스트 원칙
 
-### facility 패키지
-- 단위 테스트
-  - `FacilityService`
-  - `FacilityDTO`
-- 통합 테스트
-  - `FacilityController`
-  - `FacilityRepository`
+- `Phase 1 ~ Phase 3`에서는 Redis, S3, SMS, OAuth, OpenWeather 같은 외부 의존성을 mock으로 끊고 로직/계약만 검증한다.
+- `Phase 5`에서는 Redis는 Testcontainers, 외부 HTTP 연동은 `WireMock` 또는 `MockWebServer` 기반 stub 서버로 검증한다.
+- 프로필 분리와 `application-test.yml` 정리는 완료됐고, `@SpringBootTest`는 Testcontainers 기반 DB/Redis 주입으로 동작한다.
+- Testcontainers 기반 테스트 실행 전에는 Docker Desktop 또는 호환 Docker runtime이 반드시 실행 중이어야 한다.
+- 실제 네트워크 호출을 테스트에서 직접 사용하지 않는다.
 
-### course 패키지
-- 단위 테스트
-  - `CourseService`
-  - `BookmarkService`
-  - `CourseSearchCondition`
-  - `CourseWithBookmarkDTO`
-  - `BookmarkMapper`
-- 통합 테스트
-  - `CourseController`
-  - `BookmarkController`
-  - `BookmarkRepository`
-  - `CourseCustomRepositoryImpl`
+## 7. Slice 1: travel + websocket + spatial query
 
-### pathway 패키지
-- 단위 테스트
-  - `PathwayMapper`
-  - `PathwayService`
-  - `CoursePathwaySequenceService`
-- 통합 테스트
-  - `PathwayController`
-  - `CoursePathwaySequenceCustomRepositoryImpl`
+### 7-1. Phase 1 체크리스트
 
-### travel 패키지
-- 단위 테스트
-  - `WebSocketHandler`
-    - 연결/종료 시 session 관리
-- 통합 테스트
-  - 현재 메시지 처리 로직이 비어 있으므로 우선순위 낮음
+- [x] `TravelEvent`
+- [x] `Status`
+- [x] `EventPolicy`
+- [x] `GeoUtil`
+- [x] `DateUtil`
+- [x] `TimeMapper`
+- [x] `TravelTrackingInfo`
+- [x] `RemainingTime`
+- [x] `TravelMapper`
+- [x] `PayloadMapper`
+- [x] `TravelResponseMapper`
+- [x] `TravelDistanceCalculator`
+- [x] `CourseLocationMatcher`
+- [x] `ClosestCoordinateInfo`
+- [x] `TravelRecordDTO`
+- [x] `TravelRecordDetailDTO`
+- [x] `GetTravelRecordByMonthRes`
+- [x] `GetTravelRecordDetailRes`
+- [x] `TravelEventResponseData`
 
-## 6. 추천 실행 순서
-1. 순수 도메인/유틸 단위 테스트부터 작성한다.
-2. `UserService`, `OAuthService`, `SmsService`, `JwtInterceptor`처럼 핵심 흐름을 잡는 서비스 테스트를 작성한다.
-3. `UserController`, `OAuthController`, `ImageController`, `SmsController` WebMvc 테스트를 먼저 만든다.
-4. `CourseCustomRepositoryImpl`, `CoursePathwaySequenceCustomRepositoryImpl`, `UserRepository` 등 저장소 테스트를 추가한다.
-5. Redis 통합 테스트를 추가한다.
-6. 마지막에 로그인, 프로필, 즐겨찾기, 이미지, SMS 중심으로 기능 단위 통합 테스트를 완성한다.
+<details>
+<summary>작업 결과</summary>
 
-## 7. 테스트 작성 시 바로 드러날 구조 개선 포인트
+- 이번 배치에서는 `Slice 1 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelEventTest`
+  - `EventPolicyTest`
+  - `GeoUtilTest`
+  - `TravelDistanceCalculatorTest`
+  - `CourseLocationMatcherTest`
+  - `DateUtilTest`
+  - `TimeMapperTest`
+- 검증한 내용:
+  - 이벤트 이름 매핑과 잘못된 이벤트 예외
+  - 상태별 허용 이벤트 정책
+  - 좌표 -> `Point` / `LineString` 변환과 SRID
+  - 이전 위치 null 처리, km/m 거리 계산, 남은 거리 계산, 목표 지점 통과 시 0 처리
+  - 가장 가까운 코스 좌표 인덱스 계산과 빈 배열 예외
+  - 월 시작/종료 시각 계산
+  - epoch millis -> `Asia/Seoul` 기준 `LocalDateTime` 변환
+- 실행 결과:
+  - `./gradlew test --tests '*TravelEventTest' --tests '*EventPolicyTest' --tests '*GeoUtilTest' --tests '*TravelDistanceCalculatorTest' --tests '*CourseLocationMatcherTest' --tests '*DateUtilTest' --tests '*TimeMapperTest'` 통과
 
-### 7-1. 책임 분리 우선 개선 대상
-- `UserService`
-  - 조회, 중복 검증, 프로필 변경, OAuth 사용자 생성이 한 클래스에 몰려 있다.
-  - `UserQueryService`, `UserProfileService`, `UserRegistrationService` 정도로 분리하면 테스트가 쉬워진다.
-- `OAuthService`
-  - provider 선택, 예외 전환, 토큰 발급이 한 메서드에 묶여 있다.
-  - `KakaoLoginUseCase`, `AppleLoginUseCase`로 분리하는 편이 낫다.
-- `AppleOAuthService`
-  - 헤더 파싱, 공개키 조회, 공개키 생성, claims 검증, DTO 생성이 한 메서드에 다 들어 있다.
-  - `AppleIdentityTokenVerifier` 같은 검증 전용 컴포넌트로 빼는 것이 좋다.
-- `WeatherService`
-  - 외부 호출, 응답 파싱, 온도 보정, 엔티티 갱신, 예외 처리까지 한 메서드에서 수행한다.
-  - fetch/convert/update 단위로 분리해야 테스트가 간단해진다.
-- `RandomNicknamePoolManager` / `NicknamePoolInitializer`
-  - Redis 키 관리, pool 정책, 초기화 라이프사이클이 섞여 있다.
-  - key access와 business rule을 분리하는 것이 좋다.
-- `SmsService` / `SmsUtilService`
-  - normalize, code generation, 저장, 발송이 분산되어 있고 트랜잭션 관점도 불명확하다.
-  - `PhoneNumberNormalizer`, `VerificationCodeGenerator`, `SmsSender`로 나누면 테스트가 쉬워진다.
-- `PathwayMapper`
-  - mapper 안에서 JSON 파싱까지 수행한다.
-  - 좌표 파싱 로직을 별도 parser로 빼면 실패 케이스 테스트가 단순해진다.
-- `JwtInterceptor` 와 `UserIdResolver`
-  - 토큰 추출/파싱 로직이 중복된다.
-  - 공통 `AccessTokenExtractor` 같은 컴포넌트로 묶는 편이 낫다.
+</details>
 
-### 7-2. 테스트로 바로 잡아야 할 리스크
-- `AppleOAuthService.isOurServiceAudience()`
-  - 현재 조건이 뒤집혀 보인다.
-  - 지금 코드는 `aud == client_id`일 때 예외를 던지고 있다.
-  - 이 부분은 테스트를 먼저 쓰고 수정하는 것이 안전하다.
-- `AppleJwtHandler.decodeHeader()`
-  - JWT header는 base64url인데 일반 `Base64.getDecoder()`를 사용 중이다.
-  - URL-safe decoder 테스트가 필요하다.
-- `ValidEmailPatternValidator`
-  - `value == null`일 때 NPE가 날 수 있다.
-  - null 허용 여부를 정책으로 정하고 validator를 맞춰야 한다.
-- `RandomNicknameService`
-  - pool이 비면 `"무등산null"`이 반환될 수 있다.
-  - empty pool 정책이 필요하다.
-- `SmsService.sendSms()`
-  - Redis 저장 후 실제 발송을 시도한다.
-  - 발송 실패 시 Redis에 만료 코드가 남을 수 있다.
-- `UserService.registerBasicInformation()`
-  - 이메일 중복만 검사하고 전화번호 중복은 검사하지 않는다.
-- `UserService.updateUserProfile()`
-  - 이메일/전화번호 unique 정책을 서비스 레벨에서 보장하지 않는다.
-- `WeatherRes.toDTO()`
-  - `weatherArray[0]`와 `main`이 무조건 존재한다고 가정한다.
-- `WeatherService.updateAllBaseWeather()`
-  - 예외를 모두 삼켜서 실패 원인 추적이 어렵다.
-- `WebSocketHandler`
-  - 메시지 처리 로직이 비어 있다.
-  - 현재는 연결/종료 관리만 테스트하면 된다.
+<details>
+<summary>작업 결과</summary>
 
-## 8. 현실적인 첫 주 작업안
-- Day 1
-  - 도메인/유틸 단위 테스트 작성
-  - `BloodType`, `UserInfo`, `PhysicalInfo`, `User`, `UserAlert`, `RedirectUriBuilder`, `HttpHeadersGenerator`
-- Day 2
-  - 인증/유저 서비스 단위 테스트 작성
-  - `UserService`, `OAuthService`, `SmsService`, `AppleJwtHandler`, `ApplePublicKeyGenerator`
-- Day 3
-  - `UserController`, `ImageController`, `OAuthController`, `SmsController` WebMvc 테스트 작성
-- Day 4
-  - `UserRepository`, `BookmarkRepository`, `CourseCustomRepositoryImpl`, `CoursePathwaySequenceCustomRepositoryImpl` 테스트 작성
-- Day 5
-  - Redis 통합 테스트 + 로그인/프로필/즐겨찾기 기능 단위 통합 테스트 시작
+- 이번 배치에서는 `Slice 1 > Phase 1 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelTrackingInfoTest`
+  - `TravelMapperTest`
+  - `TravelResponseMapperTest`
+  - `PayloadMapperTest`
+- 검증한 내용:
+  - 산행 상태 객체의 상태 전이와 경로/거리/시간 갱신
+  - 기본 산행정보 생성과 산행기록 매핑
+  - start/current/pause/restart/end/keep-alive 응답 매핑
+  - WebSocket JSON 메시지 -> `Payload` 파싱
+  - `Payload.data` -> 요청 DTO 변환
+- 실행 결과:
+  - `./gradlew test --tests '*TravelTrackingInfoTest' --tests '*TravelMapperTest' --tests '*TravelResponseMapperTest' --tests '*PayloadMapperTest' --tests '*WebSocketAuthServiceTest'` 통과
 
-## 9. 결론
-- 지금은 테스트 기반이 거의 없는 상태라, 바로 `@SpringBootTest`부터 늘리면 유지보수가 어렵다.
-- 순수 단위 테스트 -> 목 기반 서비스 테스트 -> WebMvc 테스트 -> Repository 테스트 -> 기능 단위 통합 테스트 순서로 가는 것이 가장 비용 대비 효과가 좋다.
-- 우선순위는 `auth`, `user`, `common`을 먼저 잡고, 그 다음 조회성 패키지(`mountain`, `base`, `facility`, `course`, `pathway`)를 채우는 방향이 적절하다.
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 1 > 작업 배치 3` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `StatusTest`
+  - `RemainingTimeTest`
+  - `ClosestCoordinateInfoTest`
+  - `TravelRecordDTOTest`
+  - `TravelRecordDetailDTOTest`
+  - `GetTravelRecordByMonthResTest`
+  - `GetTravelRecordDetailResTest`
+  - `TravelEventResponseDataTest`
+- 같이 수정한 코드:
+  - `TravelRecordDetailDTO.from()`의 `endAt` 매핑 수정
+- 검증한 내용:
+  - 상태 enum 정의와 `valueOf`
+  - 남은시간 VO 생성/갱신
+  - 가장 가까운 좌표 정보 record 저장
+  - 월별/상세 산행기록 DTO 변환
+  - 좌표 배열과 상세 응답 변환
+  - 산행 이벤트 응답 데이터 builder
+- 실행 결과:
+  - `./gradlew test --tests '*StatusTest' --tests '*RemainingTimeTest' --tests '*ClosestCoordinateInfoTest' --tests '*TravelRecordDTOTest' --tests '*TravelRecordDetailDTOTest' --tests '*GetTravelRecordByMonthResTest' --tests '*GetTravelRecordDetailResTest' --tests '*TravelEventResponseDataTest' --tests '*TravelRecordControllerTest'` 통과
+
+</details>
+
+### 7-2. Phase 2 체크리스트
+
+- [x] `TravelTrackingInfoStore`
+- [x] `RemainingTimeCalculator`
+- [x] `TravelDomainService`
+- [x] `TravelRecordService`
+- [x] `WebSocketAuthService`
+- [x] `TravelService`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `WebSocketAuthServiceTest`
+- 검증한 내용:
+  - 인증 이벤트 처리 후 세션 인증 상태 저장
+  - 인증 실패 시 세션 미저장
+  - 세션 제거 시 인증 정보 삭제
+- 실행 결과:
+  - `./gradlew test --tests '*TravelTrackingInfoTest' --tests '*TravelMapperTest' --tests '*TravelResponseMapperTest' --tests '*PayloadMapperTest' --tests '*WebSocketAuthServiceTest'` 통과
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 2 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelDomainServiceTest`
+  - `TravelRecordServiceTest`
+  - `TravelServiceTest`
+- 검증한 내용:
+  - 가장 가까운 좌표, 남은시간, 도착여부, 이탈여부, 누적거리 계산
+  - 월별 기록 조회, 기록 저장, 상세 조회, 미존재 예외, 삭제
+  - `start`, `current-position`, `pause`, `keep-alive`, `restart`, `end` 이벤트 라우팅
+  - 허용되지 않은 이벤트 예외
+  - 종료 후 기록 저장 및 tracking info 삭제
+  - 남아있는 tracking info 정리
+- 실행 결과:
+  - `./gradlew test --tests '*TravelDomainServiceTest' --tests '*TravelRecordServiceTest' --tests '*TravelServiceTest'` 통과
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 2 > 작업 배치 3` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelTrackingInfoStoreTest`
+  - `RemainingTimeCalculatorTest`
+- 검증한 내용:
+  - 산행 정보 생성, 상태 조회, 현재위치/일시정지/재시작/종료 업데이트, 삭제
+  - 미존재 tracking info 조회 예외
+  - 남은거리 기반 경유지/도착지 남은시간 계산
+  - 남은거리 0초 처리와 코스 조회 실패 예외
+- 실행 결과:
+  - `./gradlew test --tests '*TravelTrackingInfoStoreTest' --tests '*RemainingTimeCalculatorTest'` 통과
+
+</details>
+
+### 7-3. Phase 3 체크리스트
+
+- [x] `TravelRecordController`
+- [x] `WebSocketHandler`
+- [x] `WebSocketResponser`
+- [x] `WebSocketConfig`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Phase 3` 계약 테스트 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelRecordControllerTest`
+  - `WebSocketHandlerTest`
+  - `WebSocketResponserTest`
+  - `WebSocketConfigTest`
+- 검증한 내용:
+  - 월별 기록 조회, 상세 조회, 삭제 API 응답 구조와 예외 응답 구조
+  - WebSocket 인증 이벤트 처리, 미인증 세션 종료, 실시간 이벤트 위임, 예외별 실패 응답
+  - WebSocket 성공/실패 메시지 JSON 직렬화
+  - `/travel-navigate` 핸들러 등록과 허용 origin 설정
+- 실행 결과:
+  - `./gradlew test --tests '*TravelRecordControllerTest' --tests '*WebSocketHandlerTest' --tests '*WebSocketResponserTest' --tests '*WebSocketConfigTest'` 통과
+
+</details>
+
+### 7-4. Phase 4 체크리스트
+
+- [x] `TravelRecordRepository`
+- [x] `CourseRepository.isUserArrivedDestination()` (`travel` 흐름에서 사용하는 spatial query 선검증)
+
+### 7-5. Phase 5 체크리스트
+
+- [x] MySQL Testcontainers로 `TravelRecord` geometry 저장/조회 검증
+- [x] MySQL Testcontainers로 `ST_Distance_Sphere` 검증
+- [ ] WebSocket 인증 시나리오 테스트 환경 구성
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 1 > Phase 4/5 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `TravelRecordRepositoryTest`
+  - `CourseRepositoryTest`
+- 검증한 내용:
+  - `TravelRecordRepository`의 기간/사용자 조회와 소유권 조회
+  - `CourseRepository.isUserArrivedDestination()`의 `ST_Distance_Sphere` 결과
+- 실행 결과:
+  - `./gradlew test --tests '*TravelRecordRepositoryTest' --tests '*CourseRepositoryTest'`
+  - 현재는 `@DirtiesContext(AFTER_CLASS)` 적용 후 정상 통과
+  - 초기 시도에서는 Docker 미실행 및 컨텍스트 재사용 이슈로 MySQL 연결 실패가 있었음
+
+</details>
+
+### 7-6. Phase 6 체크리스트
+
+- [ ] 월별 산행 기록 조회 API
+- [ ] 산행 기록 상세 조회 API
+- [ ] 산행 기록 삭제 API
+- [ ] WebSocket `auth-user`
+- [ ] WebSocket `start`
+- [ ] WebSocket `current-position`
+- [ ] WebSocket `pause`
+- [ ] WebSocket `keep-alive`
+- [ ] WebSocket `restart`
+- [ ] WebSocket `end`
+- [ ] 종료 후 `TravelRecord` 저장 검증
+- [ ] 종료 후 tracking info 제거 검증
+
+## 8. Slice 2: auth + user + common
+
+### 8-1. Phase 1 체크리스트
+
+- [x] `JwtTokenProvider` 보강
+- [x] `AuthToken`
+- [x] `AppleJwtHandler`
+- [x] `ApplePublicKeyGenerator`
+- [x] `SmsUtilService`
+- [x] `AppleLoginReq`
+- [x] `AppleLoginRes`
+- [x] `SendSmsRes`
+- [x] `VerifySmsRes`
+- [x] `KaKaoUserInfoRes`
+- [x] `BloodType`
+- [x] `User`
+- [x] `UserInfo`
+- [x] `PhysicalInfo`
+- [x] `UserAlert`
+- [x] `UserMapper`
+- [x] `UserProfileDTO`
+- [x] `UserAlertSettingDTO`
+- [x] `ProfileStatusInfoDTO`
+- [x] `GetProfileRes`
+- [x] `GetProfileStatusRes`
+- [x] `GetAlertSettingRes`
+- [x] `GetRandomNicknameRes`
+- [x] `GetNicknameAvailabilityRes`
+- [x] `RedirectUriBuilder`
+- [x] `HttpHeadersGenerator`
+- [x] `ApiResponse`
+- [x] `ValidEmailPatternValidator`
+- [x] `JwtInterceptor`
+- [x] `UserIdResolver`
+- [x] `NicknamePoolInitializer`
+- [x] `GeometryConfig`
+- [x] `WebSocketSuccessRes`
+- [x] `WebSocketFailRes`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `AuthDtoTest`
+  - `AuthTokenTest`
+  - `BloodTypeTest`
+  - `UserInfoTest`
+  - `PhysicalInfoTest`
+  - `UserAlertTest`
+  - `UserTest`
+  - `UserMapperTest`
+  - `UserProfileDTOTest`
+  - `UserResponseDtoTest`
+  - `RedirectUriBuilderTest`
+  - `HttpHeadersGeneratorTest`
+  - `ApiResponseTest`
+  - `ValidEmailPatternValidatorTest`
+  - `GeometryConfigTest`
+  - `WebSocketResponseDtoTest`
+- 검증한 내용:
+  - Apple/Kakao 요청·응답 DTO 변환
+  - 토큰 record 생성
+  - 혈액형 파싱과 잘못된 값 예외
+  - `User`, `UserInfo`, `PhysicalInfo`, `UserAlert` 상태 변경
+  - `UserMapper`, `UserProfileDTO`, 프로필/알림 응답 DTO 변환
+  - redirect URI, Location 헤더, API 응답 body 생성
+  - 이메일 정규식 검증, GeometryFactory SRID, WebSocket 성공/실패 응답
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 1 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `AppleJwtHandlerTest`
+  - `ApplePublicKeyGeneratorTest`
+  - `SmsUtilServiceTest`
+  - `JwtInterceptorTest`
+  - `UserIdResolverTest`
+  - `NicknamePoolInitializerTest`
+- 같이 보강한 테스트 파일:
+  - `JwtTokenProviderTest`
+- 검증한 내용:
+  - Apple 토큰 헤더 파싱, claim 검증, 공개키 선택/생성
+  - SMS 메시지 생성, 발송 실패 예외, 인증번호/전화번호 정규화
+  - JWT interceptor의 preflight, reissue, 로그인 요청 분기
+  - `@UserId` argument resolver 동작과 토큰 누락 예외
+  - Redis 준비 확인, 닉네임 풀 시작 위치 초기화, recover 예외 변환
+  - `JwtTokenProvider` 헤더 파싱 예외와 refresh token 서명 검증 보강
+
+</details>
+
+### 8-2. Phase 2 체크리스트
+
+- [x] `AuthTokenService` 보강
+- [x] `OAuthService`
+- [x] `SmsService`
+- [x] `KaKaoOAuthService`
+- [x] `AppleOAuthService`
+- [x] `UserService`
+- [x] `S3Service` 보강
+- [x] `RandomNicknameService`
+- [x] `RandomNicknamePoolService`
+- [x] `RandomNicknamePoolManager`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `SmsServiceTest`
+  - `KaKaoOAuthServiceTest`
+  - `AppleOAuthServiceTest`
+  - `OAuthServiceTest`
+- 보강한 테스트 파일:
+  - `AuthTokenServiceTest`
+- 같이 수정한 코드:
+  - `AppleOAuthService.isOurServiceAudience()`
+- 검증한 내용:
+  - refresh token 저장/재발급/로그아웃/로그인상태 검증
+  - SMS 인증번호 저장/검증/삭제 흐름
+  - Kakao 로그인 URI 생성과 access token -> user info 조회 흐름
+  - Apple 공개키/claim 기반 user info 조회와 issuer/audience 검증
+  - 상위 `OAuthService`의 Kakao/Apple 로그인, logout, reissue 위임
+  - `Claims.getAudience()`를 `Set<String>`로 해석해 `client_id` 포함 여부로 검증하도록 수정
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 2 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `UserServiceTest`
+  - `RandomNicknameServiceTest`
+  - `RandomNicknamePoolServiceTest`
+  - `RandomNicknamePoolManagerTest`
+- 보강한 테스트 파일:
+  - `S3ServiceTest`
+- 검증한 내용:
+  - 유저 조회/생성, 기본정보·개인정보 등록, 프로필/알림/파일명 수정
+  - 랜덤 닉네임 접두사 결합, Redis set pop/size/add 위임
+  - 닉네임 풀 부족 시 2000개 suffix 생성과 start 위치 갱신
+  - presigned URL, 기본/사용자 프로필 이미지 조회, 이미지 저장/삭제 예외 분기
+
+</details>
+
+### 8-3. Phase 3 체크리스트
+
+- [x] `OAuthController`
+- [x] `SmsController`
+- [x] `UserController`
+- [x] `ImageController`
+- [x] `GlobalExceptionHandler`
+- [x] `WebConfig`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 3 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `OAuthControllerTest`
+  - `SmsControllerTest`
+  - `UserControllerTest`
+  - `ImageControllerTest`
+- 검증한 내용:
+  - Kakao/Apple 로그인, logout, reissue API 응답 계약
+  - SMS 발송/검증 요청과 validation 오류 응답
+  - 프로필/알림/닉네임/이미지 관련 API 응답 구조
+  - `Location` 헤더, `@UserId` custom resolver, query/body validation contract
+
+</details>
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 2 > Phase 3 > 작업 배치 2` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `GlobalExceptionHandlerTest`
+  - `WebConfigTest`
+- 검증한 내용:
+  - validation/auth/internal/unexpected/request-param 예외의 공통 응답 구조
+  - 인증 예외 시 redirect header 부여
+  - `UserIdResolver` 등록, JWT interceptor 등록/제외 경로, CORS 매핑 등록
+
+</details>
+
+### 8-4. Phase 4 체크리스트
+
+- [ ] `UserRepository`
+
+### 8-5. Phase 5 체크리스트
+
+- [ ] `SmsRepository` Redis 통합 테스트
+- [ ] `RefreshTokenRepository` Redis 통합 테스트
+- [ ] `BlacklistTokenRepository` Redis 통합 테스트
+- [ ] `RandomNicknamePoolService` Redis 통합 테스트
+- [ ] Kakao OAuth stub 통합 테스트
+- [ ] Apple OAuth stub 통합 테스트
+- [ ] CoolSMS stub 통합 테스트
+
+### 8-6. Phase 6 체크리스트
+
+- [ ] Kakao 로그인 흐름
+- [ ] Apple 로그인 흐름
+- [ ] refresh token 재발급 흐름
+- [ ] logout 흐름
+- [ ] SMS 인증번호 발송 흐름
+- [ ] SMS 인증번호 검증 흐름
+- [ ] 프로필 조회/수정 흐름
+- [ ] 기본정보 등록 흐름
+- [ ] 개인정보 등록 흐름
+- [ ] 알림 조회/수정 흐름
+- [ ] 랜덤 닉네임 조회 흐름
+- [ ] 프로필 이미지 흐름
+
+## 9. Slice 3: course + pathway
+
+### 9-1. Phase 1 체크리스트
+
+- [x] `CourseSearchCondition`
+- [x] `CourseWithBookmarkDTO`
+- [x] `BookmarkMapper`
+- [x] `PathwayMapper`
+- [x] `PathwayCoordinatesArrayDTO`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 3 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `CourseSearchConditionTest`
+  - `CourseWithBookmarkDTOTest`
+  - `BookmarkMapperTest`
+  - `PathwayMapperTest`
+  - `PathwayCoordinatesArrayDTOTest`
+- 검증한 내용:
+  - 코스 검색조건 생성과 null 입력 유지
+  - 코스 + 북마크 여부 기반 DTO 매핑
+  - 사용자 / 코스 기반 북마크 엔티티 생성
+  - 등산로 엔티티 -> DTO 변환
+  - `LineString` -> 좌표 배열 응답 변환
+- 실행 결과:
+  - `./gradlew test --tests '*CourseSearchConditionTest' --tests '*CourseWithBookmarkDTOTest' --tests '*BookmarkMapperTest' --tests '*PathwayMapperTest' --tests '*PathwayCoordinatesArrayDTOTest'` 통과
+
+</details>
+
+### 9-2. Phase 2 체크리스트
+
+- [x] `CourseService`
+- [x] `BookmarkService`
+- [x] `CoursePathwaySequenceService`
+- [x] `PathwayService`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 3 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `CourseServiceTest`
+  - `BookmarkServiceTest`
+  - `CoursePathwaySequenceServiceTest`
+  - `PathwayServiceTest`
+- 검증한 내용:
+  - 코스 조회 성공 / 실패
+  - 코스 목록 조회 시 검색조건 생성과 repository 위임
+  - 코스 상세 조회와 예외
+  - 경로 flatten 후 가장 가까운 좌표 계산 위임
+  - 도착여부 `1/0` -> `true/false` 변환
+  - 북마크 추가 / 삭제 / 미존재 예외 / 목록 조회
+  - 코스별 sequence 조회 위임
+  - sequence -> 등산로 DTO 목록 변환과 빈 목록 처리
+- 실행 결과:
+  - `./gradlew test --tests '*CourseServiceTest' --tests '*BookmarkServiceTest' --tests '*CoursePathwaySequenceServiceTest' --tests '*PathwayServiceTest'` 통과
+
+</details>
+
+### 9-3. Phase 3 체크리스트
+
+- [x] `CourseController`
+- [x] `BookmarkController`
+- [x] `PathwayController`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 3 > Phase 3 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `CourseControllerTest`
+  - `BookmarkControllerTest`
+  - `PathwayControllerTest`
+- 검증한 내용:
+  - 코스 목록 조회 응답 구조와 정렬 파라미터 전달
+  - 코스 상세 조회 성공 / 미존재 예외 응답
+  - 북마크 추가 / 삭제 / 목록 조회 응답 구조
+  - 북마크 추가 요청 검증 실패와 북마크 미존재 예외 응답
+  - 경로 조회 응답 구조와 필수 쿼리스트링 누락 예외 응답
+- 실행 결과:
+  - `./gradlew test --tests '*CourseControllerTest' --tests '*BookmarkControllerTest' --tests '*PathwayControllerTest'` 통과
+
+</details>
+
+### 9-4. Phase 4 체크리스트
+
+- [ ] `BookmarkRepository`
+- [ ] `CourseCustomRepositoryImpl`
+- [ ] `CoursePathwaySequenceCustomRepositoryImpl`
+- [ ] `PathwayRepository`
+
+### 9-5. Phase 5 체크리스트
+
+- [ ] `CourseRepository` native query 보강 테스트
+- [ ] Querydsl 정렬 smoke 테스트
+
+### 9-6. Phase 6 체크리스트
+
+- [ ] 코스 목록 조회 흐름
+- [ ] 코스 상세 조회 흐름
+- [ ] 즐겨찾기 등록/삭제/목록 흐름
+- [ ] 경로 조회 흐름
+
+## 10. Slice 4: mountain + base + facility
+
+### 10-1. Phase 1 체크리스트
+
+- [x] `MountainDTO`
+- [x] `SuggestedMountainDTO`
+- [x] `FacilityDTO`
+- [x] `BaseDTO`
+- [x] `BaseDetailDTO`
+- [x] `CourseDetailDTO`
+- [x] `WeatherRes`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 4 > Phase 1 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `MountainDTOTest`
+  - `SuggestedMountainDTOTest`
+  - `FacilityDTOTest`
+  - `BaseDTOTest`
+  - `BaseDetailDTOTest`
+  - `CourseDetailDTOTest`
+  - `WeatherResTest`
+- 검증한 내용:
+  - 산/시설 좌표 응답의 경도-위도 순서
+  - 베이스 `Point` -> 좌표 배열 변환
+  - 베이스 상세 응답의 이미지 목록과 `recommendedOutfit` 기본값
+  - 코스 상세 DTO 변환
+  - OpenWeather 응답의 첫 번째 날씨와 온도 추출
+- 실행 결과:
+  - `./gradlew test --tests '*MountainDTOTest' --tests '*SuggestedMountainDTOTest' --tests '*FacilityDTOTest' --tests '*BaseDTOTest' --tests '*BaseDetailDTOTest' --tests '*CourseDetailDTOTest' --tests '*WeatherResTest'` 통과
+
+</details>
+
+### 10-2. Phase 2 체크리스트
+
+- [x] `SuggestMountainService`
+- [x] `MountainService`
+- [x] `FacilityService`
+- [x] `BaseService`
+- [x] `WeatherService`
+- [x] `WeatherScheduler`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 4 > Phase 2 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `SuggestMountainServiceTest`
+  - `MountainServiceTest`
+  - `FacilityServiceTest`
+  - `BaseServiceTest`
+  - `WeatherServiceTest`
+  - `WeatherSchedulerTest`
+- 검증한 내용:
+  - 초성/일반 키워드 분기와 정규화 위임
+  - 산 목록 조회, 존재 검증, 자동완성 조회
+  - 시설/베이스 조회 시 산 존재 검증 선행
+  - 베이스 상세 조회 시 이미지 repository 결합
+  - 날씨 응답 보정 온도 계산과 예외 격리
+  - 시작 시 날씨 갱신과 스케줄 실행 위임
+- 실행 결과:
+  - `./gradlew test --tests '*SuggestMountainServiceTest' --tests '*MountainServiceTest' --tests '*FacilityServiceTest' --tests '*BaseServiceTest' --tests '*WeatherServiceTest' --tests '*WeatherSchedulerTest'` 통과
+
+</details>
+
+### 10-3. Phase 3 체크리스트
+
+- [x] `MountainController`
+- [x] `FacilityController`
+- [x] `BaseController`
+
+<details>
+<summary>작업 결과</summary>
+
+- 이번 배치에서는 `Slice 4 > Phase 3 > 작업 배치 1` 범위를 처리했다.
+- 추가한 테스트 파일:
+  - `MountainControllerTest`
+  - `FacilityControllerTest`
+  - `BaseControllerTest`
+- 검증한 내용:
+  - 산 목록 / 자동완성 응답 구조
+  - 시설 목록 / 베이스 목록 / 베이스 상세 응답 구조
+  - 자동완성 키워드 누락 시 공통 400 응답
+  - 없는 산 조회 시 `MOUNTAIN404_001` 예외 응답
+- 실행 결과:
+  - `./gradlew test --tests '*MountainControllerTest' --tests '*FacilityControllerTest' --tests '*BaseControllerTest'` 통과
+
+</details>
+
+### 10-4. Phase 4 체크리스트
+
+- [ ] `MountainRepository`
+- [ ] `FacilityRepository`
+- [ ] `BaseRepository`
+- [ ] `BaseImageRepository`
+
+### 10-5. Phase 5 체크리스트
+
+- [ ] OpenWeather stub 통합 테스트
+
+### 10-6. Phase 6 체크리스트
+
+- [ ] 산 목록 조회 흐름
+- [ ] 산 자동완성 흐름
+- [ ] 시설 조회 흐름
+- [ ] 베이스 목록 조회 흐름
+- [ ] 베이스 상세 조회 흐름
+- [ ] 날씨 갱신 흐름
+
+## 11. 바로 잡아야 할 코드 리스크 체크리스트
+
+- [x] `TravelRecordDetailDTO.from()`의 `endAt` 매핑 수정 완료
+- [ ] `GetTravelRecordDetailRes.from()`의 `mountainId` 정책 확인 필요
+- [x] `TravelRecordService.findRecordById()` 사용자 소유권 검증 추가 완료
+- [x] `TravelRecordService.deleteRecordById()` 사용자 소유권 검증 추가 완료
+- [x] `TravelRecordRepository`에 소유권 검증용 query 추가 완료
+- [x] `AppleOAuthService.isOurServiceAudience()` 조건 검증 완료
+- [ ] `AppleJwtHandler` base64url 디코딩 방식 검증 필요
+- [ ] `ValidEmailPatternValidator` null 정책 명확화 필요
+- [ ] `RandomNicknameService` empty pool 정책 필요
+- [ ] `UserService.registerBasicInformation()` 전화번호 중복 검증 확인 필요
+- [ ] `UserService.updateUserProfile()` email/phone unique 정책 확인 필요
+- [x] `CourseRepository`의 `@Param` import 동작 검증 완료
+- [ ] `WebSocketHandler.afterConnectionClosed()`의 미인증 세션 경로 검증 필요
+
+## 12. 구조 개선 체크리스트
+
+- [ ] `TravelService` 이벤트별 핸들러 분리 검토
+- [ ] `WebSocketHandler` 인증 처리와 travel 처리 분리 검토
+- [ ] `TravelRecordService` 소유권 검증 책임 명확화
+- [ ] `CourseService` 위치 분석 책임 분리 검토
+- [ ] `RemainingTimeCalculator`의 course 중복 조회 제거 검토
+- [ ] `TravelTrackingInfoStore`의 외부 저장소 전환 필요성 검토
+- [ ] `WebSocketAuthService` payload 계약 명시
+- [ ] `UserService` 책임 분리 검토
+- [ ] `AppleOAuthService` 검증 전용 컴포넌트 분리 검토
+- [ ] `WeatherService` fetch/convert/update 분리 검토
+
+## 13. 이력 부록: Slice 1 작업 배치 기록
+
+이 섹션부터는 현재 상태가 아니라 작업 당시의 실행 단위를 보관한 이력이다.
+현재 진행 여부 판단은 앞쪽 Slice/Phase 체크리스트를 기준으로 본다.
+
+### 13-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `TravelEvent`, `EventPolicy`, `GeoUtil`, `TravelDistanceCalculator`, `CourseLocationMatcher`, `DateUtil`, `TimeMapper`
+- [x] 작업 배치 2: `TravelTrackingInfo`, `TravelMapper`, `TravelResponseMapper`, `PayloadMapper`
+- [x] 작업 배치 3: `Status`, `RemainingTime`, `ClosestCoordinateInfo`, `TravelRecordDTO`, `TravelRecordDetailDTO`, `GetTravelRecordByMonthRes`, `GetTravelRecordDetailRes`, `TravelEventResponseData`
+
+### 13-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `WebSocketAuthService`
+- [x] 작업 배치 2: `TravelDomainService`, `TravelService`, `TravelRecordService`
+- [x] 작업 배치 3: `TravelTrackingInfoStore`, `RemainingTimeCalculator`
+
+### 13-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `TravelRecordController`, `WebSocketHandler`, `WebSocketResponser`, `WebSocketConfig`
+
+### 13-4. Phase 4 작업 배치
+
+- [x] 작업 배치 1: `TravelRecordRepository`, `CourseRepository` spatial 테스트
+
+## 14. 이력 부록: Slice 3 작업 배치 기록
+
+### 14-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `CourseSearchCondition`, `CourseWithBookmarkDTO`, `BookmarkMapper`, `PathwayMapper`, `PathwayCoordinatesArrayDTO`
+
+### 14-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `CourseService`, `BookmarkService`, `CoursePathwaySequenceService`, `PathwayService`
+
+### 14-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `CourseController`, `BookmarkController`, `PathwayController`
+
+## 15. 이력 부록: Slice 4 작업 배치 기록
+
+### 15-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `MountainDTO`, `SuggestedMountainDTO`, `FacilityDTO`, `BaseDTO`, `BaseDetailDTO`, `CourseDetailDTO`, `WeatherRes`
+
+### 15-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `SuggestMountainService`, `MountainService`, `FacilityService`, `BaseService`, `WeatherService`, `WeatherScheduler`
+
+### 15-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `MountainController`, `FacilityController`, `BaseController`
+
+## 16. 이력 부록: Slice 2 작업 배치 기록
+
+### 16-1. Phase 1 작업 배치
+
+- [x] 작업 배치 1: `AuthToken`, `AppleLoginReq`, `AppleLoginRes`, `SendSmsRes`, `VerifySmsRes`, `KaKaoUserInfoRes`, `BloodType`, `User`, `UserInfo`, `PhysicalInfo`, `UserAlert`, `UserMapper`, `UserProfileDTO`, `UserAlertSettingDTO`, `ProfileStatusInfoDTO`, `GetProfileRes`, `GetProfileStatusRes`, `GetAlertSettingRes`, `GetRandomNicknameRes`, `GetNicknameAvailabilityRes`, `RedirectUriBuilder`, `HttpHeadersGenerator`, `ApiResponse`, `ValidEmailPatternValidator`, `GeometryConfig`, `WebSocketSuccessRes`, `WebSocketFailRes`
+- [x] 작업 배치 2: `JwtTokenProvider` 보강, `AppleJwtHandler`, `ApplePublicKeyGenerator`, `SmsUtilService`, `JwtInterceptor`, `UserIdResolver`, `NicknamePoolInitializer`
+
+### 16-2. Phase 2 작업 배치
+
+- [x] 작업 배치 1: `AuthTokenService` 보강, `SmsService`, `KaKaoOAuthService`, `AppleOAuthService`, `OAuthService`
+- [x] 작업 배치 2: `UserService`, `RandomNicknameService`, `RandomNicknamePoolService`, `RandomNicknamePoolManager`, `S3Service` 보강
+
+### 16-3. Phase 3 작업 배치
+
+- [x] 작업 배치 1: `OAuthController`, `SmsController`, `UserController`, `ImageController`
+- [x] 작업 배치 2: `GlobalExceptionHandler`, `WebConfig`
+
+## 17. 결론
+
+- 분류 체계는 `Phase 1 -> Phase 6` 확장 순서로 본다.
+- 실제 작성은 도메인별 세로 슬라이스 방식으로 진행한다.
+- 첫 번째 슬라이스는 `travel + websocket + spatial query`다.
+- 즉, “단위 테스트부터 시작하되 그 첫 대상은 `travel`”로 이해하면 된다.

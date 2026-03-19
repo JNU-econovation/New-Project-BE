@@ -1,10 +1,10 @@
 package com.econo_4factorial.newproject.course.repository;
 
 import com.econo_4factorial.newproject.course.domain.Course;
-import feign.Param;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface CourseRepository extends JpaRepository<Course, Long>, CourseCustomRepository {
 

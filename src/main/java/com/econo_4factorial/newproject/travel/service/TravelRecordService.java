@@ -3,6 +3,7 @@ package com.econo_4factorial.newproject.travel.service;
 import com.econo_4factorial.newproject.common.util.DateUtil;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.service.CourseService;
+import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDTO;
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDetailDTO;
@@ -44,14 +45,16 @@ public class TravelRecordService {
     }
 
     @Transactional(readOnly = true)
-    public TravelRecordDetailDTO findRecordById(Long recordId) {
-        return travelRecordRepository.findById(recordId)
+    public TravelRecordDetailDTO findRecordById(Long userId, Long recordId) {
+        return travelRecordRepository.findByIdAndUserId(recordId, userId)
                 .map(TravelRecordDetailDTO::from)
                 .orElseThrow(TravelRecordNotFoundException::new);
     }
 
     @Transactional
-    public void deleteRecordById(Long recordId) {
-        travelRecordRepository.deleteById(recordId);
+    public void deleteRecordById(Long userId, Long recordId) {
+        TravelRecord travelRecord = travelRecordRepository.findByIdAndUserId(recordId, userId)
+                .orElseThrow(TravelRecordNotFoundException::new);
+        travelRecordRepository.delete(travelRecord);
     }
 }

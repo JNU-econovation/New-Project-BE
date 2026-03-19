@@ -82,6 +82,18 @@ class JwtTokenProviderTest {
     }
 
     @Test
+    void Bearer_형식이_아닌_헤더는_예외가_발생한다() {
+        assertThatThrownBy(() -> jwtTokenProvider.extractToken("Basic token"))
+                .isInstanceOf(com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException.class);
+    }
+
+    @Test
+    void null_헤더는_예외가_발생한다() {
+        assertThatThrownBy(() -> jwtTokenProvider.extractToken(null))
+                .isInstanceOf(com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException.class);
+    }
+
+    @Test
     void 올바른_리프레시_토큰을_검증하면_true를_반환한다() {
         String token = jwtTokenProvider.issueRefreshToken(userId);
 
@@ -115,6 +127,20 @@ class JwtTokenProviderTest {
                 .compact();
 
         assertThatThrownBy(() -> jwtTokenProvider.getUserIdFromAccessToken(invalidToken))
+                .isInstanceOf(SignatureException.class);
+    }
+
+    @Test
+    void 다른_비밀키로_서명된_리프레시_토큰은_검증에_실패한다() {
+        SecretKey wrongKey = Keys.hmacShaKeyFor("wrongSecretKeyThatIsAlsoLongEnoughValue".getBytes());
+        String invalidToken = Jwts.builder()
+                .claim("id", userId)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .signWith(wrongKey)
+                .compact();
+
+        assertThatThrownBy(() -> jwtTokenProvider.validateRefreshToken(invalidToken))
                 .isInstanceOf(SignatureException.class);
     }
 }

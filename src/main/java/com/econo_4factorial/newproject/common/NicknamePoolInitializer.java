@@ -4,6 +4,7 @@ import com.econo_4factorial.newproject.common.exception.RedisNotReadyException;
 import com.econo_4factorial.newproject.user.service.RandomNicknamePoolManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 @EnableRetry
+@ConditionalOnProperty(value = "app.startup-jobs.enabled", havingValue = "true", matchIfMissing = true)
 public class NicknamePoolInitializer {
     private static final String NICKNAME_POOL_START_KEY = "users:randomNickname:pool:start";
     private static final String NICKNAME_POOL_START_INITIAL_VALUE = "1";

@@ -24,14 +24,14 @@ public class AppleJwtHandler {
         try {
             String header = token.split("\\.")[0]; //정규식을 활용해서 header만 추출
             return new ObjectMapper().readValue(decodeHeader(header), Map.class);
-        }catch (JsonProcessingException e) {
+        } catch (JsonProcessingException | IllegalArgumentException e) {
             throw new AppleTokenHeaderParsingException();
         }
     }
 
     private String decodeHeader(String header) {
         return new String(
-                Base64.getDecoder().decode(header),
+                Base64.getUrlDecoder().decode(header),
                 StandardCharsets.UTF_8
         );
     }

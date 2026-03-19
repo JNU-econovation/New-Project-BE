@@ -3,7 +3,7 @@ package com.econo_4factorial.newproject.auth.service.apple;
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse;
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
-import com.econo_4factorial.newproject.auth.exception.InternalServerException.InvalidAudienceException;
+import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidAudienceException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.NotAppleIssuerException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class AppleOAuthService {
     }
 
     private void isOurServiceAudience(Claims tokenClaims) {
-        if (client_id.equals(tokenClaims.getAudience()))
+        if (tokenClaims.getAudience() == null || !tokenClaims.getAudience().contains(client_id))
             throw new InvalidAudienceException();
     }
 

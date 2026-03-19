@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
 class AuthTokenServiceTest {
@@ -62,6 +63,17 @@ class AuthTokenServiceTest {
     }
 
     @Test
+    void 리프레시_토큰_저장시_유저ID와_TTL을_포함한다() {
+        authTokenService.saveRefreshToken(userId, refreshToken);
+
+        verify(refreshTokenRepository).save(argThat(savedToken ->
+                savedToken.getId().equals(userId)
+                        && savedToken.getRefreshToken().equals(refreshToken)
+                        && savedToken.getExpirationTime().equals(1209600L)
+        ));
+    }
+
+    @Test
     void 재발급_시_이전_토큰을_삭제하고_새_토큰을_발급한다() {
         given(jwtTokenProvider.getUserIdFromRefreshToken(refreshToken)).willReturn(userId);
         given(refreshTokenRepository.existsByRefreshToken(refreshToken)).willReturn(true);
@@ -94,7 +106,11 @@ class AuthTokenServiceTest {
         authTokenService.logout(userId, accessToken);
 
         verify(refreshTokenRepository).deleteById(userId);
-        verify(blacklistTokenRepository).save(any(BlacklistToken.class));
+        verify(blacklistTokenRepository).save(argThat(blacklistToken ->
+                blacklistToken.getAccessToken().equals(accessToken)
+                        && blacklistToken.getStatus().equals("logout")
+                        && blacklistToken.getExpirationTime() > 0
+        ));
     }
 
     @Test
@@ -113,5 +129,14 @@ class AuthTokenServiceTest {
         boolean result = authTokenService.isLoggedIn(userId, accessToken);
 
         assertThat(result).isTrue();
+    }
+
+    @Test
+    void 리프레시_토큰이_없으면_로그아웃_예외가_발생한다() {
+        given(blacklistTokenRepository.existsById(accessToken)).willReturn(false);
+        given(refreshTokenRepository.existsById(userId)).willReturn(false);
+
+        assertThatThrownBy(() -> authTokenService.isLoggedIn(userId, accessToken))
+                .isInstanceOf(LoggedOutTokenException.class);
     }
 }

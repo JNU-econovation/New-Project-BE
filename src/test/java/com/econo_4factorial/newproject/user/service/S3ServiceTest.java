@@ -69,6 +69,18 @@ class S3ServiceTest {
     }
 
     @Test
+    void DB에_파일명이_있으면_해당_이미지_URL을_반환한다() throws MalformedURLException {
+        Long userId = 1L;
+        String fileName = "profile/1/custom.jpeg";
+        given(userService.getUserProfileFileName(userId)).willReturn(fileName);
+        given(amazonS3Client.getUrl(BUCKET, fileName)).willReturn(new URL("https://s3.com/" + fileName));
+
+        ProfileImageUrlDTO result = s3Service.getImageUrl(userId);
+
+        assertThat(result.profileImageUrl()).contains(fileName);
+    }
+
+    @Test
     void 새_이미지를_저장할_때_기존_이미지가_있으면_삭제한다() {
         Long userId = 1L;
         String oldFileName = "profile/1/old-uuid.jpeg";
@@ -119,5 +131,40 @@ class S3ServiceTest {
 
         verify(amazonS3Client).deleteObject(BUCKET, fileName);
         verify(userService).deleteUserProfileFileName(userId);
+    }
+
+    @Test
+    void 기존_파일명과_새_파일명이_같으면_기존_이미지를_삭제하지_않는다() {
+        Long userId = 1L;
+        String fileName = "profile/1/uuid.jpeg";
+        given(amazonS3Client.doesObjectExist(BUCKET, fileName)).willReturn(true);
+        given(userService.getUserProfileFileName(userId)).willReturn(fileName);
+
+        s3Service.saveFileNameToEntity(userId, fileName);
+
+        verify(amazonS3Client, never()).deleteObject(BUCKET, fileName);
+        verify(userService).updateUserProfileFileName(userId, fileName);
+    }
+
+    @Test
+    void 삭제할_프로필_이미지가_없으면_예외가_발생한다() {
+        Long userId = 1L;
+        given(userService.getUserProfileFileName(userId)).willReturn(" ");
+
+        assertThatThrownBy(() -> s3Service.deleteImageUrl(userId))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("삭제할 프로필 이미지가 없습니다");
+    }
+
+    @Test
+    void S3에_없는_이미지를_삭제하려고_하면_예외가_발생한다() {
+        Long userId = 1L;
+        String fileName = "profile/1/missing.jpeg";
+        given(userService.getUserProfileFileName(userId)).willReturn(fileName);
+        given(amazonS3Client.doesObjectExist(BUCKET, fileName)).willReturn(false);
+
+        assertThatThrownBy(() -> s3Service.deleteImageUrl(userId))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Image does not exist");
     }
 }

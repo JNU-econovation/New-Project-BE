@@ -52,7 +52,7 @@ public class TravelRecordController {
             @Parameter(name = "recordId", description = "산행 기록 ID", required = true)
             @PathVariable Long recordId
     ) {
-        TravelRecordDetailDTO recordDetail = travelRecordService.findRecordById(recordId);
+        TravelRecordDetailDTO recordDetail = travelRecordService.findRecordById(userId, recordId);
         log.info("산행 기록 상세 조회 요청. userId = {}. recordId= {}. 조회된 산행 상세기록 = {}.", userId, recordId, recordDetail);
         return ApiResponse.success(GetTravelRecordDetailRes.from(recordDetail), HttpStatus.OK);
     }
@@ -66,7 +66,7 @@ public class TravelRecordController {
             @Parameter(name = "recordId", description = "산행 기록 ID", required = true)
             @PathVariable Long recordId
     ) {
-        travelRecordService.deleteRecordById(recordId);
+        travelRecordService.deleteRecordById(userId, recordId);
         log.info("산행 기록 삭제 요청. userId = {}. recordId= {}. ", userId, recordId);
         return ApiResponse.success(HttpStatus.OK);
     }

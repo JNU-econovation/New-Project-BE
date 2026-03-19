@@ -16,6 +16,9 @@ public record GetTravelRecordDetailRes (
         Long courseId,
         Integer mountainId
 ) {
+    // Current service scope supports a single target mountain only.
+    public static final Integer DEFAULT_MOUNTAIN_ID = 1;
+
     public static GetTravelRecordDetailRes from (TravelRecordDetailDTO recordDetail) {
         return new GetTravelRecordDetailRes(
                 recordDetail.recordId(),
@@ -26,7 +29,7 @@ public record GetTravelRecordDetailRes (
                 recordDetail.length(),
                 recordDetail.coordinates(),
                 recordDetail.courseId(),
-                1 //무등산 하드 코딩. 수정 필요
+                DEFAULT_MOUNTAIN_ID
         );
     }
 }
