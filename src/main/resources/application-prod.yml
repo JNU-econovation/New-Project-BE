@@ -69,8 +69,6 @@ management:
       exposure:
         include:
           - health
-          - prometheus
-          - info
   metrics:
     export:
       prometheus:
