@@ -69,7 +69,7 @@ management:
       exposure:
         include:
           - health
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
