@@ -5,6 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_bookmark_user_course", columnNames = {"user_id", "course_id"})
+        }
+)
 @Getter
 @Builder
 @AllArgsConstructor
