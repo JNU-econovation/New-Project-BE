@@ -4,15 +4,14 @@ import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.base.dto.weather.WeatherDTO;
 import com.econo_4factorial.newproject.base.dto.weather.WeatherRes;
 import com.econo_4factorial.newproject.base.repository.BaseRepository;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,7 +21,7 @@ public class WeatherService {
     private final WeatherFeignClient weatherFeignClient;
     private final BaseRepository baseRepository;
     static final double KELVIN_TO_CELSIUS_OFFSET = 273.15; // [°C]
-    static final double ISA_LAPSE_RATE_C_PER_M   = 0.0065; // [°C/m] (표준대기 감률: 6.5°C/km)
+    static final double ISA_LAPSE_RATE_C_PER_M = 0.0065; // [°C/m] (표준대기 감률: 6.5°C/km)
 
     @Value("${weather.api.key}")
     private String apiKey;
@@ -58,7 +57,6 @@ public class WeatherService {
                     }
                     continue;
                 }
-
 
                 double celsius = kelvinToCelsius(kelvinObj);
                 double correctedTemperature = applyAltitudeCorrection(celsius, altitude);

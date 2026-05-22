@@ -1,5 +1,11 @@
 package com.econo_4factorial.newproject.auth.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.FailToSendSmsException;
 import com.econo_4factorial.newproject.common.config.SmsProperties;
 import com.solapi.sdk.message.dto.response.MultipleDetailMessageSentResponse;
@@ -11,12 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SmsUtilServiceTest {

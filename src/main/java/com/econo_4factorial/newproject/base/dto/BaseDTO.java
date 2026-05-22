@@ -2,10 +2,9 @@ package com.econo_4factorial.newproject.base.dto;
 
 
 import com.econo_4factorial.newproject.base.domain.Base;
-import org.locationtech.jts.geom.Coordinate;
-
 import java.math.BigDecimal;
 import java.util.List;
+import org.locationtech.jts.geom.Coordinate;
 
 public record BaseDTO(
         Long baseId,

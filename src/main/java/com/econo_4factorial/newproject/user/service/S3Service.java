@@ -6,15 +6,14 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.econo_4factorial.newproject.user.domain.ImageFileFormat;
 import com.econo_4factorial.newproject.user.dto.PresignedUrlDTO;
 import com.econo_4factorial.newproject.user.dto.ProfileImageUrlDTO;
+import java.net.URL;
+import java.util.Date;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.net.URL;
-import java.util.Date;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -37,7 +36,8 @@ public class S3Service {
         log.info("file name: {}", fileName);
         log.info("file format: {}", fileFormat);
 
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName, uploadFormat);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName,
+                uploadFormat);
         URL presignedUrl = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
         return new PresignedUrlDTO(presignedUrl.toString(), fileName);
@@ -70,7 +70,8 @@ public class S3Service {
         isExistImageInBucket(fileName);
         String oldFileName = userService.getUserProfileFileName(userId);
 
-        if (oldFileName != null && !oldFileName.isBlank() && !oldFileName.equals(defaultProfileKey) && !oldFileName.equals(fileName)) {
+        if (oldFileName != null && !oldFileName.isBlank() && !oldFileName.equals(defaultProfileKey)
+                && !oldFileName.equals(fileName)) {
             amazonS3Client.deleteObject(bucket, oldFileName);
         }
 

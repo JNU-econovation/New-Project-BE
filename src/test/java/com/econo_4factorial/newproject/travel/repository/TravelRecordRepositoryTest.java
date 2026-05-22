@@ -1,5 +1,7 @@
 package com.econo_4factorial.newproject.travel.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.common.config.QueryDslConfig;
 import com.econo_4factorial.newproject.common.constant.Difficulty;
@@ -8,6 +10,11 @@ import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import com.econo_4factorial.newproject.support.MySqlContainerSupport;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import com.econo_4factorial.newproject.user.domain.User;
+import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -23,14 +30,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.lang.reflect.Constructor;
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import(QueryDslConfig.class)

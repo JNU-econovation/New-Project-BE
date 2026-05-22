@@ -1,11 +1,10 @@
 package com.econo_4factorial.newproject.auth.repository;
 
 import com.econo_4factorial.newproject.common.config.SmsProperties;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.time.Duration;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,7 +15,8 @@ public class SmsRepository {
     static final String REDIS_PREFIX = "sms:";
 
     public void createSmsVerification(String phoneNumber, String verificationCode) {
-        redisTemplate.opsForValue().set(REDIS_PREFIX + phoneNumber, verificationCode, Duration.ofSeconds(smsProperties.getTtl()));
+        redisTemplate.opsForValue()
+                .set(REDIS_PREFIX + phoneNumber, verificationCode, Duration.ofSeconds(smsProperties.getTtl()));
     }
 
     public String getSmsVerification(String phoneNumber) {

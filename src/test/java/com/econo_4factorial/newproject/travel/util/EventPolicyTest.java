@@ -1,16 +1,15 @@
 package com.econo_4factorial.newproject.travel.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.econo_4factorial.newproject.travel.exception.NotExistStatusException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class EventPolicyTest {
 

@@ -1,5 +1,7 @@
 package com.econo_4factorial.newproject.pathway.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.pathway.domain.Pathway;
@@ -11,8 +13,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.Mockito;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class PathwayMapperTest {
 

@@ -1,5 +1,10 @@
 package com.econo_4factorial.newproject.common.util.webSocket;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.econo_4factorial.newproject.common.exception.CommonErrorType;
 import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,11 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class WebSocketResponserTest {
 

@@ -1,5 +1,10 @@
 package com.econo_4factorial.newproject.auth.service.apple;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.Req.FullName;
 import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse;
@@ -7,21 +12,15 @@ import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidAudienceException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.NotAppleIssuerException;
 import io.jsonwebtoken.Claims;
+import java.security.PublicKey;
+import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.security.PublicKey;
-import java.util.Map;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AppleOAuthServiceTest {
@@ -56,7 +55,8 @@ class AppleOAuthServiceTest {
         ApplePublicKeysResponse publicKeysResponse = new ApplePublicKeysResponse(java.util.List.of());
         given(appleJwtHandler.parseHeaders("identity-token")).willReturn(Map.of("kid", "kid-1", "alg", "RS256"));
         given(appleOAuthFeignClient.getApplePublicKeys()).willReturn(publicKeysResponse);
-        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse, Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
+        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse,
+                Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
         given(appleJwtHandler.getTokenClaims("identity-token", publicKey)).willReturn(claims);
         given(claims.getIssuer()).willReturn("https://appleid.apple.com");
         given(claims.getAudience()).willReturn(Set.of("com.sangyeol.app"));
@@ -79,7 +79,8 @@ class AppleOAuthServiceTest {
         ApplePublicKeysResponse publicKeysResponse = new ApplePublicKeysResponse(java.util.List.of());
         given(appleJwtHandler.parseHeaders("identity-token")).willReturn(Map.of("kid", "kid-1", "alg", "RS256"));
         given(appleOAuthFeignClient.getApplePublicKeys()).willReturn(publicKeysResponse);
-        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse, Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
+        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse,
+                Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
         given(appleJwtHandler.getTokenClaims("identity-token", publicKey)).willReturn(claims);
         given(claims.getIssuer()).willReturn("https://not-apple.com");
 
@@ -93,7 +94,8 @@ class AppleOAuthServiceTest {
         ApplePublicKeysResponse publicKeysResponse = new ApplePublicKeysResponse(java.util.List.of());
         given(appleJwtHandler.parseHeaders("identity-token")).willReturn(Map.of("kid", "kid-1", "alg", "RS256"));
         given(appleOAuthFeignClient.getApplePublicKeys()).willReturn(publicKeysResponse);
-        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse, Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
+        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse,
+                Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
         given(appleJwtHandler.getTokenClaims("identity-token", publicKey)).willReturn(claims);
         given(claims.getIssuer()).willReturn("https://appleid.apple.com");
         given(claims.getAudience()).willReturn(Set.of("another-client"));
@@ -108,7 +110,8 @@ class AppleOAuthServiceTest {
         ApplePublicKeysResponse publicKeysResponse = new ApplePublicKeysResponse(java.util.List.of());
         given(appleJwtHandler.parseHeaders("identity-token")).willReturn(Map.of("kid", "kid-1", "alg", "RS256"));
         given(appleOAuthFeignClient.getApplePublicKeys()).willReturn(publicKeysResponse);
-        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse, Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
+        given(applePublicKeyGenerator.generatePublicKey(publicKeysResponse,
+                Map.of("kid", "kid-1", "alg", "RS256"))).willReturn(publicKey);
         given(appleJwtHandler.getTokenClaims("identity-token", publicKey)).willReturn(claims);
         given(claims.getIssuer()).willReturn("https://appleid.apple.com");
         given(claims.getAudience()).willReturn(null);

@@ -1,22 +1,21 @@
 package com.econo_4factorial.newproject.auth.jwt.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.econo_4factorial.newproject.auth.jwt.TokenType;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import java.util.Date;
+import javax.crypto.SecretKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.crypto.SecretKey;
-import java.util.Date;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class JwtTokenProviderTest {
@@ -84,13 +83,15 @@ class JwtTokenProviderTest {
     @Test
     void Bearer_형식이_아닌_헤더는_예외가_발생한다() {
         assertThatThrownBy(() -> jwtTokenProvider.extractToken("Basic token"))
-                .isInstanceOf(com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException.class);
+                .isInstanceOf(
+                        com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException.class);
     }
 
     @Test
     void null_헤더는_예외가_발생한다() {
         assertThatThrownBy(() -> jwtTokenProvider.extractToken(null))
-                .isInstanceOf(com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException.class);
+                .isInstanceOf(
+                        com.econo_4factorial.newproject.auth.exception.BadRequestException.InvalidTokenHeaderException.class);
     }
 
     @Test

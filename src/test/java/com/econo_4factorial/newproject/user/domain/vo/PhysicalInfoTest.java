@@ -1,10 +1,10 @@
 package com.econo_4factorial.newproject.user.domain.vo;
 
-import com.econo_4factorial.newproject.user.domain.BloodType;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import com.econo_4factorial.newproject.user.domain.BloodType;
+import org.junit.jupiter.api.Test;
 
 class PhysicalInfoTest {
 

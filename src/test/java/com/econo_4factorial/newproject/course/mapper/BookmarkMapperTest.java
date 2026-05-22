@@ -1,12 +1,12 @@
 package com.econo_4factorial.newproject.course.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.course.domain.Bookmark;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.user.domain.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class BookmarkMapperTest {
 

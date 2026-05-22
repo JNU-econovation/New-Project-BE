@@ -1,9 +1,16 @@
 package com.econo_4factorial.newproject.common.util.webSocket;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.LoggedOutTokenException;
 import com.econo_4factorial.newproject.auth.jwt.service.AuthTokenService;
 import com.econo_4factorial.newproject.auth.jwt.service.JwtTokenProvider;
 import com.econo_4factorial.newproject.travel.dto.Payload;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,14 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.socket.WebSocketSession;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @org.junit.jupiter.api.extension.ExtendWith(MockitoExtension.class)
 class WebSocketAuthServiceTest {
@@ -95,7 +94,8 @@ class WebSocketAuthServiceTest {
     @SuppressWarnings("unchecked")
     private void 인증세션_저장소를_초기화한다() {
         ConcurrentHashMap<String, Long> authenticatedClients =
-                (ConcurrentHashMap<String, Long>) ReflectionTestUtils.getField(WebSocketAuthService.class, "authenticatedClients");
+                (ConcurrentHashMap<String, Long>) ReflectionTestUtils.getField(WebSocketAuthService.class,
+                        "authenticatedClients");
         authenticatedClients.clear();
     }
 }

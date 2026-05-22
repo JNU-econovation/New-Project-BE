@@ -1,11 +1,16 @@
 package com.econo_4factorial.newproject.mountain.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -13,7 +18,7 @@ import java.math.BigDecimal;
 @Table(indexes = {
         @Index(name = "idx_mountain_initials", columnList = "initials"),
 })
-public class Mountain{
+public class Mountain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

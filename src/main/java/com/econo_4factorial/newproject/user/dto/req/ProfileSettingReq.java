@@ -2,7 +2,12 @@ package com.econo_4factorial.newproject.user.dto.req;
 
 import com.econo_4factorial.newproject.common.annotation.ValidEmailPattern;
 import com.econo_4factorial.newproject.common.exception.ValidationMessage;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public record ProfileSettingReq(
         @NotBlank(message = ValidationMessage.NAME_IS_REQUIRED)

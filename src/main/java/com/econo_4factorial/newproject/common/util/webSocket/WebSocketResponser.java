@@ -2,15 +2,13 @@ package com.econo_4factorial.newproject.common.util.webSocket;
 
 import com.econo_4factorial.newproject.common.exception.ErrorType;
 import com.econo_4factorial.newproject.travel.TravelEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
-import java.io.IOException;
 
 @Slf4j
 @Component

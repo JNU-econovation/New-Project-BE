@@ -1,11 +1,11 @@
 package com.econo_4factorial.newproject.auth.service.apple;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.ApplePublicKeyGenerateException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.NotMatchedApplePublicKeyException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PublicKey;
@@ -13,9 +13,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class ApplePublicKeyGeneratorTest {
 
@@ -41,7 +40,8 @@ class ApplePublicKeyGeneratorTest {
                 )
         ));
 
-        PublicKey generatedKey = applePublicKeyGenerator.generatePublicKey(response, Map.of("kid", "kid-1", "alg", "RS256"));
+        PublicKey generatedKey = applePublicKeyGenerator.generatePublicKey(response,
+                Map.of("kid", "kid-1", "alg", "RS256"));
 
         assertThat(generatedKey.getEncoded()).isEqualTo(publicKey.getEncoded());
     }
@@ -61,7 +61,8 @@ class ApplePublicKeyGeneratorTest {
                 )
         ));
 
-        assertThatThrownBy(() -> applePublicKeyGenerator.generatePublicKey(response, Map.of("kid", "kid-2", "alg", "RS256")))
+        assertThatThrownBy(
+                () -> applePublicKeyGenerator.generatePublicKey(response, Map.of("kid", "kid-2", "alg", "RS256")))
                 .isInstanceOf(NotMatchedApplePublicKeyException.class);
     }
 
@@ -80,7 +81,8 @@ class ApplePublicKeyGeneratorTest {
                 )
         ));
 
-        assertThatThrownBy(() -> applePublicKeyGenerator.generatePublicKey(response, Map.of("kid", "kid-1", "alg", "RS256")))
+        assertThatThrownBy(
+                () -> applePublicKeyGenerator.generatePublicKey(response, Map.of("kid", "kid-1", "alg", "RS256")))
                 .isInstanceOf(ApplePublicKeyGenerateException.class);
     }
 

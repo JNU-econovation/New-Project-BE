@@ -1,8 +1,16 @@
 package com.econo_4factorial.newproject.travel.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,15 +22,6 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Duration;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class RemainingTimeCalculatorTest {
@@ -65,7 +64,8 @@ class RemainingTimeCalculatorTest {
         given(destinationBase.getGeoPoint()).willReturn(destinationPoint);
         given(travelDistanceCalculator.calculateRemainingDistanceToPointInCourse(courseLine, peakPoint, userPoint))
                 .willReturn(120.0);
-        given(travelDistanceCalculator.calculateRemainingDistanceToPointInCourse(courseLine, destinationPoint, userPoint))
+        given(travelDistanceCalculator.calculateRemainingDistanceToPointInCourse(courseLine, destinationPoint,
+                userPoint))
                 .willReturn(300.0);
 
         RemainingTime result = remainingTimeCalculator.calculateRemainingTime(courseId, userPoint);
@@ -97,7 +97,8 @@ class RemainingTimeCalculatorTest {
         given(destinationBase.getGeoPoint()).willReturn(destinationPoint);
         given(travelDistanceCalculator.calculateRemainingDistanceToPointInCourse(courseLine, peakPoint, userPoint))
                 .willReturn(0.0);
-        given(travelDistanceCalculator.calculateRemainingDistanceToPointInCourse(courseLine, destinationPoint, userPoint))
+        given(travelDistanceCalculator.calculateRemainingDistanceToPointInCourse(courseLine, destinationPoint,
+                userPoint))
                 .willReturn(0.0);
 
         RemainingTime result = remainingTimeCalculator.calculateRemainingTime(courseId, userPoint);

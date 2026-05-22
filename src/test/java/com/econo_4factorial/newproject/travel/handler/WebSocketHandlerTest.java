@@ -1,5 +1,10 @@
 package com.econo_4factorial.newproject.travel.handler;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+
 import com.econo_4factorial.newproject.common.exception.BadRequestException;
 import com.econo_4factorial.newproject.common.exception.CommonErrorType;
 import com.econo_4factorial.newproject.common.exception.InternalServerException;
@@ -12,6 +17,9 @@ import com.econo_4factorial.newproject.travel.dto.res.TravelEventResponseData;
 import com.econo_4factorial.newproject.travel.exception.TravelErrorType;
 import com.econo_4factorial.newproject.travel.service.TravelService;
 import com.econo_4factorial.newproject.travel.util.PayloadMapper;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +29,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class WebSocketHandlerTest {
@@ -191,6 +190,7 @@ class WebSocketHandlerTest {
 
     @SuppressWarnings("unchecked")
     private ConcurrentHashMap<String, WebSocketSession> getClients() {
-        return (ConcurrentHashMap<String, WebSocketSession>) ReflectionTestUtils.getField(WebSocketHandler.class, "clients");
+        return (ConcurrentHashMap<String, WebSocketSession>) ReflectionTestUtils.getField(WebSocketHandler.class,
+                "clients");
     }
 }

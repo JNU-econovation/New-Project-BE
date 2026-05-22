@@ -1,12 +1,11 @@
 package com.econo_4factorial.newproject.common.util.api;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.io.Serializable;
 
 public class ApiResult<B> extends ResponseEntity<B> {
     public ApiResult(B body, HttpStatus status) {
@@ -14,7 +13,7 @@ public class ApiResult<B> extends ResponseEntity<B> {
     }
 
     public ApiResult(B body, HttpHeaders headers, HttpStatus status) {
-        super (body, headers, status);
+        super(body, headers, status);
     }
 
     @Getter

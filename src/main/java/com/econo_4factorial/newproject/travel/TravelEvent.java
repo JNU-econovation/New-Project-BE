@@ -1,10 +1,9 @@
 package com.econo_4factorial.newproject.travel;
 
 import com.econo_4factorial.newproject.travel.exception.NotExistEventException;
-import lombok.Getter;
-
 import java.util.Map;
 import java.util.Optional;
+import lombok.Getter;
 
 @Getter
 public enum TravelEvent {

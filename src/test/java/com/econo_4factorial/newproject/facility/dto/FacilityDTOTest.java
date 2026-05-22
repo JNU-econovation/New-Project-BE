@@ -1,14 +1,13 @@
 package com.econo_4factorial.newproject.facility.dto;
 
-import com.econo_4factorial.newproject.facility.domain.Facility;
-import com.econo_4factorial.newproject.facility.domain.FacilityType;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.econo_4factorial.newproject.facility.domain.Facility;
+import com.econo_4factorial.newproject.facility.domain.FacilityType;
+import java.math.BigDecimal;
+import org.junit.jupiter.api.Test;
 
 class FacilityDTOTest {
 

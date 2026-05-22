@@ -1,14 +1,13 @@
 package com.econo_4factorial.newproject.base.dto;
 
-import com.econo_4factorial.newproject.base.domain.Base;
-import com.econo_4factorial.newproject.base.domain.BaseImage;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.econo_4factorial.newproject.base.domain.Base;
+import com.econo_4factorial.newproject.base.domain.BaseImage;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class BaseDetailDTOTest {
 

@@ -1,6 +1,10 @@
 package com.econo_4factorial.newproject.course.service;
 
-import com.econo_4factorial.newproject.base.domain.Base;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.dto.ClosestCoordinateInfo;
@@ -8,9 +12,10 @@ import com.econo_4factorial.newproject.course.dto.CourseSearchCondition;
 import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
 import com.econo_4factorial.newproject.course.exception.BadRequestException.CourseNotFoundException;
 import com.econo_4factorial.newproject.course.repository.CourseRepository;
-import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import com.econo_4factorial.newproject.pathway.dto.PathwayDTO;
 import com.econo_4factorial.newproject.pathway.service.PathwayService;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,15 +27,6 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
@@ -141,7 +137,8 @@ class CourseServiceTest {
         ArgumentCaptor<Coordinate[]> coordinatesCaptor = ArgumentCaptor.forClass(Coordinate[].class);
         ArgumentCaptor<Coordinate> userCoordinateCaptor = ArgumentCaptor.forClass(Coordinate.class);
         given(pathwayService.getPathwaysByCourseId(11L)).willReturn(List.of(first, second));
-        given(courseLocationMatcher.findClosestCoordinateIndex(coordinatesCaptor.capture(), userCoordinateCaptor.capture()))
+        given(courseLocationMatcher.findClosestCoordinateIndex(coordinatesCaptor.capture(),
+                userCoordinateCaptor.capture()))
                 .willReturn(expected);
 
         ClosestCoordinateInfo result = courseService.findClosestCoordinateWithIndex(11L, userPoint);

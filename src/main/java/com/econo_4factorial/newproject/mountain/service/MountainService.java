@@ -4,11 +4,10 @@ import com.econo_4factorial.newproject.mountain.dto.MountainDTO;
 import com.econo_4factorial.newproject.mountain.dto.SuggestedMountainDTO;
 import com.econo_4factorial.newproject.mountain.exception.BadRequestException.MountainNotFoundException;
 import com.econo_4factorial.newproject.mountain.repository.MountainRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

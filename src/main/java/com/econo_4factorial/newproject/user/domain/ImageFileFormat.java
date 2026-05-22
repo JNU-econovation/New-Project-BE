@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ImageFileFormat
-{
+public enum ImageFileFormat {
     JPG("jpeg"),
     PNG("png"),
     HEIC("heic");

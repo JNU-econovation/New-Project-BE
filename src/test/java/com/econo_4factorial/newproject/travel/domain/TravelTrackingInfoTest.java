@@ -1,19 +1,18 @@
 package com.econo_4factorial.newproject.travel.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class TravelTrackingInfoTest {
 

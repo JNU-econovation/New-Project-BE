@@ -1,10 +1,10 @@
 package com.econo_4factorial.newproject.travel;
 
-import com.econo_4factorial.newproject.travel.exception.NotExistEventException;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import com.econo_4factorial.newproject.travel.exception.NotExistEventException;
+import org.junit.jupiter.api.Test;
 
 class TravelEventTest {
 

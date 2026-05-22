@@ -1,11 +1,10 @@
 package com.econo_4factorial.newproject.common.util.webSocket;
 
-import com.econo_4factorial.newproject.travel.TravelEvent;
-import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.econo_4factorial.newproject.travel.TravelEvent;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 class WebSocketResponseDtoTest {
 

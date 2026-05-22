@@ -36,7 +36,7 @@ public class SmsController {
             @RequestBody @Valid SendSmsReq sendSmsReq
     ) {
         smsService.sendSms(sendSmsReq.phoneNumber());
-        return ApiResponse.success(SendSmsRes.from(sendSmsReq.phoneNumber()),HttpStatus.OK);
+        return ApiResponse.success(SendSmsRes.from(sendSmsReq.phoneNumber()), HttpStatus.OK);
     }
 
     @PostMapping("/verify")
@@ -46,7 +46,7 @@ public class SmsController {
             @UserId Long userId,
             @RequestBody @Valid VerifySmsReq verifySmsReq
     ) {
-        smsService.verifySms(verifySmsReq.phoneNumber(),verifySmsReq.verificationCode());
-        return ApiResponse.success(VerifySmsRes.from(verifySmsReq.phoneNumber()),HttpStatus.OK);
+        smsService.verifySms(verifySmsReq.phoneNumber(), verifySmsReq.verificationCode());
+        return ApiResponse.success(VerifySmsRes.from(verifySmsReq.phoneNumber()), HttpStatus.OK);
     }
 }

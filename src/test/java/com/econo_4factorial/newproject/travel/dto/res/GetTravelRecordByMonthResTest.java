@@ -1,12 +1,11 @@
 package com.econo_4factorial.newproject.travel.dto.res;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDTO;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class GetTravelRecordByMonthResTest {
 

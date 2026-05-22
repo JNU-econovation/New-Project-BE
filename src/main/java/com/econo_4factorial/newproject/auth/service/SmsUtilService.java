@@ -2,16 +2,15 @@ package com.econo_4factorial.newproject.auth.service;
 
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.FailToSendSmsException;
 import com.econo_4factorial.newproject.common.config.SmsProperties;
+import com.solapi.sdk.SolapiClient;
 import com.solapi.sdk.message.dto.response.MultipleDetailMessageSentResponse;
 import com.solapi.sdk.message.model.Message;
 import com.solapi.sdk.message.service.DefaultMessageService;
 import jakarta.annotation.PostConstruct;
+import java.security.SecureRandom;
 import lombok.RequiredArgsConstructor;
-import com.solapi.sdk.SolapiClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.security.SecureRandom;
 
 @Slf4j
 @Component
@@ -23,19 +22,19 @@ public class SmsUtilService {
 
     @PostConstruct
     public void init() {
-        this.messageService = SolapiClient.INSTANCE.createInstance(smsProperties.getKey(),smsProperties.getSecret());
+        this.messageService = SolapiClient.INSTANCE.createInstance(smsProperties.getKey(), smsProperties.getSecret());
     }
 
     public MultipleDetailMessageSentResponse sendMessage(String toPhoneNumber, String verificationCode) {
-        try{
+        try {
             Message message = new Message();
             message.setFrom(smsProperties.getSenderNumber());
             message.setTo(toPhoneNumber);
-            message.setText(smsProperties.getSmsPrefix() + " 본인확인 인증번호는 "+verificationCode+" 입니다.");
+            message.setText(smsProperties.getSmsPrefix() + " 본인확인 인증번호는 " + verificationCode + " 입니다.");
 
             MultipleDetailMessageSentResponse response = this.messageService.send(message);
             log.info("SMS-LOG: TO = {}, From = {}, Text = {}",
-                    message.getTo(),message.getFrom(),message.getText());
+                    message.getTo(), message.getFrom(), message.getText());
             return response;
         } catch (Exception e) {
             log.error("SMS 발송 실패 - to={}", toPhoneNumber, e);

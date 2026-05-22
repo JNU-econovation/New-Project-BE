@@ -36,7 +36,8 @@ public class KaKaoOAuthService {
 
     public KakaoUserInfoDTO getUserInfo(String kakaoAuthorizationCode) {
         String kakaoAccessToken = getAccessToken(kakaoAuthorizationCode);
-        KaKaoUserInfoRes kaKaoUserInfo = kakaoUserInfoFeignClient.getUserInfo(TOKEN_PRIFIX + kakaoAccessToken, PROPERTIES );
+        KaKaoUserInfoRes kaKaoUserInfo = kakaoUserInfoFeignClient.getUserInfo(TOKEN_PRIFIX + kakaoAccessToken,
+                PROPERTIES);
         return kaKaoUserInfo.toKaKaoUserInfoDTO();
     }
 

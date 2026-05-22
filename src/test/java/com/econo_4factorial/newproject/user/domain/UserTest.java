@@ -1,9 +1,9 @@
 package com.econo_4factorial.newproject.user.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.user.domain.vo.PhysicalInfo;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
 

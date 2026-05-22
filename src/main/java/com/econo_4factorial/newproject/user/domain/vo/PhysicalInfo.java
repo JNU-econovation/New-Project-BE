@@ -49,8 +49,12 @@ public class PhysicalInfo {
     }
 
     private static void validateRange(Long value, Long min, Long max, String msg) {
-        if (value == null) return;
-        if (value < min || value > max) throw new IllegalArgumentException(msg);
+        if (value == null) {
+            return;
+        }
+        if (value < min || value > max) {
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     private static void validateEtc(String etc) {

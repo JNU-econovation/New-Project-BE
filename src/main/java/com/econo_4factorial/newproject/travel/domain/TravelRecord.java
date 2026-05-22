@@ -2,12 +2,21 @@ package com.econo_4factorial.newproject.travel.domain;
 
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.user.domain.User;
-import jakarta.persistence.*;
-import lombok.*;
-import org.locationtech.jts.geom.LineString;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.LineString;
 
 @Entity
 @Getter
@@ -44,7 +53,8 @@ public class TravelRecord {
     private String displayName;
 
     @Builder
-    public TravelRecord(User user, Course course, LineString paths, LocalDateTime startedAt, LocalDateTime endAt, double totalTravelDistanceKm, Duration totalTravelTime, String displayName) {
+    public TravelRecord(User user, Course course, LineString paths, LocalDateTime startedAt, LocalDateTime endAt,
+                        double totalTravelDistanceKm, Duration totalTravelTime, String displayName) {
         this.user = user;
         this.course = course;
         this.paths = paths;

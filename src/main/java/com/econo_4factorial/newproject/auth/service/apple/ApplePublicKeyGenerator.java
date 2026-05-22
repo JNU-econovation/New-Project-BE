@@ -1,12 +1,9 @@
 package com.econo_4factorial.newproject.auth.service.apple;
 
 import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse;
-import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse.*;
+import com.econo_4factorial.newproject.auth.dto.apple.ApplePublicKeysResponse.ApplePublicKey;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.ApplePublicKeyGenerateException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.NotMatchedApplePublicKeyException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -15,6 +12,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class ApplePublicKeyGenerator {
         return generateKey(matchedKey);
     }
 
-    private PublicKey generateKey (ApplePublicKey publicKey) {
+    private PublicKey generateKey(ApplePublicKey publicKey) {
         try {
             byte[] nBytes = Base64.getUrlDecoder().decode(publicKey.n());
             byte[] eBytes = Base64.getUrlDecoder().decode(publicKey.e());
@@ -37,7 +36,7 @@ public class ApplePublicKeyGenerator {
             );
             KeyFactory keyFactory = KeyFactory.getInstance(publicKey.kty());
             return keyFactory.generatePublic(publicKeySpec);
-        }catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new ApplePublicKeyGenerateException();
         }
     }

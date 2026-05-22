@@ -9,7 +9,9 @@ public enum BloodType {
     AB;
 
     public static BloodType fromString(String bloodType) {
-        if (bloodType == null) throw new IllegalArgumentException("bloodType cannot be null");
+        if (bloodType == null) {
+            throw new IllegalArgumentException("bloodType cannot be null");
+        }
         try {
             return BloodType.valueOf(bloodType.toUpperCase());
         } catch (IllegalArgumentException e) {

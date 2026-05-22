@@ -1,7 +1,6 @@
 package com.econo_4factorial.newproject.travel.exception;
 
 import com.econo_4factorial.newproject.common.exception.ErrorType;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
 
 public enum TravelErrorType implements ErrorType {

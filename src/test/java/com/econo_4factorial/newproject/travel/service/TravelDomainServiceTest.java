@@ -1,9 +1,15 @@
 package com.econo_4factorial.newproject.travel.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+
 import com.econo_4factorial.newproject.course.dto.ClosestCoordinateInfo;
 import com.econo_4factorial.newproject.course.service.CourseService;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
 import com.econo_4factorial.newproject.travel.dto.TravelAnalysisResult;
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,13 +19,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Duration;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class TravelDomainServiceTest {
@@ -53,7 +52,8 @@ class TravelDomainServiceTest {
         given(courseService.isArrived(1L, userPoint)).willReturn(true);
         given(remainingTimeCalculator.calculateRemainingTime(1L, userPoint)).willReturn(remainingTime);
         given(travelDistanceCalculator.calculateDistanceFromLastLocation(prevPoint, userPoint)).willReturn(0.456);
-        given(travelDistanceCalculator.calculateDistanceBetweenPoints(any(Point.class), eq(userPoint))).willReturn(49.0);
+        given(travelDistanceCalculator.calculateDistanceBetweenPoints(any(Point.class), eq(userPoint))).willReturn(
+                49.0);
 
         TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(1L, prevPoint, userPoint, 1.234);
 
@@ -75,7 +75,8 @@ class TravelDomainServiceTest {
         given(courseService.isArrived(2L, userPoint)).willReturn(false);
         given(remainingTimeCalculator.calculateRemainingTime(2L, userPoint)).willReturn(remainingTime);
         given(travelDistanceCalculator.calculateDistanceFromLastLocation(prevPoint, userPoint)).willReturn(1.0);
-        given(travelDistanceCalculator.calculateDistanceBetweenPoints(any(Point.class), eq(userPoint))).willReturn(51.0);
+        given(travelDistanceCalculator.calculateDistanceBetweenPoints(any(Point.class), eq(userPoint))).willReturn(
+                51.0);
 
         TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(2L, prevPoint, userPoint, 0.0);
 

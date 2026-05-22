@@ -1,16 +1,15 @@
 package com.econo_4factorial.newproject.travel.dto;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.common.util.TimeMapper;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
 class TravelRecordDTOTest {
 

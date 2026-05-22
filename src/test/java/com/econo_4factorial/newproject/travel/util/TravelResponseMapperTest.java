@@ -1,15 +1,14 @@
 package com.econo_4factorial.newproject.travel.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
 import com.econo_4factorial.newproject.travel.dto.TravelAnalysisResult;
 import com.econo_4factorial.newproject.travel.dto.res.CurrentPositionEventRes;
 import com.econo_4factorial.newproject.travel.dto.res.TravelEventResponse;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class TravelResponseMapperTest {
 

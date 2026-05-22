@@ -8,14 +8,13 @@ import com.econo_4factorial.newproject.auth.jwt.RefreshToken;
 import com.econo_4factorial.newproject.auth.jwt.TokenType;
 import com.econo_4factorial.newproject.auth.jwt.repository.BlacklistTokenRepository;
 import com.econo_4factorial.newproject.auth.jwt.repository.RefreshTokenRepository;
+import java.time.Duration;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
-import java.util.Date;
 
 @Component
 @Slf4j
@@ -39,7 +38,8 @@ public class AuthTokenService {
 
         saveRefreshToken(userId, refreshToken);
 
-        return AuthToken.of(accessToken, refreshToken, now.getTime() + Duration.ofSeconds(accessTokenExpiredTime).toMillis());
+        return AuthToken.of(accessToken, refreshToken,
+                now.getTime() + Duration.ofSeconds(accessTokenExpiredTime).toMillis());
     }
 
     @Transactional

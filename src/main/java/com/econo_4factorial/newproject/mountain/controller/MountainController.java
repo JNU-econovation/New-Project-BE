@@ -10,6 +10,7 @@ import com.econo_4factorial.newproject.mountain.service.MountainService;
 import com.econo_4factorial.newproject.mountain.service.SuggestMountainService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -40,7 +39,7 @@ public class MountainController {
     @Operation(summary = "산 자동완성", description = "산 검색 시 자동완성 기능입니다.")
     public ApiResult<ApiResult.SuccessBody<GetSuggestedMountainRes>> getSuggestedMountains(
             @RequestParam("keyword") String keyword
-    ){
+    ) {
         List<SuggestedMountainDTO> suggestedMountainDTOS = suggestMountainService.suggestMountains(keyword);
         return ApiResponse.success(GetSuggestedMountainRes.from(suggestedMountainDTOS), HttpStatus.OK);
     }

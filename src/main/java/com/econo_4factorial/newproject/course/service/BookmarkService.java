@@ -1,5 +1,7 @@
 package com.econo_4factorial.newproject.course.service;
 
+import static com.econo_4factorial.newproject.course.mapper.BookmarkMapper.toEntity;
+
 import com.econo_4factorial.newproject.course.domain.Bookmark;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
@@ -7,18 +9,15 @@ import com.econo_4factorial.newproject.course.exception.BadRequestException.Book
 import com.econo_4factorial.newproject.course.repository.BookmarkRepository;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.service.UserService;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.econo_4factorial.newproject.course.mapper.BookmarkMapper.toEntity;
 
 @Slf4j
 @Service

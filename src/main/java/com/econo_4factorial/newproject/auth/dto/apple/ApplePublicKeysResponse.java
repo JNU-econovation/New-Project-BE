@@ -6,11 +6,12 @@ public record ApplePublicKeysResponse(
         List<ApplePublicKey> keys
 ) {
     public record ApplePublicKey(
-        String kty,
-        String kid,
-        String use,
-        String alg,
-        String n,
-        String e
-    ) {}
+            String kty,
+            String kid,
+            String use,
+            String alg,
+            String n,
+            String e
+    ) {
+    }
 }

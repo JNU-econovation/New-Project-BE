@@ -1,9 +1,12 @@
 package com.econo_4factorial.newproject.travel.util;
 
-import org.locationtech.jts.geom.*;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.springframework.stereotype.Component;
 
 @Component
 public class GeoUtil {

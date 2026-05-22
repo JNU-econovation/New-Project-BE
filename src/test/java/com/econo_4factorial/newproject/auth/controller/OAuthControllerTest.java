@@ -1,5 +1,13 @@
 package com.econo_4factorial.newproject.auth.controller;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.Req.FullName;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
@@ -24,14 +32,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class OAuthControllerTest {
@@ -79,7 +79,8 @@ class OAuthControllerTest {
         mockMvc.perform(get("/api/v1/oauth/kakao/callback")
                         .param("code", "auth-code"))
                 .andExpect(status().isFound())
-                .andExpect(header().string(HttpHeaders.LOCATION, org.hamcrest.Matchers.containsString("accessToken=access-token")))
+                .andExpect(header().string(HttpHeaders.LOCATION,
+                        org.hamcrest.Matchers.containsString("accessToken=access-token")))
                 .andExpect(jsonPath("$.status").value("success"));
 
         verify(oAuthService).loginWithKaKao("auth-code");
@@ -88,7 +89,8 @@ class OAuthControllerTest {
     @Test
     void 애플_로그인을_처리한다() throws Exception {
         AuthToken authToken = AuthToken.of("access-token", "refresh-token", 3600L);
-        given(oAuthService.loginWithApple(new AppleLoginReq("identity-token", "test@example.com", new FullName("홍", "길동"))))
+        given(oAuthService.loginWithApple(
+                new AppleLoginReq("identity-token", "test@example.com", new FullName("홍", "길동"))))
                 .willReturn(authToken);
 
         mockMvc.perform(post("/api/v1/oauth/apple/login")

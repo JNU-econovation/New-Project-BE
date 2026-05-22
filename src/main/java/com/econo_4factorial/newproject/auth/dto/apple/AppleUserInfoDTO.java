@@ -4,6 +4,5 @@ public record AppleUserInfoDTO(
         String appleSub,
         String name,
         String email
-
 ) {
 }

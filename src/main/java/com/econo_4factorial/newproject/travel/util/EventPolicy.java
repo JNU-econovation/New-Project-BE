@@ -1,13 +1,12 @@
 package com.econo_4factorial.newproject.travel.util;
 
-import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.econo_4factorial.newproject.travel.Status;
+import com.econo_4factorial.newproject.travel.TravelEvent;
 import com.econo_4factorial.newproject.travel.exception.NotExistStatusException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

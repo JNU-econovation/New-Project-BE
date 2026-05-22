@@ -2,11 +2,10 @@ package com.econo_4factorial.newproject.pathway.dto.res;
 
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.pathway.dto.PathwayDTO;
-import org.locationtech.jts.geom.LineString;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
+import org.locationtech.jts.geom.LineString;
 
 public record PathwayCoordinatesArrayDTO(
         Long pathwayId,
@@ -18,7 +17,8 @@ public record PathwayCoordinatesArrayDTO(
     public static PathwayCoordinatesArrayDTO from(PathwayDTO pathwayDTO) {
         List<List<BigDecimal>> coordinates = convertCoordinatesFromLineString(pathwayDTO.coordinates());
         return new PathwayCoordinatesArrayDTO(
-                pathwayDTO.pathwayId(), pathwayDTO.deptBaseId(), pathwayDTO.destBaseId(), pathwayDTO.difficulty(), coordinates
+                pathwayDTO.pathwayId(), pathwayDTO.deptBaseId(), pathwayDTO.destBaseId(), pathwayDTO.difficulty(),
+                coordinates
         );
     }
 

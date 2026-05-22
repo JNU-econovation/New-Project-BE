@@ -1,5 +1,11 @@
 package com.econo_4factorial.newproject.user.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,12 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class RandomNicknamePoolManagerTest {
@@ -40,7 +40,8 @@ class RandomNicknamePoolManagerTest {
 
         randomNicknamePoolManager.manageRandomNicknameSuffixPool();
 
-        verify(randomNicknamePoolService, never()).addNewSuffixes(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyLong(), org.mockito.ArgumentMatchers.anyLong());
+        verify(randomNicknamePoolService, never()).addNewSuffixes(org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.anyLong(), org.mockito.ArgumentMatchers.anyLong());
         verify(redisTemplate, never()).opsForValue();
     }
 
@@ -53,7 +54,8 @@ class RandomNicknamePoolManagerTest {
         randomNicknamePoolManager.manageRandomNicknameSuffixPool();
 
         ArgumentCaptor<String[]> suffixCaptor = ArgumentCaptor.forClass(String[].class);
-        verify(randomNicknamePoolService).addNewSuffixes(suffixCaptor.capture(), org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.eq(2000L));
+        verify(randomNicknamePoolService).addNewSuffixes(suffixCaptor.capture(), org.mockito.ArgumentMatchers.eq(1L),
+                org.mockito.ArgumentMatchers.eq(2000L));
         assertThat(suffixCaptor.getValue()).hasSize(2000);
         assertThat(suffixCaptor.getValue()[0]).isEqualTo("0001");
         assertThat(suffixCaptor.getValue()[1999]).isEqualTo("2000");

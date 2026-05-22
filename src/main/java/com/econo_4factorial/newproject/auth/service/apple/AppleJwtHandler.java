@@ -1,21 +1,20 @@
 package com.econo_4factorial.newproject.auth.service.apple;
 
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
-import com.econo_4factorial.newproject.auth.exception.InternalServerException.AppleTokenHeaderParsingException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
+import com.econo_4factorial.newproject.auth.exception.InternalServerException.AppleTokenHeaderParsingException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

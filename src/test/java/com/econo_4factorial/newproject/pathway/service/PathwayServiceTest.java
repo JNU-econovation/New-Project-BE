@@ -1,11 +1,16 @@
 package com.econo_4factorial.newproject.pathway.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.pathway.domain.CoursePathwaySequence;
 import com.econo_4factorial.newproject.pathway.domain.Pathway;
 import com.econo_4factorial.newproject.pathway.dto.PathwayDTO;
 import com.econo_4factorial.newproject.pathway.mapper.PathwayMapper;
 import com.econo_4factorial.newproject.pathway.repository.PathwayRepository;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,12 +20,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PathwayServiceTest {

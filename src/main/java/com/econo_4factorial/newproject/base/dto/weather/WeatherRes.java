@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record WeatherRes(
         @JsonProperty("weather")
-        WeatherArray [] weatherArray,
+        WeatherArray[] weatherArray,
         @JsonProperty("main")
         Main main
 ) {
     public record WeatherArray(
             @JsonProperty("main")
             String weather
-    ){
+    ) {
         public WeatherArray(String weather) {
             this.weather = weather;
         }
@@ -20,8 +20,8 @@ public record WeatherRes(
     public record Main(
             @JsonProperty("temp")
             Double temperature
-    ){
-        public Main (Double temperature) {
+    ) {
+        public Main(Double temperature) {
             this.temperature = temperature;
         }
     }

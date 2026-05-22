@@ -1,13 +1,13 @@
 package com.econo_4factorial.newproject.auth.service.apple;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.ExpiredTokenException;
 import com.econo_4factorial.newproject.auth.exception.BadRequestException.SignatureException;
 import com.econo_4factorial.newproject.auth.exception.InternalServerException.AppleTokenHeaderParsingException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -15,9 +15,8 @@ import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class AppleJwtHandlerTest {
 

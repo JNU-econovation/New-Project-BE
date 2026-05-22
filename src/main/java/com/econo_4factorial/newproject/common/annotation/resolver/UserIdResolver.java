@@ -13,8 +13,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.Optional;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -32,7 +30,9 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) {
         String header = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header == null) throw new NotExistTokenException();
+        if (header == null) {
+            throw new NotExistTokenException();
+        }
 
         String token = jwtTokenProvider.extractToken(header);
         return jwtTokenProvider.getUserIdFromAccessToken(token);

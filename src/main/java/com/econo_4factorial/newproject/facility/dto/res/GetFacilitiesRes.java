@@ -1,7 +1,6 @@
 package com.econo_4factorial.newproject.facility.dto.res;
 
 import com.econo_4factorial.newproject.facility.dto.FacilityDTO;
-
 import java.util.List;
 
 public record GetFacilitiesRes(

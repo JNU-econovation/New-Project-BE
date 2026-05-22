@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 
 public interface CourseRepository extends JpaRepository<Course, Long>, CourseCustomRepository {
 
-    @Query (value = """
-        SELECT ST_Distance_Sphere(:userPoint, b.geo_point) <= 10
-        FROM course c
-        JOIN base b ON c.destination_base_id = b.id
-        WHERE c.id = :courseId
-        """,nativeQuery = true)
+    @Query(value = """
+            SELECT ST_Distance_Sphere(:userPoint, b.geo_point) <= 10
+            FROM course c
+            JOIN base b ON c.destination_base_id = b.id
+            WHERE c.id = :courseId
+            """, nativeQuery = true)
     long isUserArrivedDestination(
             @Param("courseId") Long courseId,
             @Param("userPoint") Point userPoint

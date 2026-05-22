@@ -5,15 +5,14 @@ import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
 import com.econo_4factorial.newproject.travel.exception.TravelTrackingInfoNotFoundException;
 import com.econo_4factorial.newproject.travel.mapper.TravelMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Point;
-import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.locationtech.jts.geom.Point;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -57,7 +56,8 @@ public class TravelTrackingInfoStore {
         log.info("산행 재개. userId : {}", userId);
     }
 
-    public TravelTrackingInfo end(LocalDateTime endAt, Long userId, Point userPoint, RemainingTime remainingTime, Double totalTravelDistance, Duration totalTravelTime) {
+    public TravelTrackingInfo end(LocalDateTime endAt, Long userId, Point userPoint, RemainingTime remainingTime,
+                                  Double totalTravelDistance, Duration totalTravelTime) {
         TravelTrackingInfo info = infoStore.get(userId);
         info.end(endAt, userPoint, totalTravelDistance, remainingTime, totalTravelTime);
         log.info("산행 종료. userId : {}", userId);
@@ -65,7 +65,7 @@ public class TravelTrackingInfoStore {
     }
 
     public Point getLastPoint(Long userId) {
-        return  Optional.ofNullable(infoStore.get(userId))
+        return Optional.ofNullable(infoStore.get(userId))
                 .map(TravelTrackingInfo::getLastPoint)
                 .orElseThrow(TravelTrackingInfoNotFoundException::new);
     }

@@ -1,36 +1,32 @@
 package com.econo_4factorial.newproject.travel.service;
 
 import com.econo_4factorial.newproject.common.util.TimeMapper;
-import com.econo_4factorial.newproject.course.domain.Course;
-import com.econo_4factorial.newproject.course.service.CourseService;
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.TravelEvent;
-import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.dto.Payload;
 import com.econo_4factorial.newproject.travel.dto.TravelAnalysisResult;
-import com.econo_4factorial.newproject.travel.dto.req.*;
+import com.econo_4factorial.newproject.travel.dto.req.CurrentPositionEventReq;
+import com.econo_4factorial.newproject.travel.dto.req.EndEventReq;
+import com.econo_4factorial.newproject.travel.dto.req.PauseEventReq;
+import com.econo_4factorial.newproject.travel.dto.req.RestartEventReq;
+import com.econo_4factorial.newproject.travel.dto.req.StartEventReq;
 import com.econo_4factorial.newproject.travel.dto.res.TravelEventResponse;
 import com.econo_4factorial.newproject.travel.exception.NotAllowedEventForStatusException;
-import com.econo_4factorial.newproject.travel.mapper.TravelMapper;
-import com.econo_4factorial.newproject.travel.repository.TravelRecordRepository;
-import com.econo_4factorial.newproject.travel.util.GeoUtil;
 import com.econo_4factorial.newproject.travel.util.EventPolicy;
+import com.econo_4factorial.newproject.travel.util.GeoUtil;
 import com.econo_4factorial.newproject.travel.util.PayloadMapper;
 import com.econo_4factorial.newproject.travel.util.TravelResponseMapper;
-import com.econo_4factorial.newproject.user.domain.User;
-import com.econo_4factorial.newproject.user.service.UserService;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Point;
-import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.locationtech.jts.geom.Point;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -86,7 +82,8 @@ public class TravelService {
         Point prevPoint = travelTrackingInfoStore.getLastPoint(userId);
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
-        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
+        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint,
+                totalTravelDistance);
         travelTrackingInfoStore.start(userId, result.travelRemainingTime());
 
         return TravelResponseMapper.toStartEventRes(result);
@@ -101,9 +98,12 @@ public class TravelService {
         Point userPoint = GeoUtil.toPoint(dto.coordinate());
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
-        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
-        if(!isPingPongRequest(info.getStatus()))
-            travelTrackingInfoStore.currentPosition(userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance());
+        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint,
+                totalTravelDistance);
+        if (!isPingPongRequest(info.getStatus())) {
+            travelTrackingInfoStore.currentPosition(userId, userPoint, result.travelRemainingTime(),
+                    result.totalTravelDistance());
+        }
 
         return TravelResponseMapper.toCurrentPositionEventRes(result);
     }
@@ -115,7 +115,8 @@ public class TravelService {
         Point userPoint = GeoUtil.toPoint(dto.coordinate());
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
-        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
+        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint,
+                totalTravelDistance);
         travelTrackingInfoStore.pause(userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance());
 
         return TravelResponseMapper.toPauseEventRes(result);
@@ -132,7 +133,8 @@ public class TravelService {
         Point userPoint = GeoUtil.toPoint(dto.coordinate());
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
-        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
+        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint,
+                totalTravelDistance);
         travelTrackingInfoStore.reStart(userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance());
 
         return TravelResponseMapper.toRestartEventRes(result);
@@ -147,8 +149,10 @@ public class TravelService {
         Point userPoint = GeoUtil.toPoint(dto.coordinate());
         Double totalTravelDistance = travelTrackingInfoStore.getTotalTravelDistance(userId);
 
-        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint, totalTravelDistance);
-        TravelTrackingInfo info = travelTrackingInfoStore.end(endAt, userId, userPoint, result.travelRemainingTime(), result.totalTravelDistance(), totalTravelTime);
+        TravelAnalysisResult result = travelDomainService.analyzeTravelStatus(courseId, prevPoint, userPoint,
+                totalTravelDistance);
+        TravelTrackingInfo info = travelTrackingInfoStore.end(endAt, userId, userPoint, result.travelRemainingTime(),
+                result.totalTravelDistance(), totalTravelTime);
 
         travelRecordService.saveTravelRecord(info);
         travelTrackingInfoStore.deleteInfo(userId);
@@ -157,7 +161,7 @@ public class TravelService {
     }
 
     public void deleteIfExistTravelTrackingInfo(Long userId) {
-        if(travelTrackingInfoStore.isExistTravelTrackingInfo(userId)) {
+        if (travelTrackingInfoStore.isExistTravelTrackingInfo(userId)) {
             travelTrackingInfoStore.deleteInfo(userId);
             log.info("웹소켓 세션이 끝났지만 남아있는 travelTrackingInfo 삭제 완료. userId : {}", userId);
         }

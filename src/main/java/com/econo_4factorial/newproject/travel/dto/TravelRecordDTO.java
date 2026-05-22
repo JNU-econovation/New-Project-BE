@@ -5,7 +5,7 @@ import com.econo_4factorial.newproject.common.util.TimeMapper;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 
-public record TravelRecordDTO (
+public record TravelRecordDTO(
         Long id,
         Long date,
         String displayName,
@@ -13,10 +13,10 @@ public record TravelRecordDTO (
         Double length,
         Long duration,
         Difficulty difficulty
-){
-    public static TravelRecordDTO from(TravelRecord travelRecord){
+) {
+    public static TravelRecordDTO from(TravelRecord travelRecord) {
         Long date = TimeMapper.toEpochMilli(travelRecord.getStartedAt());
-        Course course =travelRecord.getCourse();
+        Course course = travelRecord.getCourse();
 
         return new TravelRecordDTO(
                 travelRecord.getId(),

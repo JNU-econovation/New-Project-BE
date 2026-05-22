@@ -1,13 +1,12 @@
 package com.econo_4factorial.newproject.travel.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class GeoUtilTest {
 

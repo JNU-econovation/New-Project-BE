@@ -9,18 +9,14 @@ import com.econo_4factorial.newproject.course.exception.BadRequestException.Cour
 import com.econo_4factorial.newproject.course.repository.CourseRepository;
 import com.econo_4factorial.newproject.pathway.dto.PathwayDTO;
 import com.econo_4factorial.newproject.pathway.service.PathwayService;
-import com.econo_4factorial.newproject.travel.util.GeoUtil;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -32,12 +28,12 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final PathwayService pathwayService;
     private final CourseLocationMatcher courseLocationMatcher;
-  
+
     public Course findByIdOrThrow(Long courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(CourseNotFoundException::new);
     }
-      
+
     @Transactional(readOnly = true)
     public List<CourseWithBookmarkDTO> getAllCoursesWithBookmark(Long userId, Long mountainId, String sortBy) {
         CourseSearchCondition courseSearchCondition = CourseSearchCondition.of(mountainId, sortBy);
@@ -54,7 +50,7 @@ public class CourseService {
     public ClosestCoordinateInfo findClosestCoordinateWithIndex(Long courseId, Point userPoint) {
         List<PathwayDTO> pathwayList = pathwayService.getPathwaysByCourseId(courseId);
 
-        Coordinate[] coordinatesOfCourse= pathwayList.stream()
+        Coordinate[] coordinatesOfCourse = pathwayList.stream()
                 .flatMap(pathway -> Arrays.stream(pathway.coordinates().getCoordinates()))
                 .toArray(Coordinate[]::new);
         Coordinate userCoordinate = userPoint.getCoordinate();
@@ -63,8 +59,9 @@ public class CourseService {
 
     public Boolean isArrived(Long courseId, Point userPoint) {
         long result = courseRepository.isUserArrivedDestination(courseId, userPoint);
-        if (result == TRUE)
+        if (result == TRUE) {
             return Boolean.TRUE;
+        }
         return Boolean.FALSE;
     }
 

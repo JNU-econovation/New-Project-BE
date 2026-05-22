@@ -1,5 +1,13 @@
 package com.econo_4factorial.newproject.travel.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
@@ -14,6 +22,10 @@ import com.econo_4factorial.newproject.travel.dto.res.TravelEventResponse;
 import com.econo_4factorial.newproject.travel.exception.NotAllowedEventForStatusException;
 import com.econo_4factorial.newproject.travel.util.EventPolicy;
 import com.econo_4factorial.newproject.travel.util.PayloadMapper;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,19 +35,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class TravelServiceTest {
@@ -60,7 +59,8 @@ class TravelServiceTest {
 
     @BeforeEach
     void setUp() {
-        travelService = new TravelService(payloadMapper, eventPolicy, travelTrackingInfoStore, travelDomainService, travelRecordService);
+        travelService = new TravelService(payloadMapper, eventPolicy, travelTrackingInfoStore, travelDomainService,
+                travelRecordService);
         travelService.init();
         geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
     }
@@ -73,7 +73,8 @@ class TravelServiceTest {
         TravelAnalysisResult result = 분석결과를_생성한다();
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.UNSTARTED);
-        given(eventPolicy.isAllowed(Status.UNSTARTED, com.econo_4factorial.newproject.travel.TravelEvent.START)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.UNSTARTED,
+                com.econo_4factorial.newproject.travel.TravelEvent.START)).willReturn(true);
         given(payloadMapper.extractDataToDTO(payload, StartEventReq.class)).willReturn(request);
         given(travelTrackingInfoStore.getLastPoint(1L)).willReturn(point);
         given(travelTrackingInfoStore.getTotalTravelDistance(1L)).willReturn(0.0);
@@ -82,7 +83,8 @@ class TravelServiceTest {
         TravelEventResponse response = travelService.execute(payload, 1L);
 
         assertThat(response.getEvent()).isEqualTo(com.econo_4factorial.newproject.travel.TravelEvent.START);
-        verify(travelTrackingInfoStore).makeInfo(eq(1L), eq(10L), eq(LocalDateTime.of(1970, 1, 1, 9, 0)), any(Point.class));
+        verify(travelTrackingInfoStore).makeInfo(eq(1L), eq(10L), eq(LocalDateTime.of(1970, 1, 1, 9, 0)),
+                any(Point.class));
         verify(travelTrackingInfoStore).start(1L, result.travelRemainingTime());
     }
 
@@ -96,7 +98,8 @@ class TravelServiceTest {
         TravelAnalysisResult result = 분석결과를_생성한다();
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.TRAVEL);
-        given(eventPolicy.isAllowed(Status.TRAVEL, com.econo_4factorial.newproject.travel.TravelEvent.CURRENT_POSITION)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.TRAVEL,
+                com.econo_4factorial.newproject.travel.TravelEvent.CURRENT_POSITION)).willReturn(true);
         given(payloadMapper.extractDataToDTO(payload, CurrentPositionEventReq.class)).willReturn(request);
         given(travelTrackingInfoStore.getInfo(1L)).willReturn(info);
         given(travelTrackingInfoStore.getLastPoint(1L)).willReturn(prevPoint);
@@ -106,7 +109,8 @@ class TravelServiceTest {
         TravelEventResponse response = travelService.execute(payload, 1L);
 
         assertThat(response.getEvent()).isEqualTo(com.econo_4factorial.newproject.travel.TravelEvent.CURRENT_POSITION);
-        verify(travelTrackingInfoStore).currentPosition(1L, currentPoint, result.travelRemainingTime(), result.totalTravelDistance());
+        verify(travelTrackingInfoStore).currentPosition(1L, currentPoint, result.travelRemainingTime(),
+                result.totalTravelDistance());
     }
 
     @Test
@@ -119,7 +123,8 @@ class TravelServiceTest {
         TravelAnalysisResult result = 분석결과를_생성한다();
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.TRAVEL);
-        given(eventPolicy.isAllowed(Status.TRAVEL, com.econo_4factorial.newproject.travel.TravelEvent.CURRENT_POSITION)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.TRAVEL,
+                com.econo_4factorial.newproject.travel.TravelEvent.CURRENT_POSITION)).willReturn(true);
         given(payloadMapper.extractDataToDTO(payload, CurrentPositionEventReq.class)).willReturn(request);
         given(travelTrackingInfoStore.getInfo(1L)).willReturn(info);
         given(travelTrackingInfoStore.getLastPoint(1L)).willReturn(prevPoint);
@@ -129,7 +134,8 @@ class TravelServiceTest {
         TravelEventResponse response = travelService.execute(payload, 1L);
 
         assertThat(response.getEvent()).isEqualTo(com.econo_4factorial.newproject.travel.TravelEvent.CURRENT_POSITION);
-        verify(travelTrackingInfoStore, never()).currentPosition(eq(1L), any(Point.class), any(RemainingTime.class), any(Double.class));
+        verify(travelTrackingInfoStore, never()).currentPosition(eq(1L), any(Point.class), any(RemainingTime.class),
+                any(Double.class));
     }
 
     @Test
@@ -141,7 +147,8 @@ class TravelServiceTest {
         TravelAnalysisResult result = 분석결과를_생성한다();
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.TRAVEL);
-        given(eventPolicy.isAllowed(Status.TRAVEL, com.econo_4factorial.newproject.travel.TravelEvent.PAUSE)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.TRAVEL,
+                com.econo_4factorial.newproject.travel.TravelEvent.PAUSE)).willReturn(true);
         given(payloadMapper.extractDataToDTO(payload, PauseEventReq.class)).willReturn(request);
         given(travelTrackingInfoStore.getLastPoint(1L)).willReturn(prevPoint);
         given(travelTrackingInfoStore.getTotalTravelDistance(1L)).willReturn(2.0);
@@ -150,7 +157,8 @@ class TravelServiceTest {
         TravelEventResponse response = travelService.execute(payload, 1L);
 
         assertThat(response.getEvent()).isEqualTo(com.econo_4factorial.newproject.travel.TravelEvent.PAUSE);
-        verify(travelTrackingInfoStore).pause(1L, currentPoint, result.travelRemainingTime(), result.totalTravelDistance());
+        verify(travelTrackingInfoStore).pause(1L, currentPoint, result.travelRemainingTime(),
+                result.totalTravelDistance());
     }
 
     @Test
@@ -158,7 +166,8 @@ class TravelServiceTest {
         Payload payload = new Payload("keep-alive", Map.of());
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.PAUSED);
-        given(eventPolicy.isAllowed(Status.PAUSED, com.econo_4factorial.newproject.travel.TravelEvent.KEEP_ALIVE)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.PAUSED,
+                com.econo_4factorial.newproject.travel.TravelEvent.KEEP_ALIVE)).willReturn(true);
 
         TravelEventResponse response = travelService.execute(payload, 1L);
 
@@ -175,7 +184,8 @@ class TravelServiceTest {
         TravelAnalysisResult result = 분석결과를_생성한다();
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.PAUSED);
-        given(eventPolicy.isAllowed(Status.PAUSED, com.econo_4factorial.newproject.travel.TravelEvent.RESTART)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.PAUSED,
+                com.econo_4factorial.newproject.travel.TravelEvent.RESTART)).willReturn(true);
         given(payloadMapper.extractDataToDTO(payload, RestartEventReq.class)).willReturn(request);
         given(travelTrackingInfoStore.getLastPoint(1L)).willReturn(prevPoint);
         given(travelTrackingInfoStore.getTotalTravelDistance(1L)).willReturn(2.5);
@@ -184,7 +194,8 @@ class TravelServiceTest {
         TravelEventResponse response = travelService.execute(payload, 1L);
 
         assertThat(response.getEvent()).isEqualTo(com.econo_4factorial.newproject.travel.TravelEvent.RESTART);
-        verify(travelTrackingInfoStore).reStart(1L, currentPoint, result.travelRemainingTime(), result.totalTravelDistance());
+        verify(travelTrackingInfoStore).reStart(1L, currentPoint, result.travelRemainingTime(),
+                result.totalTravelDistance());
     }
 
     @Test
@@ -197,13 +208,15 @@ class TravelServiceTest {
         TravelTrackingInfo endedInfo = 산행정보를_생성한다(Status.END, prevPoint);
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.TRAVEL);
-        given(eventPolicy.isAllowed(Status.TRAVEL, com.econo_4factorial.newproject.travel.TravelEvent.END)).willReturn(true);
+        given(eventPolicy.isAllowed(Status.TRAVEL, com.econo_4factorial.newproject.travel.TravelEvent.END)).willReturn(
+                true);
         given(payloadMapper.extractDataToDTO(payload, EndEventReq.class)).willReturn(request);
         given(travelTrackingInfoStore.getLastPoint(1L)).willReturn(prevPoint);
         given(travelTrackingInfoStore.getTotalTravelDistance(1L)).willReturn(3.0);
         given(travelDomainService.analyzeTravelStatus(13L, prevPoint, currentPoint, 3.0)).willReturn(result);
         given(travelTrackingInfoStore.end(eq(LocalDateTime.of(1970, 1, 1, 9, 0)), eq(1L), eq(currentPoint),
-                eq(result.travelRemainingTime()), eq(result.totalTravelDistance()), eq(Duration.ofHours(2)))).willReturn(endedInfo);
+                eq(result.travelRemainingTime()), eq(result.totalTravelDistance()),
+                eq(Duration.ofHours(2)))).willReturn(endedInfo);
 
         TravelEventResponse response = travelService.execute(payload, 1L);
 
@@ -217,7 +230,8 @@ class TravelServiceTest {
         Payload payload = new Payload("end", Map.of());
 
         given(travelTrackingInfoStore.getStatus(1L)).willReturn(Status.UNSTARTED);
-        given(eventPolicy.isAllowed(Status.UNSTARTED, com.econo_4factorial.newproject.travel.TravelEvent.END)).willReturn(false);
+        given(eventPolicy.isAllowed(Status.UNSTARTED,
+                com.econo_4factorial.newproject.travel.TravelEvent.END)).willReturn(false);
 
         assertThatThrownBy(() -> travelService.execute(payload, 1L))
                 .isInstanceOf(NotAllowedEventForStatusException.class);

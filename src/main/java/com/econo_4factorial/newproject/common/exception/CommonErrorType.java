@@ -2,7 +2,7 @@ package com.econo_4factorial.newproject.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-public enum CommonErrorType implements ErrorType{
+public enum CommonErrorType implements ErrorType {
 
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("COMMON400_001", HttpStatus.BAD_REQUEST, "RequestDTO 유효성 검사 미통과"),
     ILLEGAL_ARGUMENT_EXCEPTION("COMMON400_002", HttpStatus.BAD_REQUEST, "Illegal argument exception 발생 "),
@@ -10,7 +10,7 @@ public enum CommonErrorType implements ErrorType{
     MISSING_REQUEST_PARAM_EXCEPTION("COMMON400_004", HttpStatus.BAD_REQUEST, "쿼리 스트링이 누락됐습니다."),
 
     WEB_SOCKET_IO_EXCEPTION("WEB_SOCKET500", HttpStatus.BAD_REQUEST, "소켓 IOException 발생"),
-  
+
     UN_EXPECTED_EXCEPTION("COMMON500_001", HttpStatus.INTERNAL_SERVER_ERROR, "예기치 못한 에러가 발생했습니다."),
     REDIS_NOT_READY_EXCEPTION("COMMON500_002", HttpStatus.INTERNAL_SERVER_ERROR, "Redis의 연결 상태가 Ready가 아닙니다");
 

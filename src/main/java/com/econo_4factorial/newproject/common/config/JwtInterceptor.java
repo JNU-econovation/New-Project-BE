@@ -24,11 +24,11 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        if(isPreFlightRequest(request)) {
+        if (isPreFlightRequest(request)) {
             return true;
         }
 
-        if(isReissueRequest(request)) {
+        if (isReissueRequest(request)) {
             return true;
         }
 

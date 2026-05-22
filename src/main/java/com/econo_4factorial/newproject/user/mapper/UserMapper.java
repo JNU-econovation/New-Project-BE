@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class UserMapper {
-    public static User toEntity (KakaoUserInfoDTO userInfoDTO) {
+    public static User toEntity(KakaoUserInfoDTO userInfoDTO) {
         return User.kakaoUserBuilder()
                 .kakaoId(userInfoDTO.kakaoId())
                 .email(userInfoDTO.email())
@@ -16,7 +16,7 @@ public final class UserMapper {
                 .build();
     }
 
-    public static User toEntity (AppleUserInfoDTO userInfoDTO) {
+    public static User toEntity(AppleUserInfoDTO userInfoDTO) {
         return User.appleUserBuilder()
                 .appleSub(userInfoDTO.appleSub())
                 .email(userInfoDTO.email())

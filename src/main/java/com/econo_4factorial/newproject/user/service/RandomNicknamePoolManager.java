@@ -1,11 +1,10 @@
 package com.econo_4factorial.newproject.user.service;
 
+import java.util.stream.LongStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.LongStream;
 
 @Slf4j
 @Service
@@ -20,10 +19,10 @@ public class RandomNicknamePoolManager {
     private final RandomNicknamePoolService nicknamePool;
 
     public void manageRandomNicknameSuffixPool() {
-        if(!hasEnoughSuffix()) {
+        if (!hasEnoughSuffix()) {
             log.info("랜덤 닉네임 보충 시작");
             Long start = getStartPosition();
-            Long end  = start + CHUNK_SIZE;
+            Long end = start + CHUNK_SIZE;
 
             String[] suffixes = generateSuffixes(start, end);
 
@@ -34,7 +33,7 @@ public class RandomNicknamePoolManager {
     }
 
     private void updateStartPosition(Long end) {
-        redisTemplate.opsForValue().set(NICKNAME_POOL_START_KEY, String.valueOf(end+1));
+        redisTemplate.opsForValue().set(NICKNAME_POOL_START_KEY, String.valueOf(end + 1));
     }
 
     private String[] generateSuffixes(Long start, Long end) {

@@ -1,16 +1,15 @@
 package com.econo_4factorial.newproject.travel.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.travel.dto.Payload;
 import com.econo_4factorial.newproject.travel.dto.req.StartEventReq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.socket.TextMessage;
-
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class PayloadMapperTest {
 

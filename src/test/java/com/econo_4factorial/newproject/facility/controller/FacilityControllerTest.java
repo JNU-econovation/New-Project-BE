@@ -1,11 +1,19 @@
 package com.econo_4factorial.newproject.facility.controller;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.econo_4factorial.newproject.common.exception.GlobalExceptionHandler;
 import com.econo_4factorial.newproject.common.util.RedirectUriBuilder;
-import com.econo_4factorial.newproject.facility.dto.FacilityDTO;
 import com.econo_4factorial.newproject.facility.domain.FacilityType;
+import com.econo_4factorial.newproject.facility.dto.FacilityDTO;
 import com.econo_4factorial.newproject.facility.service.FacilityService;
 import com.econo_4factorial.newproject.mountain.exception.BadRequestException.MountainNotFoundException;
+import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,15 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.math.BigDecimal;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class FacilityControllerTest {

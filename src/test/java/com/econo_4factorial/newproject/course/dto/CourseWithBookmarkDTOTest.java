@@ -1,14 +1,14 @@
 package com.econo_4factorial.newproject.course.dto;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+
 import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
 class CourseWithBookmarkDTOTest {
 

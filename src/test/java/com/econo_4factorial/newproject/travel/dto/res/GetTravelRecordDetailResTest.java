@@ -1,12 +1,11 @@
 package com.econo_4factorial.newproject.travel.dto.res;
 
-import com.econo_4factorial.newproject.travel.dto.TravelRecordDetailDTO;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.econo_4factorial.newproject.travel.dto.TravelRecordDetailDTO;
 import java.math.BigDecimal;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class GetTravelRecordDetailResTest {
 

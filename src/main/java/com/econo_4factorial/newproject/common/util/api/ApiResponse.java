@@ -18,14 +18,16 @@ public class ApiResponse {
     }
 
     public static ApiResult<ApiResult.SuccessBody<Void>> success(final HttpHeaders headers, final HttpStatus status) {
-        return new ApiResult<>(new ApiResult.SuccessBody<Void>(null, SUCCESS ), headers, status);
+        return new ApiResult<>(new ApiResult.SuccessBody<Void>(null, SUCCESS), headers, status);
     }
 
-    public static ApiResult<ApiResult.ErrorBody> fail (final String errorCode, final String message, final HttpStatus status) {
+    public static ApiResult<ApiResult.ErrorBody> fail(final String errorCode, final String message,
+                                                      final HttpStatus status) {
         return new ApiResult<>(new ApiResult.ErrorBody(ERROR, errorCode, message), status);
     }
 
-    public static ApiResult<ApiResult.ErrorBody> fail(final String errorCode, final String message, final HttpHeaders headers, HttpStatus status) {
+    public static ApiResult<ApiResult.ErrorBody> fail(final String errorCode, final String message,
+                                                      final HttpHeaders headers, HttpStatus status) {
         return new ApiResult<>(new ApiResult.ErrorBody(ERROR, errorCode, message), headers, status);
     }
 }

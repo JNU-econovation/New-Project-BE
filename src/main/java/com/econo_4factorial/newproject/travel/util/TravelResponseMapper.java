@@ -34,8 +34,7 @@ public final class TravelResponseMapper {
         return new CurrentPositionEventRes(TravelEvent.END, data);
     }
 
-    public static CurrentPositionEventRes toCurrentPositionEventRes(TravelAnalysisResult result)
-    {
+    public static CurrentPositionEventRes toCurrentPositionEventRes(TravelAnalysisResult result) {
         TravelEventResponseData data = toTravelEventResponseData(result);
         return new CurrentPositionEventRes(TravelEvent.CURRENT_POSITION, data);
     }

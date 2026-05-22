@@ -1,11 +1,10 @@
 package com.econo_4factorial.newproject.travel.dto.res;
 
 import com.econo_4factorial.newproject.travel.dto.TravelRecordDetailDTO;
-
 import java.math.BigDecimal;
 import java.util.List;
 
-public record GetTravelRecordDetailRes (
+public record GetTravelRecordDetailRes(
         Long recordId,
         String displayName,
         Long startedAt,
@@ -19,7 +18,7 @@ public record GetTravelRecordDetailRes (
     // Current service scope supports a single target mountain only.
     public static final Integer DEFAULT_MOUNTAIN_ID = 1;
 
-    public static GetTravelRecordDetailRes from (TravelRecordDetailDTO recordDetail) {
+    public static GetTravelRecordDetailRes from(TravelRecordDetailDTO recordDetail) {
         return new GetTravelRecordDetailRes(
                 recordDetail.recordId(),
                 recordDetail.displayName(),

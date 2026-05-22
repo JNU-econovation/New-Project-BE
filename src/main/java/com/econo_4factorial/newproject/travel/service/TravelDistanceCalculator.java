@@ -1,5 +1,6 @@
 package com.econo_4factorial.newproject.travel.service;
 
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -8,8 +9,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.linearref.LengthIndexedLine;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.IntStream;
-
 @Service
 @RequiredArgsConstructor
 public class TravelDistanceCalculator {
@@ -17,8 +16,9 @@ public class TravelDistanceCalculator {
     private final Double ZERO = 0.0;
 
     public Double calculateDistanceFromLastLocation(Point prevPoint, Point currentPoint) {
-        if (prevPoint == null)
+        if (prevPoint == null) {
             return ZERO;
+        }
 
         double lat1 = prevPoint.getY();
         double lon1 = prevPoint.getX();
@@ -58,7 +58,8 @@ public class TravelDistanceCalculator {
         return R * c;
     }
 
-    public Double calculateRemainingDistanceToPointInCourse(LineString lineStringOfCourse, Point targetPoint, Point userPoint) {
+    public Double calculateRemainingDistanceToPointInCourse(LineString lineStringOfCourse, Point targetPoint,
+                                                            Point userPoint) {
         LengthIndexedLine indexedLine = new LengthIndexedLine(lineStringOfCourse);
 
         double userIndex = indexedLine.indexOf(userPoint.getCoordinate());

@@ -2,16 +2,14 @@ package com.econo_4factorial.newproject.common.util.webSocket;
 
 import com.econo_4factorial.newproject.auth.jwt.service.AuthTokenService;
 import com.econo_4factorial.newproject.auth.jwt.service.JwtTokenProvider;
-import com.econo_4factorial.newproject.common.exception.WebSocketIOException;
 import com.econo_4factorial.newproject.travel.dto.Payload;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j

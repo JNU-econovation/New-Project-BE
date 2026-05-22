@@ -1,15 +1,17 @@
 package com.econo_4factorial.newproject.user.service;
 
+import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
+
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.BloodType;
 import com.econo_4factorial.newproject.user.domain.User;
+import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
 import com.econo_4factorial.newproject.user.dto.UserAlertSettingDTO;
 import com.econo_4factorial.newproject.user.dto.UserProfileDTO;
-import com.econo_4factorial.newproject.user.dto.ProfileStatusInfoDTO;
+import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AddPersonalInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.AlertSettingReq;
-import com.econo_4factorial.newproject.user.dto.req.AddBasicInformationReq;
 import com.econo_4factorial.newproject.user.dto.req.ProfileSettingReq;
 import com.econo_4factorial.newproject.user.exception.BadRequestException.EmailAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exception.BadRequestException.PhoneNumberAlreadyExistsException;
@@ -18,8 +20,6 @@ import com.econo_4factorial.newproject.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.econo_4factorial.newproject.user.mapper.UserMapper.toEntity;
 
 @Service
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class UserService {
     @Transactional
     public User findOrCreateUserByKakaoUserInfo(KakaoUserInfoDTO userInfoDTO) {
         return userRepository.findByKakaoId(userInfoDTO.kakaoId())
-                .orElseGet(()-> addKakaoUser(userInfoDTO));
+                .orElseGet(() -> addKakaoUser(userInfoDTO));
     }
 
     private User addKakaoUser(KakaoUserInfoDTO userInfoDTO) {
@@ -68,14 +68,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public void validateExistPhoneNumber(String phoneNumber) {
-        if(userRepository.existsByUserInfoPhoneNumber(phoneNumber)) {
+        if (userRepository.existsByUserInfoPhoneNumber(phoneNumber)) {
             throw new PhoneNumberAlreadyExistsException();
         }
     }
 
     @Transactional(readOnly = true)
     public void validateExistEmail(String email) {
-        if(userRepository.existsByUserInfoEmail(email)) {
+        if (userRepository.existsByUserInfoEmail(email)) {
             throw new EmailAlreadyExistsException();
         }
     }

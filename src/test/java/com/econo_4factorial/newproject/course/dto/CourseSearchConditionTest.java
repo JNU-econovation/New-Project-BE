@@ -1,8 +1,8 @@
 package com.econo_4factorial.newproject.course.dto;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class CourseSearchConditionTest {
 

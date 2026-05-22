@@ -1,5 +1,7 @@
 package com.econo_4factorial.newproject.user.dto;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.user.domain.vo.UserAlert;
 import com.econo_4factorial.newproject.user.dto.res.GetAlertSettingRes;
 import com.econo_4factorial.newproject.user.dto.res.GetNicknameAvailabilityRes;
@@ -7,8 +9,6 @@ import com.econo_4factorial.newproject.user.dto.res.GetProfileRes;
 import com.econo_4factorial.newproject.user.dto.res.GetProfileStatusRes;
 import com.econo_4factorial.newproject.user.dto.res.GetRandomNicknameRes;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class UserResponseDtoTest {
 
@@ -34,7 +34,8 @@ class UserResponseDtoTest {
 
     @Test
     void 프로필_응답을_생성한다() {
-        UserProfileDTO userProfileDTO = new UserProfileDTO("홍길동", "등산러", "010-1234-5678", "test@example.com", 70L, 180L, null, null);
+        UserProfileDTO userProfileDTO = new UserProfileDTO("홍길동", "등산러", "010-1234-5678", "test@example.com", 70L, 180L,
+                null, null);
 
         GetProfileRes response = GetProfileRes.from(userProfileDTO);
 

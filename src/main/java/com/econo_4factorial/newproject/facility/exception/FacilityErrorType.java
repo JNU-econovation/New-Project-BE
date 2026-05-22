@@ -17,17 +17,17 @@ public enum FacilityErrorType implements ErrorType {
     }
 
     @Override
-    public String getErrorCode () {
+    public String getErrorCode() {
         return errorCode;
     }
 
     @Override
-    public HttpStatus getHttpStatus () {
+    public HttpStatus getHttpStatus() {
         return httpStatus;
     }
 
     @Override
-    public String getMessage () {
+    public String getMessage() {
         return message;
     }
 }

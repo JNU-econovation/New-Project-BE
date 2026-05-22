@@ -2,7 +2,6 @@ package com.econo_4factorial.newproject.base.dto;
 
 import com.econo_4factorial.newproject.base.domain.Base;
 import com.econo_4factorial.newproject.base.domain.BaseImage;
-
 import java.util.List;
 
 public record BaseDetailDTO(

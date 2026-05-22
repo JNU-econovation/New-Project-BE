@@ -1,23 +1,22 @@
 package com.econo_4factorial.newproject.mountain.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import com.econo_4factorial.newproject.mountain.domain.Mountain;
 import com.econo_4factorial.newproject.mountain.dto.MountainDTO;
 import com.econo_4factorial.newproject.mountain.dto.SuggestedMountainDTO;
 import com.econo_4factorial.newproject.mountain.exception.BadRequestException.MountainNotFoundException;
 import com.econo_4factorial.newproject.mountain.repository.MountainRepository;
+import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class MountainServiceTest {

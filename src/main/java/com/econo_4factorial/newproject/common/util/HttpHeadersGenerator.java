@@ -1,9 +1,8 @@
 package com.econo_4factorial.newproject.common.util;
 
+import java.net.URI;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
-
-import java.net.URI;
 
 @UtilityClass
 public class HttpHeadersGenerator {

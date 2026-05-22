@@ -1,11 +1,15 @@
 package com.econo_4factorial.newproject.travel.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.course.domain.Course;
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
 import com.econo_4factorial.newproject.user.domain.User;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -13,11 +17,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.mockito.Mockito;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class TravelMapperTest {
 
@@ -54,7 +53,8 @@ class TravelMapperTest {
                 LocalDateTime.of(2024, 1, 1, 9, 0),
                 포인트를_생성한다(126.0, 37.0)
         );
-        info.currentPosition(포인트를_생성한다(126.1, 37.1), 3.2, new RemainingTime(Duration.ofMinutes(20), Duration.ofMinutes(40)));
+        info.currentPosition(포인트를_생성한다(126.1, 37.1), 3.2,
+                new RemainingTime(Duration.ofMinutes(20), Duration.ofMinutes(40)));
         info.end(LocalDateTime.of(2024, 1, 1, 12, 0), 포인트를_생성한다(126.2, 37.2), 6.4,
                 new RemainingTime(Duration.ZERO, Duration.ZERO), Duration.ofHours(3));
 

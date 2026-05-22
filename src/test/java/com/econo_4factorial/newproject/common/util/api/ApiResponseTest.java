@@ -1,10 +1,10 @@
 package com.econo_4factorial.newproject.common.util.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ApiResponseTest {
 
@@ -53,7 +53,8 @@ class ApiResponseTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Retry-After", "60");
 
-        ApiResult<ApiResult.ErrorBody> response = ApiResponse.fail("COMMON500_001", "서버 오류", headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        ApiResult<ApiResult.ErrorBody> response = ApiResponse.fail("COMMON500_001", "서버 오류", headers,
+                HttpStatus.INTERNAL_SERVER_ERROR);
 
         assertThat(response.getHeaders().getFirst("Retry-After")).isEqualTo("60");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);

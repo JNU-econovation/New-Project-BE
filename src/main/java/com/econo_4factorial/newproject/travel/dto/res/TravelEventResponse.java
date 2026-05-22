@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TravelEventResponse {
-       private TravelEvent event;
-       private TravelEventResponseData data;
+    private TravelEvent event;
+    private TravelEventResponseData data;
 }

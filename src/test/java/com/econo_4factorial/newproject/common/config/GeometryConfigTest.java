@@ -1,9 +1,9 @@
 package com.econo_4factorial.newproject.common.config;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.GeometryFactory;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class GeometryConfigTest {
 

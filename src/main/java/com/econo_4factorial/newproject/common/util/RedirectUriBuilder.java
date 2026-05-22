@@ -13,7 +13,7 @@ public class RedirectUriBuilder {
     @Value("${auth.login_success.base_uri}")
     private String baseUri;
 
-    public String buildLoginSuccessUri (AuthToken authToken) {
+    public String buildLoginSuccessUri(AuthToken authToken) {
         return UriComponentsBuilder.fromUriString(baseUri)
                 .queryParam("accessToken", authToken.accessToken())
                 .queryParam("refreshToken", authToken.refreshToken())
@@ -22,7 +22,7 @@ public class RedirectUriBuilder {
                 .toUriString();
     }
 
-    public String buildLoginFailUri () {
+    public String buildLoginFailUri() {
         return UriComponentsBuilder.fromUriString(baseUri)
                 .build()
                 .toUriString();

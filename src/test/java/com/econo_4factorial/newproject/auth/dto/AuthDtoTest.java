@@ -1,5 +1,7 @@
 package com.econo_4factorial.newproject.auth.dto;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.econo_4factorial.newproject.auth.dto.Req.AppleLoginReq;
 import com.econo_4factorial.newproject.auth.dto.Req.FullName;
 import com.econo_4factorial.newproject.auth.dto.Res.AppleLoginRes;
@@ -10,8 +12,6 @@ import com.econo_4factorial.newproject.auth.dto.kakao.KaKaoUserInfoRes;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.auth.jwt.AuthToken;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class AuthDtoTest {
 
@@ -62,7 +62,8 @@ class AuthDtoTest {
 
     @Test
     void 카카오_유저_응답을_도메인_DTO로_변환한다() {
-        KaKaoUserInfoRes response = new KaKaoUserInfoRes(1L, new KaKaoUserInfoRes.KakaoAccount("test@example.com", "테스터"));
+        KaKaoUserInfoRes response = new KaKaoUserInfoRes(1L,
+                new KaKaoUserInfoRes.KakaoAccount("test@example.com", "테스터"));
 
         KakaoUserInfoDTO kakaoUserInfoDTO = response.toKaKaoUserInfoDTO();
 

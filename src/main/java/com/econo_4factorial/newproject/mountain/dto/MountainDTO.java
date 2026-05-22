@@ -1,7 +1,6 @@
 package com.econo_4factorial.newproject.mountain.dto;
 
 import com.econo_4factorial.newproject.mountain.domain.Mountain;
-
 import java.math.BigDecimal;
 import java.util.List;
 

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookmarkMapper {
-    public static Bookmark toEntity (User user, Course course) {
+    public static Bookmark toEntity(User user, Course course) {
         return Bookmark.builder()
                 .user(user)
                 .course(course)

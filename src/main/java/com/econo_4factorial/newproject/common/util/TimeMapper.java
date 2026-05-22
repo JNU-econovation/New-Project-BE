@@ -1,10 +1,9 @@
 package com.econo_4factorial.newproject.common.util;
 
-import lombok.experimental.UtilityClass;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TimeMapper {

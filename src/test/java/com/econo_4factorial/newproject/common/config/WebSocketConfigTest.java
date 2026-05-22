@@ -1,14 +1,14 @@
 package com.econo_4factorial.newproject.common.config;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+
 import com.econo_4factorial.newproject.travel.handler.WebSocketHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistration;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
 
 class WebSocketConfigTest {
 

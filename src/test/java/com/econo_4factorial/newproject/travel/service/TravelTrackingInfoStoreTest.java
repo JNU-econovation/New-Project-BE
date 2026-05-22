@@ -1,21 +1,20 @@
 package com.econo_4factorial.newproject.travel.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.domain.TravelTrackingInfo;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
 import com.econo_4factorial.newproject.travel.exception.TravelTrackingInfoNotFoundException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TravelTrackingInfoStoreTest {
 
@@ -70,7 +69,8 @@ class TravelTrackingInfoStoreTest {
         travelTrackingInfoStore.currentPosition(1L, currentPoint, updatedRemainingTime, 1.5);
         travelTrackingInfoStore.pause(1L, pausedPoint, updatedRemainingTime, 2.5);
         travelTrackingInfoStore.reStart(1L, restartedPoint, updatedRemainingTime, 3.5);
-        TravelTrackingInfo result = travelTrackingInfoStore.end(endAt, 1L, endPoint, updatedRemainingTime, 4.5, totalTravelTime);
+        TravelTrackingInfo result = travelTrackingInfoStore.end(endAt, 1L, endPoint, updatedRemainingTime, 4.5,
+                totalTravelTime);
 
         assertThat(result.getStatus()).isEqualTo(Status.END);
         assertThat(result.getRemainingTime()).isEqualTo(updatedRemainingTime);

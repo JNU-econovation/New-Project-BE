@@ -12,8 +12,8 @@ public record AppleLoginReq(
 
         FullName fullName
 ) {
-        public AppleUserInfoDTO toAppleUserInfoDTO(String appleSub) {
-                String name = this.fullName.getName();
-                return new AppleUserInfoDTO(appleSub, name, this.email);
-        }
+    public AppleUserInfoDTO toAppleUserInfoDTO(String appleSub) {
+        String name = this.fullName.getName();
+        return new AppleUserInfoDTO(appleSub, name, this.email);
+    }
 }

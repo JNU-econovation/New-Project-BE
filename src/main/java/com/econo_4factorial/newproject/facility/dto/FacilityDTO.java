@@ -2,7 +2,6 @@ package com.econo_4factorial.newproject.facility.dto;
 
 import com.econo_4factorial.newproject.facility.domain.Facility;
 import com.econo_4factorial.newproject.facility.domain.FacilityType;
-
 import java.math.BigDecimal;
 import java.util.List;
 

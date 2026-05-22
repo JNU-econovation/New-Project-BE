@@ -12,6 +12,8 @@ import com.econo_4factorial.newproject.travel.dto.res.TravelEventResponse;
 import com.econo_4factorial.newproject.travel.service.TravelService;
 import com.econo_4factorial.newproject.travel.util.PayloadMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,9 +21,6 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j

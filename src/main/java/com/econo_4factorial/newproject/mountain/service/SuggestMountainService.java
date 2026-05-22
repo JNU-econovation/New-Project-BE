@@ -1,11 +1,10 @@
 package com.econo_4factorial.newproject.mountain.service;
 
 import com.econo_4factorial.newproject.mountain.dto.SuggestedMountainDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.text.Normalizer;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,9 @@ public class SuggestMountainService {
     private boolean isInitials(String s) {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (INITIAL_CONSTANTS.indexOf(c) < 0) return false;
+            if (INITIAL_CONSTANTS.indexOf(c) < 0) {
+                return false;
+            }
         }
         return true;
     }

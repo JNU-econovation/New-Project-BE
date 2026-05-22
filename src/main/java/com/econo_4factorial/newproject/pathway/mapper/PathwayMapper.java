@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PathwayMapper {
-    public PathwayDTO toDTO (Pathway pathway) {
+    public PathwayDTO toDTO(Pathway pathway) {
         return PathwayDTO.builder()
                 .pathwayId(pathway.getId())
                 .deptBaseId(pathway.getDeparture().getId())

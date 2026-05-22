@@ -1,5 +1,8 @@
 package com.econo_4factorial.newproject.course.repository;
 
+import static com.econo_4factorial.newproject.course.domain.QBookmark.bookmark;
+import static com.econo_4factorial.newproject.course.domain.QCourse.course;
+
 import com.econo_4factorial.newproject.common.constant.Difficulty;
 import com.econo_4factorial.newproject.course.dto.CourseSearchCondition;
 import com.econo_4factorial.newproject.course.dto.CourseWithBookmarkDTO;
@@ -9,14 +12,10 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.econo_4factorial.newproject.course.domain.QBookmark.bookmark;
-import static com.econo_4factorial.newproject.course.domain.QCourse.course;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
@@ -30,7 +29,8 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CourseWithBookmarkDTO> findAllByMountainIdWithBookmark(CourseSearchCondition searchCondition, Long mountainId, Long userId) {
+    public List<CourseWithBookmarkDTO> findAllByMountainIdWithBookmark(CourseSearchCondition searchCondition,
+                                                                       Long mountainId, Long userId) {
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(searchCondition.sortBy());
 
         return queryFactory.
@@ -65,12 +65,13 @@ public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private OrderSpecifier[] createOrderSpecifier(String sortBy) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 
-        if (DIFFICULTY.equalsIgnoreCase(sortBy))
+        if (DIFFICULTY.equalsIgnoreCase(sortBy)) {
             orderSpecifiers.add(orderByDifficultyAsc());
-        else if (LENGTH.equalsIgnoreCase(sortBy))
+        } else if (LENGTH.equalsIgnoreCase(sortBy)) {
             orderSpecifiers.add(orderByLengthAsc());
-        else
+        } else {
             orderSpecifiers.add(orderByBookmarkAsc());
+        }
 
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }

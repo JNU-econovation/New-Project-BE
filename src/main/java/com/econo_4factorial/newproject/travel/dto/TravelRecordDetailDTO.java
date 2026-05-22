@@ -2,13 +2,12 @@ package com.econo_4factorial.newproject.travel.dto;
 
 import com.econo_4factorial.newproject.common.util.TimeMapper;
 import com.econo_4factorial.newproject.travel.domain.TravelRecord;
-import org.locationtech.jts.geom.LineString;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
+import org.locationtech.jts.geom.LineString;
 
-public record TravelRecordDetailDTO (
+public record TravelRecordDetailDTO(
         Long recordId,
         String displayName,
         Long startedAt,

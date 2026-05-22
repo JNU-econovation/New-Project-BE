@@ -122,7 +122,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ApiResult<ApiResult.ErrorBody> handleUnexpectedException(Exception ex, HttpServletRequest request) {
-        log.error("[예기치 못한 예외 발생] {} {}", request.getMethod(), request.getRequestURI(), ex );
+        log.error("[예기치 못한 예외 발생] {} {}", request.getMethod(), request.getRequestURI(), ex);
         ErrorType errorType = CommonErrorType.UN_EXPECTED_EXCEPTION;
 
         return ApiResponse.fail(

@@ -1,11 +1,10 @@
 package com.econo_4factorial.newproject.common.util;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 
 class HttpHeadersGeneratorTest {
 

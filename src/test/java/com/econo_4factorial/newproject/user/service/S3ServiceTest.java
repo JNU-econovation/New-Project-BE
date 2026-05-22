@@ -1,10 +1,21 @@
 package com.econo_4factorial.newproject.user.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.econo_4factorial.newproject.user.domain.ImageFileFormat;
 import com.econo_4factorial.newproject.user.dto.PresignedUrlDTO;
 import com.econo_4factorial.newproject.user.dto.ProfileImageUrlDTO;
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,15 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class S3ServiceTest {
@@ -61,7 +63,8 @@ class S3ServiceTest {
     void DB에_파일명이_없으면_기본_이미지_URL을_반환한다() throws MalformedURLException {
         Long userId = 1L;
         given(userService.getUserProfileFileName(userId)).willReturn(null);
-        given(amazonS3Client.getUrl(BUCKET, DEFAULT_PROFILE_KEY)).willReturn(new URL("https://s3.com/" + DEFAULT_PROFILE_KEY));
+        given(amazonS3Client.getUrl(BUCKET, DEFAULT_PROFILE_KEY)).willReturn(
+                new URL("https://s3.com/" + DEFAULT_PROFILE_KEY));
 
         ProfileImageUrlDTO result = s3Service.getImageUrl(userId);
 

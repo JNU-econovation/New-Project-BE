@@ -2,13 +2,12 @@ package com.econo_4factorial.newproject.travel.domain;
 
 import com.econo_4factorial.newproject.travel.Status;
 import com.econo_4factorial.newproject.travel.domain.vo.RemainingTime;
-import lombok.Builder;
-import lombok.Getter;
-import org.locationtech.jts.geom.Point;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
+import org.locationtech.jts.geom.Point;
 
 @Builder
 @Getter
@@ -60,7 +59,8 @@ public class TravelTrackingInfo {
         this.status = Status.RESTARTED;
     }
 
-    public void end(LocalDateTime endAt, Point userPoint, Double totalTravelDistance, RemainingTime remainingTime, Duration totalTravelTime) {
+    public void end(LocalDateTime endAt, Point userPoint, Double totalTravelDistance, RemainingTime remainingTime,
+                    Duration totalTravelTime) {
         paths.add(userPoint);
         this.totalTravelDistanceKm = totalTravelDistance;
         this.remainingTime = remainingTime;

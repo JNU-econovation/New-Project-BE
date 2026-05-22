@@ -1,31 +1,30 @@
 package com.econo_4factorial.newproject.pathway.controller;
 
-import com.econo_4factorial.newproject.common.constant.Difficulty;
-import com.econo_4factorial.newproject.common.exception.GlobalExceptionHandler;
-import com.econo_4factorial.newproject.common.util.RedirectUriBuilder;
-import com.econo_4factorial.newproject.pathway.dto.PathwayDTO;
-import com.econo_4factorial.newproject.pathway.service.PathwayService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-
-import java.util.List;
-
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.econo_4factorial.newproject.common.constant.Difficulty;
+import com.econo_4factorial.newproject.common.exception.GlobalExceptionHandler;
+import com.econo_4factorial.newproject.common.util.RedirectUriBuilder;
+import com.econo_4factorial.newproject.pathway.dto.PathwayDTO;
+import com.econo_4factorial.newproject.pathway.service.PathwayService;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @ExtendWith(MockitoExtension.class)
 class PathwayControllerTest {

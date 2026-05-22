@@ -11,11 +11,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/bookmarks")
@@ -26,7 +31,7 @@ public class BookmarkController {
 
     @PostMapping
     @Operation(summary = "즐겨찾기 추가", description = "사용자의 즐겨찾기를 추가합니다.")
-    public ApiResult<ApiResult.SuccessBody<Void>> addBookmark (
+    public ApiResult<ApiResult.SuccessBody<Void>> addBookmark(
             @Parameter(name = "userId", description = "사용자 ID", required = true)
             @UserId Long userId,
 
@@ -38,7 +43,7 @@ public class BookmarkController {
 
     @DeleteMapping({"/{courseId}"})
     @Operation(summary = "즐겨찾기 삭제", description = "사용자의 즐겨찾기를 삭제합니다.")
-    public ApiResult<ApiResult.SuccessBody<Void>> deleteBookmark (
+    public ApiResult<ApiResult.SuccessBody<Void>> deleteBookmark(
             @Parameter(name = "userId", description = "사용자 ID", required = true)
             @UserId Long userId,
 
@@ -51,11 +56,11 @@ public class BookmarkController {
 
     @GetMapping
     @Operation(summary = "전체 즐겨찾기 조회", description = "사용자의 모든 즐겨찾기 리스트를 조회합니다.")
-    public ApiResult<ApiResult.SuccessBody<GetBookmarkListRes>> getBookmarkList (
+    public ApiResult<ApiResult.SuccessBody<GetBookmarkListRes>> getBookmarkList(
             @Parameter(name = "userId", description = "사용자 ID", required = true)
             @UserId Long userId
     ) {
         List<CourseWithBookmarkDTO> bookmarks = bookmarkService.getBookmarkList(userId);
-        return ApiResponse.success(GetBookmarkListRes.from(bookmarks),HttpStatus.OK);
+        return ApiResponse.success(GetBookmarkListRes.from(bookmarks), HttpStatus.OK);
     }
 }

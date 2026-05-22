@@ -1,12 +1,12 @@
 package com.econo_4factorial.newproject.base.dto;
 
-import com.econo_4factorial.newproject.common.constant.Difficulty;
-import com.econo_4factorial.newproject.course.domain.Course;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.econo_4factorial.newproject.common.constant.Difficulty;
+import com.econo_4factorial.newproject.course.domain.Course;
+import org.junit.jupiter.api.Test;
 
 class CourseDetailDTOTest {
 

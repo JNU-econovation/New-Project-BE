@@ -43,20 +43,20 @@ public class NicknamePoolInitializer {
         try {
             String response = redisTemplate.getConnectionFactory().getConnection().ping();
             log.info("Redis Ready");
-        } catch (Exception e){
+        } catch (Exception e) {
             log.warn("Redis Not Ready. 재시도 실행...");
             throw e;
         }
     }
 
     @Recover
-    public void recover (Exception e) {
+    public void recover(Exception e) {
         log.error("Redis Ready 상태 확인 실패.", e);
         throw new RedisNotReadyException();
     }
 
     private void initializeNicknamePoolIfNeeded() {
-        if(!hasNicknamePool()) {
+        if (!hasNicknamePool()) {
             initializeStartPosition();
             log.info("Redis. 랜덤 닉네임 START_POSITON_KEY 최초 값 1삽입.");
         }

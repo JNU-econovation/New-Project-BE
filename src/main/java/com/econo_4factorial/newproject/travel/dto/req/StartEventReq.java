@@ -4,6 +4,6 @@ public record StartEventReq(
         double[] coordinate,
         Long courseId,
         Long time
-){
+) {
 
 }

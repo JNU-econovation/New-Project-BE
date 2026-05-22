@@ -12,12 +12,11 @@ import com.econo_4factorial.newproject.travel.mapper.TravelMapper;
 import com.econo_4factorial.newproject.travel.repository.TravelRecordRepository;
 import com.econo_4factorial.newproject.user.domain.User;
 import com.econo_4factorial.newproject.user.service.UserService;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

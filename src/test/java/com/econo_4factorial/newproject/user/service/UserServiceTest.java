@@ -1,5 +1,13 @@
 package com.econo_4factorial.newproject.user.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 import com.econo_4factorial.newproject.auth.dto.apple.AppleUserInfoDTO;
 import com.econo_4factorial.newproject.auth.dto.kakao.KakaoUserInfoDTO;
 import com.econo_4factorial.newproject.user.domain.BloodType;
@@ -15,22 +23,13 @@ import com.econo_4factorial.newproject.user.exception.BadRequestException.EmailA
 import com.econo_4factorial.newproject.user.exception.BadRequestException.PhoneNumberAlreadyExistsException;
 import com.econo_4factorial.newproject.user.exception.BadRequestException.UserNotFoundException;
 import com.econo_4factorial.newproject.user.repository.UserRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -203,7 +202,8 @@ class UserServiceTest {
     @Test
     void 유저_프로필을_수정한다() {
         User user = createUser(1L);
-        ProfileSettingReq request = new ProfileSettingReq("홍길동", "test@example.com", "등산러", "010-1234-5678", 70L, 175L, "B", "메모");
+        ProfileSettingReq request = new ProfileSettingReq("홍길동", "test@example.com", "등산러", "010-1234-5678", 70L, 175L,
+                "B", "메모");
         given(userRepository.findById(1L)).willReturn(Optional.of(user));
 
         userService.updateUserProfile(1L, request);

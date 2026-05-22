@@ -1,13 +1,13 @@
 package com.econo_4factorial.newproject.course.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.econo_4factorial.newproject.course.dto.ClosestCoordinateInfo;
 import com.econo_4factorial.newproject.course.exception.InternalServerException.ClosestCoordinateNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CourseLocationMatcherTest {
 
