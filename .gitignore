@@ -44,4 +44,5 @@ out/
 /nohup.out
 /restart.sh
 AGENTS.md
+CLAUDE.md
 test.md
