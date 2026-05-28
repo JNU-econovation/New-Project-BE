@@ -46,3 +46,7 @@ out/
 AGENTS.md
 CLAUDE.md
 test.md
+
+### Runtime data - never commit ###
+db/
+logs/
