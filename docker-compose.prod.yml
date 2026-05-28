@@ -1,0 +1,52 @@
+services:
+    spring:
+      build: .
+      image: heueum/new-project:release-2026-03-31
+      container_name: springboot
+      restart: always
+      ports:
+        - 8080:8080
+      env_file:
+        - ./.env
+      environment:
+        SPRING_PROFILES_ACTIVE: prod
+      depends_on:
+        mysql:
+          condition: service_healthy
+        redis:
+          condition: service_started
+      volumes:
+        - ./logs:/app/logs
+
+    mysql:
+      image: mysql:8.0
+      container_name: mysql
+      restart: always
+      ports:
+        - 3306:3306
+      environment:
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_DATABASE: newProject
+        TZ: Asia/Seoul
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 5s
+        start_period: 20s
+        retries: 5
+      volumes:
+        - ./db/mysql/data:/var/lib/mysql
+        - ./db/mysql/init:/docker-entrypoint-initdb.d
+        - ./db/mysql/conf.d:/etc/mysql/conf.d
+
+    redis:
+      image: redis:8.0.3-alpine
+      container_name: redis
+      ports:
+        - 6379:6379
+      command: redis-server /usr/local/etc/redis/redis.conf
+      volumes:
+        - ./db/redis/:/data
+        - ./db/redis/:/usr/local/etc/redis/redis.conf
+      restart: always
+
