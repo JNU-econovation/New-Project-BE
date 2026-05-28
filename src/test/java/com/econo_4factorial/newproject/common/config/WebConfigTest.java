@@ -22,7 +22,8 @@ class WebConfigTest {
     void UserId_리졸버를_등록한다() {
         UserIdResolver userIdResolver = mock(UserIdResolver.class);
         JwtInterceptor jwtInterceptor = mock(JwtInterceptor.class);
-        WebConfig webConfig = new WebConfig(userIdResolver, jwtInterceptor);
+        CorsProperties corsProperties = new CorsProperties();
+        WebConfig webConfig = new WebConfig(userIdResolver, jwtInterceptor, corsProperties);
         List<HandlerMethodArgumentResolver> resolvers = new ArrayList<>();
 
         webConfig.addArgumentResolvers(resolvers);
@@ -34,7 +35,8 @@ class WebConfigTest {
     void JWT_인터셉터를_API_경로에_등록하고_예외_경로를_제외한다() {
         UserIdResolver userIdResolver = mock(UserIdResolver.class);
         JwtInterceptor jwtInterceptor = mock(JwtInterceptor.class);
-        WebConfig webConfig = new WebConfig(userIdResolver, jwtInterceptor);
+        CorsProperties corsProperties = new CorsProperties();
+        WebConfig webConfig = new WebConfig(userIdResolver, jwtInterceptor, corsProperties);
         InterceptorRegistry registry = mock(InterceptorRegistry.class);
         InterceptorRegistration registration = mock(InterceptorRegistration.class);
 
@@ -70,12 +72,19 @@ class WebConfigTest {
     void CORS_매핑을_등록한다() {
         UserIdResolver userIdResolver = mock(UserIdResolver.class);
         JwtInterceptor jwtInterceptor = mock(JwtInterceptor.class);
-        WebConfig webConfig = new WebConfig(userIdResolver, jwtInterceptor);
+        CorsProperties corsProperties = new CorsProperties();
+        corsProperties.setAllowedOrigins(List.of(
+                "https://localhost:3000",
+                "http://localhost:3000",
+                "https://econo.soop.euichan.com",
+                "https://api.econo.soop.euichan.com"
+        ));
+        WebConfig webConfig = new WebConfig(userIdResolver, jwtInterceptor, corsProperties);
         CorsRegistry registry = mock(CorsRegistry.class);
         CorsRegistration registration = mock(CorsRegistration.class);
 
         given(registry.addMapping("/**")).willReturn(registration);
-        given(registration.allowedOriginPatterns(
+        given(registration.allowedOrigins(
                 "https://localhost:3000",
                 "http://localhost:3000",
                 "https://econo.soop.euichan.com",
@@ -89,7 +98,7 @@ class WebConfigTest {
 
         InOrder inOrder = inOrder(registry, registration);
         inOrder.verify(registry).addMapping("/**");
-        inOrder.verify(registration).allowedOriginPatterns(
+        inOrder.verify(registration).allowedOrigins(
                 "https://localhost:3000",
                 "http://localhost:3000",
                 "https://econo.soop.euichan.com",

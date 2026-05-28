@@ -12,18 +12,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @AllArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
     private final UserIdResolver userIdResolver;
     private final JwtInterceptor jwtInterceptor;
+    private final CorsProperties corsProperties;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns(
-                        "https://localhost:3000", // local
-                        "http://localhost:3000",
-                        "https://econo.soop.euichan.com", // Frontend
-                        "https://api.econo.soop.euichan.com" // Backend
-                )
+                .allowedOrigins(corsProperties.getAllowedOrigins().toArray(new String[0]))
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

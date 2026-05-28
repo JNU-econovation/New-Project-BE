@@ -53,6 +53,8 @@ custom:
     refresh:
       expired-time: ${CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME}
       secret-key: ${CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
 
 oauth:
   kakao:

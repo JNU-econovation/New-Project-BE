@@ -1,8 +1,14 @@
+# DB/Redis URL은 MySqlContainerSupport/MySqlRedisContainerSupport가 동적 주입.
+# Testcontainers 미실행 시 부팅 실패가 의도된 동작.
 spring:
   task:
     scheduling:
       enabled: false
   jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
     hibernate:
       ddl-auto: none
   sql:
@@ -48,6 +54,9 @@ custom:
     refresh:
       expired-time: 1209600
       secret-key: test-refresh-secret-key-test-refresh-secret-key
+  cors:
+    allowed-origins:
+      - http://localhost:3000
 
 oauth:
   kakao:

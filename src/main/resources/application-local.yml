@@ -55,6 +55,10 @@ custom:
     refresh:
       expired-time: ${CUSTOM_JWT_REFRESH_TOKEN_EXPIRED_TIME}
       secret-key: ${CUSTOM_JWT_REFRESH_TOKEN_SECRET_KEY}
+  cors:
+    allowed-origins:
+      - http://localhost:3000
+      - https://localhost:3000
 
 oauth:
   kakao:
