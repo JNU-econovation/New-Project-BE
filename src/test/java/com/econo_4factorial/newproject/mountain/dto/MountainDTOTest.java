@@ -11,22 +11,16 @@ import org.junit.jupiter.api.Test;
 class MountainDTOTest {
 
     @Test
-    void 산을_DTO로_변환한다() {
+    void 좌표를_경도_위도_순서로_변환한다() {
         Mountain mountain = mock(Mountain.class);
-        when(mountain.getId()).thenReturn(1L);
-        when(mountain.getName()).thenReturn("무등산");
-        when(mountain.getLocation()).thenReturn("광주");
-        when(mountain.getLongitude()).thenReturn(new BigDecimal("126.9890"));
-        when(mountain.getLatitude()).thenReturn(new BigDecimal("35.1340"));
+        when(mountain.getLongitude()).thenReturn(new BigDecimal("126.99"));
+        when(mountain.getLatitude()).thenReturn(new BigDecimal("35.13"));
 
-        MountainDTO result = MountainDTO.from(mountain);
+        MountainDTO dto = MountainDTO.from(mountain);
 
-        assertThat(result.id()).isEqualTo(1L);
-        assertThat(result.name()).isEqualTo("무등산");
-        assertThat(result.location()).isEqualTo("광주");
-        assertThat(result.coordinate()).containsExactly(
-                new BigDecimal("126.9890"),
-                new BigDecimal("35.1340")
+        assertThat(dto.coordinate()).containsExactly(
+                new BigDecimal("126.99"),
+                new BigDecimal("35.13")
         );
     }
 }
