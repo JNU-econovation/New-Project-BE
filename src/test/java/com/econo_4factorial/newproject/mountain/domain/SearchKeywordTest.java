@@ -29,6 +29,13 @@ class SearchKeywordTest {
     }
 
     @Test
+    void 전각_공백도_제거한다() {
+        SearchKeyword keyword = new SearchKeyword("무등　");
+
+        assertThat(keyword.value()).isEqualTo("무등");
+    }
+
+    @Test
     void 자소분리된_입력을_완성형으로_정규화한다() {
         String decomposed = Normalizer.normalize("무등", Normalizer.Form.NFD);
 

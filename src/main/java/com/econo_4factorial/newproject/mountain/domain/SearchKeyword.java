@@ -25,6 +25,6 @@ public record SearchKeyword(String value) {
         if (raw == null || raw.isBlank()) {
             return "";
         }
-        return Normalizer.normalize(raw.trim(), Normalizer.Form.NFC);
+        return Normalizer.normalize(raw.strip(), Normalizer.Form.NFC);
     }
 }
