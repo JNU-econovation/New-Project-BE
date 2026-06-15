@@ -1,5 +1,10 @@
 # DB/Redis URL은 MySqlContainerSupport/MySqlRedisContainerSupport가 동적 주입.
 # Testcontainers 미실행 시 부팅 실패가 의도된 동작.
+#
+# 스키마: 엔티티 기반 create-drop (운영 스키마의 source of truth도 엔티티)
+# 시드: data-test.sql (운영 data.sql 미러 + 테스트 전용 추가 가능)
+# 실행 순서: 공통 application.yml의 jpa.defer-datasource-initialization=true 덕분에
+#            Hibernate DDL 생성 -> data-test.sql 순으로 실행됨. 이 설정 지우면 깨짐.
 spring:
   task:
     scheduling:
@@ -10,10 +15,12 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
   sql:
     init:
-      mode: never
+      mode: always
+      encoding: UTF-8
+      data-locations: classpath:data-test.sql
 
 app:
   startup-jobs:

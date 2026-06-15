@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MountainService {
     private final MountainRepository mountainRepository;
 
-    @Transactional(readOnly = true)
     public List<MountainDTO> findAll() {
         return mountainRepository.findAllByOrderByNameAsc()
                 .stream()
@@ -22,22 +22,19 @@ public class MountainService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
     public void isMountainExistOrThrow(Long mountainId) {
         if (!mountainRepository.existsById(mountainId)) {
             throw new MountainNotFoundException();
         }
     }
 
-    @Transactional(readOnly = true)
     public List<SuggestedMountainDTO> suggestMountainsByInitials(String initials) {
         return mountainRepository.findByInitialsStartingWith(initials)
                 .stream()
                 .map(SuggestedMountainDTO::from)
                 .toList();
     }
-
-    @Transactional(readOnly = true)
+    
     public List<SuggestedMountainDTO> suggestMountainsByWords(String words) {
         return mountainRepository.findByNameContaining(words)
                 .stream()
