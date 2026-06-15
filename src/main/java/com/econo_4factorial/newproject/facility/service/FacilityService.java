@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FacilityService {
+
     private final FacilityRepository facilityRepository;
     private final MountainService mountainService;
 
-    @Transactional(readOnly = true)
     public List<FacilityDTO> getFacilitiesByMountainId(Long mountainId) {
         mountainService.isMountainExistOrThrow(mountainId);
 
