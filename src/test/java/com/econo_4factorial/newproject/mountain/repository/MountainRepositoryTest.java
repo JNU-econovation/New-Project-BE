@@ -64,7 +64,7 @@ class MountainRepositoryTest extends MySqlContainerSupport {
     }
 
     @Test
-    void 산_엔티티가_시드값으로_매핑된다() {
+    void 산을_조회하면_초성과_좌표를_담아_반환한다() {
         Mountain mudeungsan = mountainRepository.findByInitialsStartingWith("ㅁㄷㅅ").getFirst();
 
         assertThat(mudeungsan.getName()).isEqualTo("무등산");

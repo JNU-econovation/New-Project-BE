@@ -3,19 +3,19 @@ package com.econo_4factorial.newproject.support;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-@Testcontainers
 public abstract class MySqlRedisContainerSupport extends MySqlContainerSupport {
 
     private static final int REDIS_PORT = 6379;
 
-    @Container
     protected static final GenericContainer<?> REDIS_CONTAINER =
             new GenericContainer<>(DockerImageName.parse("redis:7.2-alpine"))
                     .withExposedPorts(REDIS_PORT);
+
+    static {
+        REDIS_CONTAINER.start();
+    }
 
     @DynamicPropertySource
     static void registerRedisProperties(DynamicPropertyRegistry registry) {

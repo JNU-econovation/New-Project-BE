@@ -15,7 +15,10 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
     hibernate:
-      ddl-auto: create-drop
+      # create-drop이 아니라 create: 시작 시 스키마 생성하되, 종료 시 DROP하지 않는다.
+      # Testcontainer는 통째로 버려지므로 종료 DROP은 무의미하고, Singleton 컨테이너 teardown과
+      # 경쟁하며 'Communications link failure' 노이즈만 만든다.
+      ddl-auto: create
   sql:
     init:
       mode: always
