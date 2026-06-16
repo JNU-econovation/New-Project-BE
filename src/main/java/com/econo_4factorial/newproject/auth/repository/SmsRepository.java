@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class SmsRepository {
+
     private final SmsProperties smsProperties;
     private final StringRedisTemplate redisTemplate;
 

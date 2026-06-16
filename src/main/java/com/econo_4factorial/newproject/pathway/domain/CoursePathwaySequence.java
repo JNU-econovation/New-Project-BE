@@ -1,6 +1,5 @@
 package com.econo_4factorial.newproject.pathway.domain;
 
-
 import com.econo_4factorial.newproject.course.domain.Course;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

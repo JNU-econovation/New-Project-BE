@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CoursePathwaySequenceRepository extends JpaRepository<CoursePathwaySequence, Long>,
         CoursePathwaySequenceCustomRepository {
-
 }

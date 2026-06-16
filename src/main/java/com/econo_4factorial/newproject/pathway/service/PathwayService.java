@@ -11,12 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PathwayService {
+
     private final PathwayRepository pathwayRepository;
     private final CoursePathwaySequenceService coursePathwaySequenceService;
     private final PathwayMapper pathwayMapper;
 
-    @Transactional(readOnly = true)
     public List<PathwayDTO> getPathwaysByCourseId(Long courseId) {
         List<CoursePathwaySequence> sequences = coursePathwaySequenceService.findByCourseId(courseId);
         return makePathways(sequences);
