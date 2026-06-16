@@ -15,9 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
 
-@Repository
 @AllArgsConstructor
 public class CourseCustomRepositoryImpl implements CourseCustomRepository {
     private final String DIFFICULTY = "difficulty";

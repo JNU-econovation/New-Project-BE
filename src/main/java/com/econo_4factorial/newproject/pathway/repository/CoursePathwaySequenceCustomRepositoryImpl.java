@@ -10,9 +10,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
 
-@Repository
 @AllArgsConstructor
 public class CoursePathwaySequenceCustomRepositoryImpl implements CoursePathwaySequenceCustomRepository {
     private final JPAQueryFactory queryFactory;
