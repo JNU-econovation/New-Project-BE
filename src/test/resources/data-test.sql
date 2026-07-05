@@ -190,5 +190,23 @@ VALUES (display_name), peak_base_id =
 VALUES (peak_base_id);
 
 -- ============================================================================
+-- 경로(pathway) + 코스-경로 순서(course_pathway_sequence) 마스터
+-- 운영은 크기 때문에 pathway_insert.sql로 별도 import. 여기는 테스트용 대표 서브셋.
+-- 시드된 base(1~28)를 참조한 합성 데이터. WKT는 base 시드와 동일하게 '위도 경도' 순(SRID 4326).
+-- course 1(새인봉-입석대)에 경로 3개를 sequence 1~3으로 연결: 증심사주차장(21)→새인봉(11)→서인봉(13)→입석대(28)
+-- ============================================================================
+INSERT INTO pathway (id, departure_id, destination_id, coordinates, length, duration, difficulty)
+VALUES
+    (1, 21, 11, ST_GeomFromText('LINESTRING(35.1334 126.9578, 35.1300 126.9600, 35.1213 126.9655)', 4326), 2.0, 60, 'NORMAL'),
+    (2, 11, 13, ST_GeomFromText('LINESTRING(35.1213 126.9655, 35.1190 126.9750, 35.1173 126.9810)', 4326), 1.5, 45, 'NORMAL'),
+    (3, 13, 28, ST_GeomFromText('LINESTRING(35.1173 126.9810, 35.1170 126.9950, 35.1175 127.0025)', 4326), 1.8, 50, 'HARD');
+
+INSERT INTO course_pathway_sequence (id, course_id, pathway_id, `sequence`)
+VALUES
+    (1, 1, 1, 1),
+    (2, 1, 2, 2),
+    (3, 1, 3, 3);
+
+-- ============================================================================
 -- 테스트 전용 추가 (운영 미러 아님 — 추가 시 의도 주석 필수)
 -- ============================================================================
